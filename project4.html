@@ -1,0 +1,877 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/project4 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:12:26 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Project 4: Constructing Colossi</h1>
+<p><div class=turnin>
+<strong>Deliverables:</strong> Bring in to class on <strong>Wednesday, 16 March</strong> a stapled turn-in containing your written answers to all the questions. 
+   </div></p>
+<h3>Purpose</h3>
+<ol>
+<li>
+<p>Get practice with material that will be on the Blue Belt Exam
+including: recursive definitions, procedures, lists, asymptotic
+notation, and analyzing procedures.</p>
+</li>
+<li>
+<p>Learn about cryptography and the first important problems that were
+solved by computers.</p>
+</li>
+</ol>
+<h4>Preparation</h4>
+<p>Before doing this project, you are expected to have read <a href="http://computingbook.org/Cost.pdf">Chapter 7:
+<em>Cost</em></a> of the coursebook, and
+completed <a href="http://www.cs.virginia.edu/evans/cs101/unit5-notes.pdf">Lesson 5: <em>How Programs
+Run</em></a> of Udacity CS101.</p>
+<h4>Collaboration Policy</h4>
+<p><strong>This problem set is intended to help you prepare the Blue Belt Exam.</strong>
+You may work on it by yourself or with any number of other students of
+your choice, but you will need to do the exam on your own.  If you work
+with others, you should turn in one assignment with everyone's name on
+it, but <strong>it is required that <em>everyone</em> understand <em>everything</em> in the
+submission you turn in</strong>.</p>
+<p>Regardless of whether you work alone or with a partner, you may discuss
+the assignment with anyone you want and get help from others, so long as
+it is help in the spirit of learning how to do things yourself not
+getting answers you don't understand.  You should understand everything
+you turn in for the assignment well enough to be able to produce it
+completely on your own.</p>
+<p>Remember to follow the <a href="pledge.html">course pledge</a> you read and signed at
+the beginning of the semester.  For this assignment, you may consult any
+outside resources, including books, papers, web sites and people, you
+wish <i>except</i> for materials from previous cs1120 courses or direct
+solutions to the given problems.  You may consult anyone you want, but
+that person cannot type anything in for you and all work must remain
+your own and outside sources should never give you specific answers to
+problem set questions.</p>
+<p>If you use resources other than the class materials, lectures and course
+staff, you should document this in your turn-in.</p>
+<p>As usual, you are <strong>strongly encouraged</strong> to take advantage of the
+cs1120 slack group and the scheduled office hours.</p>
+<h1>Background</h1>
+<p>Cryptography means <EM>secret writing</EM>. The goal of much
+  cryptography is for one person to send a message to another person
+  over a channel that an adversary may be eavesdropping on without the
+  eavesdropper understanding the message. We do this by having functions
+  that <EM>encrypt</EM> and <EM>decrypt</EM> messages. The encrypt
+  function takes a plaintext message and produces a ciphertext
+  message. Encrypt scrambles and alters the letters of the plaintext
+  message so that an eavesdropper will not be able to understand the
+  message. The decrypt function takes a ciphertext message and produces
+  the corresponding plaintext message. Encryption works as intended if
+  the only person who can perform the decrypt function is the intended
+  recipient of the message. </p>
+<p>Since making up good encrypt and decrypt functions and keeping them
+  secret is hard, most cryptosystems are designed to be secure even if
+  the encryption and decryption algorithms are revealed. The security
+  relies on a key which is kept secret and known only to the sender and
+  receiver. The key alters the encryption and decryption algorithm in
+  some way that would be hard for someone who doesn't know the key to
+  figure out. If the sender and receiver use the same secret key we call
+  it a <EM>symmetric</EM> cipher. If the sender and receiver can use
+  different keys we call it an <EM>asymmetric</EM> cipher.</p>
+<p><CENTER><IMG src="http://www.cs.virginia.edu/evans/cs1120-images/project4/encryption.png" width=720 height=216> </CENTER>
+  <BLOCKQUOTE>
+    <BLOCKQUOTE>
+      <BLOCKQUOTE>
+<em>Ciphertext</em> = <em>Encrypt</em>(<em>K</em><SUB>E</SUB>, <em>Plaintext</em>)<br />
+<em>Plaintext</em> = <em>Decrypt</em>(<em>K</em><SUB>D</SUB>, <em>Ciphertext</em>)  </p>
+<p>If <em>K</em><SUB>E</SUB> == <em>K</em><SUB>D</SUB></TT> it is
+        <em>symmetric</em> encryption. <br />
+If <em>K</em><suB>D</SUB> cannot (feasibly) be derived from <em>K</em><SUB>D</SUB> it is <em>asymmetric</em> ("public key") encryption.
+</blockquote></blockquote></blockquote>
+   <TABLE cellPadding=12>
+   <TBODY>
+   <tr valign="top">
+   <td valign="top">
+In this project, you will explore a symmetric cipher based on the Lorenz
+Cipher that was used by the German Army High Command to send some of the
+most important and secret messages during World War II. The Lorenz
+Cipher was broken by British Cryptographers at Bletchley Park.</p>
+<p>Arguably the first electronic programmable computer, <em>Colossus</em>,
+was designed and built by Tommy Flowers, a Post Office engineer working
+at Bletchley Park during the war.  (There is a lot of arguing about what
+should be considered the first computer.  <a
+href="http://www.amazon.com/Invented-Computer-Changed-Computing-History/dp/1591020344"><em>Who
+Invented the Computer? The Legal Battle That Changed Computing
+History</em></a> supports John Atanasoff's case; this <a
+href="http://www.scientificamerican.com/blog/60-second-science/post.cfm?id=who-built-the-first-computer-2009-09-21">Scientific
+American post</a> summarizes some of the other candidates.) </p>
+<p>Ten Collosi were built in 1943 and 1944, and used to break some of the
+most important German messages during World War II. Messages broken by
+Colossus were crucial to the D-Day invasion since the allies were able
+to learn that their campaign to deceive Hitler about where the attack
+would come was succeeding and knew where German troops were positioned.
+   </td> 
+   <td valign=top align="center"> 
+<a
+href="http://www.cs.virginia.edu/evans/cs1120-images/project4/bletchley-outside.jpg">
+<img height=250 width=300
+src="http://www.cs.virginia.edu/evans/cs1120-images/project4/bletchley-outside-small.jpg"></a>
+<br><a
+href="http://www.cs.virginia.edu/evans/pictures/bletchley/"><b>Bletchley
+Park</b></a> (Summer 2004) </a> 
+   </td>
+   </tr>
+   </table></p>
+<p><div class="note">
+Optional: For more background on encryption, the Lorenz Cipher and how
+it was broken, see <a href="http://www.udacity.com/course/cs387">Udacity cs387: Applied
+Cryptography</a> (Lesson 1).  It is not necessary
+to do this to complete this project, but I hope you'll find it
+interesting and worthwhile!  It will also be very helpful if you attempt
+the bonus question at the end.
+   </div></p>
+<div class=bigquote>
+It is regretted that it is not possible to give an adequate idea of the
+fascination of a Colossus at work: its sheer bulk and apparent
+complexity; the fantastic speed of thin paper tape round the glittering
+pulleys; the childish pleasure of not-not, span, print main heading and
+other gadgets; the wizardry of purely mechanical decoding letter by
+letter (one novice thought she was being hoaxed); the uncanny action of
+the typewriter in printing the correct scores without and beyond human
+aid; the stepping of display; periods of eager expectation culminating
+in the sudden appearance of the longed-for score; the strange rhythms
+characterizing every type of run; the stately break-in, the erratic
+short run, the regularity of wheel-breaking, the stolid rectangle
+interrupted by the wild leaps of the carriage-return, the frantic
+chatter of a motor run, the&nbsp;ludicrous&nbsp;frenzy&nbsp;of&nbsp;hosts&nbsp;of&nbsp;bogus&nbsp;scores.
+<p align=right>
+D. Mitchie, J. Good, G. Timms.  <em>General Report on Tunny</em>, 1945.
+(Released to the Public Record Office in 2000).  <a
+href="http://www.alanturing.net/tunny_report"><em>http://www.alanturing.net/tunny_report</em></a>
+</div>
+
+<h3>Project 4 Repository</h3>
+<p>Set up your project4 repository in the same way as you did for <a href="project3.html">project
+3</a>.  </p>
+<ul>
+<li>
+<p><strong>Fork Project 4.</strong> Visit <a href="https://bitbucket.org/cs1120/project4/fork">https://bitbucket.org/cs1120/project4/fork</a>.
+Make sure to check the "This is a private repository" box to make your
+forked repository private (only visible to yourself and people you
+authorize to access it).  If you are working with partners, just one of
+you should fork the repository.  Then, add the other partners' bitbucket
+ids to have access to it.</p>
+</li>
+<li>
+<p><strong>Clone to your machine.</strong> To have a working copy of the repository on
+your machine, clone the forked repository in SourceTree by selecting
+<code>File | New/Clone</code> and enter the URL of the cloned
+repository. You can copy this from the project page you see in
+bitbucket.org afer forking the provided Project 4 repository.  It should
+be a URL like <code>https://&lt;your bitbucket id&gt;@bitbucket.org/&lt;your bitbucket
+id&gt;/project4.git</code>.  If you are working with partners, <em>all</em> partners
+should clone the forked repository, so you each have a local copy of it
+and can play around with the code without interfering with the other
+partners' copies.  (For this project, you should still work together
+when you work on the code and all partners should be involved in writing
+all the code.  In general, though, using git allows many people to work
+on the same code and share their changes, and handle conflicts when two
+people edit the same file.)</p>
+</li>
+</ul>
+<p>The project4 repository contains these files:</p>
+<ul>
+<li>
+<p><code>project4.py</code> &mdash; A template for your answers.  You should do the
+  problem set by editing this file.</p>
+</li>
+<li>
+<p><code>lorenz.py</code> &mdash; A few helpful definitions for this problem set,
+including code to convert between characters and baudot codes, the
+machine wheel definitions, and ciphertext to break. </p>
+</li>
+</ul>
+<p>Unlike the first three projects, the only code we are providing for this
+one is tedious code for converting characters to Baudot codes that you
+could have written yourself, but probably in a more tedious way than is
+doing by the provided code.  You will be writing all of the interesting
+code yourself for this project.</p>
+<h2>Measuring Cost</h2>
+<p>For each of the following subquestions, you will be given two functions,
+<span class="math"><em>g</em></span> and <span class="math"><em>f</em></span> that
+each take a single parameter <span class="math"><em>n</em></span> (which must
+be a non-negative integer) and asked to determine which of <span
+class="math"><em>O</em>(<em>f</em>(<em>n</em>))</span>, <span
+class="math">&Omega;(<em>f</em>(<em>n</em>))</span>, and <span
+class="math"><em>&Theta;</em>(<em>f</em>(<em>n</em>))</span> contain <span
+class="math"><em>g</em></span>.  It is (of course!) possible that more than one
+of the sets contain <span class="math"><em>g</em></span>.</p>
+<p>In addition to identifying the properties that hold, you should justify
+your answer by: </p>
+<ul>
+<li>
+<p>For each property that is <strong>true</strong>, select <span class="math"><em>c</em></span> and 
+<span class="math"><em>n</em><sub>0</sub></span> values and
+show why the necessary inequality holds for all <span class="math"><em>n</em> &gt; <em>n</em><sub>0</sub></span>.</p>
+</li>
+<li>
+<p>For each property that is <strong>false</strong>, explain why no such <span class="math"><em>c</em></span> and <span class="math"><em>n</em><sub>0</sub></span> values exist.  One way to do this is to show how for any selected <span class="math"><em>c</em></span> value, you can find infinitely many <span class="math"><em>n</em></span> values that fail to satisfy the necessary property.</p>
+</li>
+</ul>
+<p>For example, if <span class="math"><em>g</em></span> is <span
+class="math"><em>n</em><sup>2</sup></span> and <span class="math"><em>f</em></span> is
+<span class="math"><em>n</em><sup>3</sup></span> you would argue: </p>
+<ol>
+<li>
+<p><span class="math"><em>n</em><sup>2</sup></span> <b>is</b> in <span class="math"><em>O</em>(<em>n</em><sup>3</sup>)</span> since if we pick <span class="math"><em>c</em> = 1</span> and <span class="math"><em>n</em><sub>0</sub> = 1</span> then <span class="math"><em>n</em><sup>2</sup> &le; <em>cn</em><sup>3</sup></span> for all
+<span class="math"><em>n</em> &gt; 1</span>.</p>
+</li>
+<li>
+<p><span class="math"><em>n</em><sup>2</sup></span> <b>is not</b> in <span class="math">&Omega;(<em>n</em><sup>3</sup>)</span> since for any <span class="math"><em>c</em></span> value we know 
+<span class="math"><em>n</em><sup>2</sup></span> is not greater or equal to <span class="math"><em>cn</em><sup>3</sup></span> for all <span class="math"><em>n</em> &gt; 1/<em>c</em></span>.  This is the case since we can simplify the inequality to <span class="math">1 &ge; <em>cn</em></span> which is not true if we
+choose <span class="math"><em>n</em> &gt; 1/<em>c</em></span>.</p>
+</li>
+<li>
+<p><span class="math"><em>n</em><sup>2</sup></span> <b>is not</b> in <span class="math">&Theta;(<em>n</em><sup>3</sup>)</span> since <span class="math"><em>n</em><sup>2</sup></span> is not in <span class="math">&Omega;(<em>n</em><sup>3</sup>)</span>.</p>
+</li>
+</ol>
+<p><div class="q">
+<strong>Problem 1.</strong> For each <span class="math"><em>g</em></span> and <span class="math"><em>f</em></span> pair
+        below, argue convincingly whether or not <span class="math"><em>g</em></span> is
+        (1) in <span class="math"><em>O</em>(<em>f</em>)</span>, (2) in <span class="math">&Omega;(<em>f</em>)</span>, and (3)
+        in <span class="math">&Theta;(<em>f</em>)</span> as explained above.  For all questions, assume <span class="math"><em>n</em></span> is a non-negative integer.</p>
+<p><ol type=a>
+   <li> <span class="math"><em>g</em>(<em>n</em>) = <em>n</em> + 3</span>; <span class="math"><em>f</em>(<em>n</em>) = <em>n</em></span>
+   <li> <span class="math"><em>g</em>(<em>n</em>) = <em>n</em><sup>2</sup> + <em>n</em></span>; <span class="math"><em>f</em>(<em>n</em>) = <em>n</em><sup>2</sup></span>
+   <li> <span class="math"><em>g</em>(<em>n</em>) = 2<sup><em>n</em></sup></span>; <span class="math"><em>f</em>(<em>n</em>) = 3<sup><em>n</em></sup></span>
+   <li> <span class="math"><em>g</em>(<em>n</em>) = 2<sup><em>n</em></sup></span>; <span class="math"><em>f</em>(<em>n</em>) = <em>n</em><sup><em>n</em></sup></span>
+   <li> <span class="math"><em>g</em>(<em>n</em>) = </span> the federal debt <span class="math"><em>n</em></span> years from today; <span class="math"><em>f</em>(<em>n</em>) = </span> the US population <span class="math"><em>n</em></span> years from today (this one requires a more informal argument) 
+   </ol>
+(You may write your answers to Problem 1 as a comment in <code>project4.py</code>, or by hand or using another document editor and print out a separate page.)
+   </div></p>
+<h2>The Exclusive Or (XOR)</h2>
+<p>The exclusive-or (<em>xor</em>, sometimes pronounced "zor") function is every
+cryptographers favorite function.  The <em>xor</em> function takes two Boolean
+inputs, and returns <code>True</code> if exactly one of the inputs is <code>True</code>, and
+returns <code>False</code> otherwise.  Often in English, when people say "or", what
+they really mean is "xor".  For example, when someone asks "Would you
+like the chicken or fish?", they do not consider "both" to be a valid
+answer.</p>
+<p>In cryptography, it is usually easier to deal with the binary digits <code>1</code>
+and <code>0</code> instead of <code>True</code> and <code>False</code>.  We use <code>1</code> to represent true and
+<code>0</code> to represent false, and call each <code>0</code> or <code>1</code> a <em>bit</em>.  (The term
+<em>bit</em> was introduced by <a href="http://www.scientificamerican.com/article/claude-e-shannon-founder/">Claude
+Shannon</a>.)</p>
+<p><div class="q"> 
+   <strong>Problem 2.</strong> Define the <code>xor</code> function that takes two bits as
+   parameters and returns to <code>1</code> if exactly one of the parameters is
+   <code>1</code> and returns to <code>0</code> otherwise.  (Note that this <code>xor</code> function
+   may be slightly different from others you may see, since the inputs
+   are bits (represented as numbers) not Booleans.
+   </div> </p>
+<p>Your <code>xor</code> function should produce these interactions:</p>
+<pre class="brush: python;"> 
+>>> xor(0,0)
+0 
+>>> xor(0,1) 
+1 
+>>> xor(1,0) 
+1 
+>>> xor(1,1)
+0 
+</pre>
+
+<p>The <code>xor</code> function has several properties that make it extremely useful
+in cryptography:</p>
+<ul>
+<li>
+<p><em>invertibility</em> &mdash; <span class="math"><em>xor</em>(<em>xor</em>(<em>a</em>, <em>b</em>), <em>b</em>) == <em>a</em></span>.  No matter what <em>b</em> is, xor-ing any value with it twice results in the original value.  This means if we encrypt a message by xor-ing it 
+    with a key <em>k</em>, we can decrypt the message by just xor-ing it again with the same key! </p>
+</li>
+<li>
+<p><em>perfect secrecy</em> &mdash; if <span class="math"><em>m</em></span> is a message bit and 
+<span class="math"><em>r</em></span> is a perfectly random bit (equally likely to be 0 or 1), then 
+the probability that <span class="math"><em>xor</em>(<em>m</em>, <em>r</em>) == 0</span> is <span class="math">1/2</span>, regardless of <span class="math"><em>m</em></span>.</p>
+</li>
+</ul>
+<p>The second property means that if a message is encrypted by converting
+the message into a sequence of bits, and xor-ing each bit in the message
+with a perfectly random, secret bit known only to the sender and
+receiver, then we can send a message with perfect secrecy!  This is
+known as a <a href="http://en.wikipedia.org/wiki/One-time_pad">one-time
+pad</a> (and is, essentially, the <em>only</em> perfect cipher possible, as was
+proven by Claude Shannon).</p>
+<p>Fortunately for the Allies, the Nazis did not have a way of generating
+and distributing perfectly random bit sequences.  Instead, they
+generated non-random sequences of bits using rotors.  Because the
+sequences of bits generated was determined by the structure of the
+machine used to generate them, the Allies were able to figure out a way
+to break the code.</p>
+<p>We will look at how the Lorenz cipher used <em>xor</em> to encrypt messages
+soon, but first, consider how to turn messages into sequences of bits.</p>
+<h3>The Baudot Code</h3>
+<p>The Nazis used the <a
+href="http://en.wikipedia.org/wiki/Baudot_code">Baudot code</a> to
+represent the letters in their messages as sequences of bits.  The
+Baudot code translates letters and other common characters into a 5-bit
+sequences. With five bits, we have <span class="math">2<sup>5</sup> =
+32</span> possible values.  This is enough to give each letter in the
+alphabet a different code and have a few codes left over for spaces and
+other symbols. </p>
+<p><div class="yellownote">
+<strong>Modern character encodings.</strong> Until a few years ago, most computers
+typically used either 7-bit ASCII encodings to have 2<sup>7</sup> = 128
+possible characters. This is enough to cover lowercase and uppercase
+letters and some additional punctuation characters.  As computing became
+more international (not to mention the important need for <a href="http://unicode.org/emoji/charts/full-emoji-list.html">many
+emoji</a> like
+&#x1F61C; ("FACE WITH STUCK-OUT TONGUE AND WINKING EYE", added in 2010),
+computing systems adapted to support more complex character sets with
+unicode encodings.  Unicode can encode over a million different
+characters (only 120,000 are currently assigned), using between one and
+6 bytes.  (One of the biggest changes between Python 2 and Python 3 was
+to support Unicode throughout Python 3.  This means you can have
+variable names like <tt>&Theta;&#x105;&#x1b8;&#x406;&#x69c;&#x990;</tt>
+if you really want (although this is most definitely not recommended!).
+   </div></p>
+<p>Table 1 shows the letter mappings for the Baudot code. For example, the
+letter <code>H</code> is represented by <code>10100</code> and <code>I</code> is <code>00110</code>. </p>
+<p>We can put letters together just by concatenating their encodings. For
+example, the string <code>'HI'</code> is represented in Baudot as <code>1010000110</code>.  </p>
+<p>There are some values in the Baudot code that are awkward to print:
+carriage return, line feed, letter shift, figure shift and <em>error</em>.  For
+our purposes we will use printable characters unused in the Baudot code
+to represent those values so we can print encrypted messages as normal
+strings.  Table 1 shows the replacement values in parenthesis.</p>
+<p><center>
+   <table cellspacing=12 cellpadding=6>
+   <tbody>
+   <tr><td>
+      <tr>
+      <td align=right><code>A</code></TD>
+      <TD align=right><code>00011</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>H</code></TD>
+      <TD align=right><code>10100</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>O</code></TD>
+      <TD align=right><code>11000</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>V</code></TD>
+      <TD align=right><code>11110</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><EM>space</EM></TD>
+      <TD align=right><code>00100</code></td>
+      </tr>
+      <TR>
+      <TD align=right><code>B</code></TD>
+      <TD align=right><code>11001</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>I</code></TD>
+      <TD align=right><code>00110</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>P</code></TD>
+      <TD align=right><code>10110</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>W</code></TD>
+      <TD align=right><code>10011</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><EM>carriage return</EM> (<code>,</code>)</TD>
+      <TD align=right><code>01000</code></TD>
+      </TR>
+      </TD></TR>
+    </tr>
+    <TR>
+      <TD align=right><code>C</code></TD>
+      <TD align=right><code>01110</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>J</code></TD>
+      <TD align=right><code>01011</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>Q</code></TD>
+      <TD align=right><code>10111</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>X</code></TD>
+      <TD align=right><code>11101</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><EM>line feed</EM> (<code>-</code>)</TD>
+      <TD align=right><code>00010</code></TD></TR>
+    <TR>
+      <TD align=right><code>D</code></TD>
+      <TD align=right><code>01001</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>K</code></TD>
+      <TD align=right><code>01111</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>R</code></TD>
+      <TD align=right><code>01010</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>Y</code></TD>
+      <TD align=right><code>10101</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><EM>letter shift</EM> (<code>.</code>)</TD>
+      <TD align=right><code>11111</code></TD></TR>
+      </tr>
+    <TR>
+      <TD align=right><code>E</code></TD>
+      <TD align=right><code>00001</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>L</code></TD>
+      <TD align=right><code>10010</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>S</code></TD>
+      <TD align=right><code>00101</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>Z</code></TD>
+      <TD align=right><code>10001</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><EM>figure shift</EM> (<code>!</code>)</TD>
+      <TD align=right><code>11011</code></TD></TR>
+   </TR>
+    <TR>
+      <TD align=right><code>F</code></TD>
+      <TD align=right><code>01101</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>M</code></TD>
+      <TD align=right><code>11100</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>T</code></TD>
+      <TD align=right><code>10000</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <td></td>
+      <td></td>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><EM>error</EM> (<code>*</code>)</TD>
+      <TD align=right><code>00000</code></TD></TR></TD></TR>
+      </TR>
+    <TR>
+      <TD align=right><code>G</code></TD>
+      <TD align=right><code>11010</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>N</code></TD>
+      <TD align=right><code>01100</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <TD align=right><code>U</code></TD>
+      <TD align=right><code>00111</code></TD>
+      <TD align=right>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+      <td></td><td></td><td></td>
+   </TR>
+   </TBODY></TABLE>
+   <B>Table 1.</B> Baudot Code mappings. 
+   </CENTER></p>
+<p>We can use lists of bits to represent Baudot codes. <code>H</code> is represented
+as the list <code>[1, 0, 1, 0, 0]</code>. A string is represented as a list of
+these lists: <code>'HI'</code> is <code>[[1, 0, 1, 0, 0], [0, 0, 1, 1, 0]]</code>.</p>
+<p>We have provided two functions in <code>lorenz.py</code>:</p>
+<p><blockquote>
+   <code>char_to_baudot(char)</code>: Character &rarr; Baudot
+      <div class="indented">
+      Takes a character as input, and outputs the corresponding Baudot code
+      represented as a list of five bits.
+      </div>
+   <code>baudot_to_char(bcode)</code>: Baudot &rarr; Character</TT>
+      <div class="indented">
+      Takes a baudot code, represented as a list of five bits, as input and outputs the corresponding character. 
+      </div>
+    </blockquote></p>
+<p><div class="q"> 
+<strong>Problem 3.</strong> Define a function, <code>string_to_baudot</code>, that takes a
+string of characters and transforms it into a list of Baudot codes.<br />
+   </div></p>
+<p><div class="q"> 
+<strong>Problem 4.</strong> Define the inverse function, <code>baudot_to_string</code>, that
+  takes a list Baudot codes (which is a list of lists of 5 bits), and
+  returns the corresponding string of characters.
+   </div></p>
+<p>Your <code>string_to_baudot</code> and <code>baudot_to_string</code> functions should be
+  inverses. Hence, you can test your code by evaluating compositions
+  like, <code>baudot_to_string(string_to_baudot("HELLO"))</code> (which should
+  return <code>"HELLO"</code>).</p>
+<p><div class="q">
+   <strong>Problem 5.</strong> Describe the running time of your <code>baudot_to_string</code>
+procedure.  You may do this using precise English, or using &Theta;
+notation. Make sure to explain carefully what every variable you use
+means.
+   </div> </p>
+<p><table align="right" cellpadding=12>
+<tr><td align="center">
+  <a href="http://en.wikipedia.org/wiki/File:Lorenz-SZ42-2.jpg"><IMG src="http://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Lorenz-SZ42-2.jpg/800px-Lorenz-SZ42-2.jpg" width=320></a><BR><B>Lorenz Cipher Machine</B> </td></tr>
+   </table></p>
+<h3>The Lorenz Cipher</h3>
+<p>The <a href="http://en.wikipedia.org/wiki/Lorenz_cipher">Lorenz
+cipher</a> was an encryption algorithm developed by the Germans during
+World War II. It was used primarily for communications between high
+commanders in Axis headquarters and conquerer capitals.  The original
+Lorenz machine consisted of 12 wheels, each one having 23 to 61 unique
+positions. Each position of a wheel represented either a <code>0</code> or a <code>1</code>.</p>
+<p>The first 5 wheels were called the <span class="math"><em>K</em></span>
+wheels. Each bit of the Baudot representation of a letter was xor-ed
+with the value showing on the respective wheel. </p>
+<p>The same process was repeated with the next 5 wheels, named the <span
+class="math"><em>S</em></span> wheels. The resulting value represented the
+encrypted letter.</p>
+<p>After each message letter the <span class="math"><em>K</em></span> wheels turn
+one rotation. All five of the wheels advance one position (this
+coordination of movement across the wheels is one of the biggest
+weaknesses in the cipher design). </p>
+<p>The movement of the <span class="math"><em>S</em></span> wheels was determined
+by the positions of the final two wheels, called the <span class="math"><em>M</em></span>
+wheels.</p>
+<p><center>
+   <a href="http://en.wikipedia.org/wiki/File:SZ42-6-wheels-lightened.jpg">
+   <img src="http://upload.wikimedia.org/wikipedia/commons/3/39/SZ42-6-wheels-lightened.jpg" width=500></a><br>
+   <b>Lorenz Cipher Wheels</b>
+   </center></p>
+<p>Like most ciphers, the Lorenz machine also required a key. The key
+determined the starting position of each of the 12 wheels. To decipher
+the message you simply need to start the wheels with the same position
+as was used by the sender to encrypt the message, and enter the
+ciphertext.  Because of the invertability of xor, when the receiver's
+machine produces the same sequence of encryption bits the receiver
+obtains the original message by xoring the ciphertext with the generated
+bits.</p>
+<p>There were 16,033,955,073,056,318,658 possible starting positions. This
+made the Nazis very confident that without knowing the key (starting
+positions of the wheels), no one would be able to break messages
+encrypted using the Lorenz machine.  There confidence was futher
+bolstered by knowing that the Allies had not acquired a single Lorenz
+machine, since the machines were all kept in highly secure locations
+controled by the Axis (this is different from Enigma machines which were
+widely deployed in the field, with every army unit and submarine having
+one). </p>
+<p>Their confidence was misplaced, however, and Allied cryptographers at
+Bletchley Park were able to deduce the structure of the Lorenz machine
+from intercepted re-transmissions (with errors), identify statistical
+weaknesses in the encryption, and build a computer to rapidly decrypt
+intercepted messages, providing great benefits to the Allies during the
+last years of the war.</p>
+<p>Since the full Lorenz cipher would be too hard for this project, we
+will implement a simplified version.  You should be suitably amazed that
+the allied cryptographers in 1943 were able to build a computer to solve
+a problem that is still hard for us to solve today!  (Of course, they
+did have more that a week to solve it, and more serious motivation than
+we can provide in this course.)</p>
+<p>Our Lorenz machine will use 11 wheels, each with only 5 positions. The
+first five wheels will be the <span class="math"><em>K</em></span> wheels and
+the second five the <span class="math"><em>S</em></span> wheels. Each of these
+will only have a single starting position for all 5 &#151; that is,
+unlike the real Lorenz machine, for this project we will assume all
+five <span class="math"><em>K</em></span> wheels must start in the same
+position and all five <span class="math"><em>S</em></span> wheels must start in
+the same position.  </p>
+<p>The final wheel will act as the <span class="math"><em>M</em></span>
+wheel. After each letter all the <span class="math"><em>K</em></span> wheels
+and the <span class="math"><em>M</em></span> wheel should always rotate. Before
+the <span class="math"><em>M</em></span> wheel rotates, if it shows a <code>1</code> the
+<span class="math"><em>S</em></span> wheels should also rotate, but if the
+<span class="math"><em>M</em></span> wheel shows a <code>0</code> the <span
+class="math"><em>S</em></span> wheels do not rotate.</p>
+<h3>Describing the Simplified Lorenz Machine</h3>
+<p>We have provided 3 lists that represent the wheels in <code>lorenz.py</code>. The
+first is called <code>K_wheels</code> and is a list of lists, each of the inner
+lists containing the 5 settings:</p>
+<pre class="brush: python;">
+K_wheels = [[1,1,0,1,0], [0,1,0,0,1], [1,0,0,1,0], [1,1,1,0,1], [1,0,0,0,1]]
+</pre>
+
+<p>There is a similar list called <code>S_wheels</code> to represent the <span
+class="math"><em>S</em></span> wheels of our simulated machine.</p>
+<pre class="brush: python;">
+S_wheels = [[0,0,0,1,1], [0,1,1,0,0], [0,0,1,0,1], [1,1,0,0,0], [1,0,1,1,0]]
+</pre>
+
+<p>The final list represents the <span class="math"><em>M</em></span> wheels and
+is just a single list (it is just one wheel, so is a single list
+representing that wheel, not a list of wheels):
+<pre class="brush: python;">
+M_wheel = [0,0,1,0,1]
+</pre></p>
+<p>To rotate our wheels, we will take the number at the front of the list
+and move it to the back. Thus, the first number in the list represents
+the current position of the wheel.</p>
+<p><div class="q">
+<strong>Problem 6.</strong> Define a function <code>rotate_wheel</code> that takes as input a
+wheel (represented as a list). It should return a new list that
+represents the wheel rotated once (without modifying the input
+wheel). For example, <code>rotate_wheel([1, 2, 3, 4, 5])</code> should return
+<code>[2, 3, 4, 5, 1]</code>.  Although all the wheels in our simulated Lorenz
+cipher machine have five bits, your <code>rotate_wheel</code> function should work
+for any non-empty list.<br />
+   </div></p>
+<p>We also want a procedure that can rotate a wheel zero or more times:</p>
+<p><div class="q">
+<strong>Problem 7.</strong> Define a function <code>rotate_wheel_by</code> that takes two
+inputs: a wheel as the first input and a number as the second. It should
+return a new wheel that represents the result of rotating the wheel the
+input number of times. For example, <code>rotate_wheel_by([1, 0, 0, 1,
+0], 2)</code> should return <code>[0, 1, 0, 1, 0]</code> and <code>rotate_wheel_by(wheel,
+0)</code> (where <code>wheel</code> is any list) should return <code>wheel</code>.<br />
+    </div></p>
+<p>Next, we define similar functions that work on a list of wheels at a
+time instead of a single wheel. </p>
+<p><div class="q">
+<strong>Problem 8.</strong> Define a function <code>rotate_wheel_list</code> that takes a list
+of wheels (like <code>K_wheels</code>) as its input and returns a new list
+of wheels where each of the wheels in the parameter list of wheels has
+been rotated once. For example, <code>rotate_wheel_list(K_wheels)</code> should
+return <code>[[1, 0, 1, 0, 1], [1, 0, 0, 1, 0], [0, 0, 1, 0, 1], [1,
+1, 0, 1, 1], [0, 0, 0, 1, 1]]</code>. 
+   </div></p>
+<div class=bigquote>
+    <em>Avail yourself of these means to communicate to us at seasonable
+     intervals<br> a copy of your journal, notes &amp; observations of every
+     kind,<br>putting into cipher whatever might do injury if
+     betrayed. </em>
+<p align=right>
+Thomas Jefferson's instructions to Captain Lewis for the
+Expedition to the Pacific.  
+</div>
+
+<p><div class="q">
+<strong>Problem 9.</strong> Define a function <code>rotate_wheel_list_by</code> that takes a
+list of wheels and a number as parameters, and returns a new list where
+each of the wheels in the parameter list of wheels has been rotated the
+number parameter times. For example, <code>rotate_wheel_list_by(K_wheels, 5)</code> should return the same list as <code>K_wheels</code>.<br />
+   </div></p>
+<p><div class=q>
+<strong>Problem 10.</strong> Describe the running time of your <code>rotate_wheel_list_by</code>
+procedure (preferably using &Theta; notation, but any clear description
+is acceptable).  Be sure to explain what all variables you use mean.
+   </div></p>
+<h2>Simulating the Lorenz Machine</h2>
+<p>Now that we can rotate our wheels, we simulate the Lorenz machine using
+our <em>K</em> and <em>S</em> wheels. Since both sets of wheels are doing the same
+thing, we should be able to write one procedure that will work with
+either the <em>K</em> wheels or the <em>S</em> wheels. </p>
+<p><div class="q"> 
+<strong>Problem 11.</strong> Define a function, <code>wheel_encrypt</code> that takes a
+Baudot-encoded letter (a list of 5 bits) and a list of 5 wheels as
+parameters. The function should return a list that is the result of
+xor-ing each bit of the Baudot list with the first value of its
+respective wheel.
+   </div></p>
+<p>Your <code>wheel_encrypt</code> function should have running time in <span
+class="math">&Theta;(<em>n</em>)</span> where <span class="math"><em>n</em></span> is
+the length of the list passed as the first parameter to
+<code>wheel_encrypt</code>. Even though our Lorenz crypotography will always
+involve lists of length five, your answer must work for <b>any length
+inputs</b> as long as both lists have the same length.</p>
+<p>For example, <code>wheel_encrypt([0, 0, 0, 1, 1], K_wheels)</code> should produce
+<code>[1, 0, 1, 0, 0]</code>.</p>
+<p>We now have all the procedures we need to implement our simplified
+Lorenz machine. A quick review of how the machine should work:</p>
+<ul>
+<li>
+<p>Each of the five bits of the Baudot representation of a letter is
+  xored with the current position of the respective <em>K</em> wheels.</p>
+</li>
+<li>
+<p>The resulting five bits from the previous step are xored with the
+  current position of the respective <em>S</em> wheels to produce the
+  ciphertext.</p>
+</li>
+<li>
+<p>The <em>K</em> wheels are rotated one position.</p>
+</li>
+<li>
+<p>The <em>S</em> wheels are rotated one position only if the value at the current position of the <em>M</em> wheel is 1.</p>
+</li>
+<li>
+<p>The <em>M</em> wheel is rotated one position.</p>
+</li>
+</ul>
+<p>This process is repeated for each letter in the message.</p>
+<div class="q">
+
+<p><strong>Problem 12.</strong> Define a function, <code>do_lorenz</code> that takes a list of
+Baudot values, the <em>K</em> wheels, <em>S</em> wheels and <em>M</em> wheel. The function
+should encrypt the first Baudot code with the <em>K</em> and <em>S</em> wheels, then
+continue encrypting the rest of the Baudot codes with the wheels
+rotated.  The function should return the encrypted values in the form of
+a list of Baudot values. 
+   </div></p>
+<p>For example:</p>
+<pre class="brush: python;">
+>>> do_lorenz(string_to_baudot("COOKIE"), K_wheels, S_wheels, M_wheel)
+[[1, 1, 0, 1, 0], [0, 0, 0, 0, 1], [1, 1, 0, 0, 1], [1, 0, 0, 0, 1], \ 
+ [0, 0, 1, 1, 1], [1, 1, 0, 1, 1]]
+</pre>
+
+<p><div class="q">
+<strong>Problem 13.</strong> Define a function <code>lorenz_encrypt</code> that takes four
+parameters: a string and three integers. The integers represent the
+starting positions of the three wheels (zero indexed), respectively. The
+function should call <code>do_lorenz</code> with the string converted to
+Baudot and the wheels rotated to the correct starting positions. The
+function should return the ciphertext in the form of a string.
+   </div></p>
+<p>You should now be able to encrypt strings using the simplified Lorenz
+cipher. To test it, call your <code>lorenz_encrypt</code> function with a string
+and offsets of your choice to produce ciphertext. Since our encryption
+and decryption functions are the same, if you apply <code>lorenz_encrypt</code>
+again using the ciphertext and the same offsets you should get your
+original message back:</p>
+<pre class="brush: python;">
+>>> lorenz_encrypt("CAKE", 1, 2, 3)
+"BNR!"
+>>> lorenz_encrypt("BNR!", 1, 2, 3)
+"CAKE"
+</pre>
+
+<h2>Cracking the Code</h2>
+<p>The first Lorenz-encrypted messages were intercepted by the British in
+early 1940.  The intercepts were sent to Bletchley Park, the highly
+secret British base set up specifically to break enemy codes.  The
+code-breakers at Bletchley Park had little success with the Lorenz
+Cipher until the Germans made a major mistake in late 1941.  A German
+operator had nearly finished sending a long message using a Lorenz
+machine when the receiver radioed back to tell him that the message had
+not been received correctly.  The operator then reset his machine back
+to the same starting position and began sending the message again.  But
+the operator, probably frustrated at having to resend the message,
+abbreviated some of the words he had typed out completely the first
+time.  This led to two nearly identical messages encrypted using the
+same starting positions.</p>
+<p>The messages were sent to John Tiltman at Bletchley Park.  Tiltman was
+able to discern both messages and determine the generated key.  The
+messages were then passed on to Bill Tutte who, after two months of
+work, figured out the complete structure of the Lorenz machine only from
+knowing the key it generated.  The British were then able to break the
+Lorenz codes, but much of the work needed to be done by hand, which took
+a number of weeks to complete.  By the time the messages were decrypted
+they were mostly useless.</p>
+<p>The problem was given to Tommy Flowers, an electronics engineer from the
+Royal Post Office.  Flowers designed and built a device called Colossus
+that worked primarily with electronic valves.  The Colossus was the
+first electronic programmable computer.  It was able to decrypt the
+Lorenz messages in a matter of hours, a huge improvement from the
+previous methods.  The British built ten more Colossi and were able to
+decrypt an enormous amount of messages sent between Hitler and his high
+commanders.  The British kept Colossus secret until the 1970s.  After
+the war, eight of the Colossi were quickly destroyed and the remaining two
+were destroyed in 1960 and all drawings were burnt.  The details of the
+breaking of the Lorenz Cipher were kept secret until 2000, but are now
+available at <a
+href="http://www.codesandciphers.org.uk/documents/newman/newmix.htm"><em>http://www.codesandciphers.org.uk/documents/newman/newmix.htm</em></a>.</p>
+<table cellspacing=8 width=100%>
+      <tr>
+      <td align=center>
+      <a href="http://www.cs.virginia.edu/evans/cs1120-images/project4/colossus.jpg"><IMG width=340 height=238 src="http://www.cs.virginia.edu/evans/cs1120-images/project4/colossus-small.jpg"></a><BR>
+      <B>Colossus</B> (Original, 1943)</TD>
+
+      <TD align=center>
+      <a href="http://www.cs.virginia.edu/evans/cs1120-images/project4/colossus-rebuild.jpg"><IMG width=340 height=238 src="http://www.cs.virginia.edu/evans/cs1120-images/project4/colossus-rebuild-small.jpg"></a><BR>
+      <B>Colossus</B> (Rebuilt, 2004)</TD>
+   </tr></table>
+
+<p></p>
+
+<p>Our simplified cipher will be much easier to break. There are only 5
+starting positions for the <em>K</em> wheels, 5 starting positions for the <em>S</em>
+wheels, and 5 starting positions for the <em>M</em> wheel.  Hence, the keyspace
+for our simplified Lorenz machine is 125.  This is a small enough
+keyspace that it can be broken using "brute force": go through all the
+possible keys looking for a likely message.  Because of the tiny
+keyspace, no clever cryptanalysis or even automated message recognition
+is required (unlike what was necessary for the real Lorenz cipher, with
+an astronomically huge keyspace).</p>
+<p><div class="q">
+<strong>Problem 14.</strong> Define a function, <code>brute_force_lorenz</code>, that takes as
+input a ciphertext string.  Your procedure should call <code>lorenz_encrypt</code>
+on CIPHERTEXT (defined in <code>lorenz.py</code>) for all 125 possible starting
+configurations, printing out the result of decrypting the ciphertext using
+that key.<br />
+   </div></p>
+<p>If your procedure works correctly, one of the messages generated will
+look like sensible English and you will have found the key and message!
+(Your procedure does not need to return any value, although a more
+useful procedure would return the most likely plaintext message.)</p>
+<p><div class="q">
+<strong>Problem 15.</strong> (Optional bonus question) The actual Lorenz cipher
+operated similarly to the one in this problem set except instead of only
+having 5 positions in each wheel, each wheel had many more positions (up
+to 61).  Suppose <em>n</em> is the number of possible positions for each Lorenz
+cipher wheel, and the procedure used to cryptanalyze the cipher is the
+same as your code (except extended as necessary to handle the extra
+wheel positions).  </p>
+<p><ol type=a>
+   <li>  Describe how the amount of work needed
+to break a Lorenz-encrypted message grows as a function of the number of
+wheel positions, <em>n</em>, using <span class="math">&Theta;</span> notation.  Assume the message
+length and number of wheels are fixed. </li></p>
+<p><li> Suppose instead that it was possible to add <em>S</em> and <em>K</em> wheels to the
+Lorenz cipher, and <em>w</em> represents the number of <em>S</em> and
+<em>K</em> wheels (for example, for the cipher machine in the problem
+set, <em>w</em> = 5).  Describe how the amount of work needed to break
+a Lorenz-encrypted message grows as a function of <em>w</em>, using
+<span class="math">&Theta;</span> notation.  Assume the message length and number of wheel
+positions are fixed. </p>
+<p><li> If the Nazis had learned of Bletchley Park's success in breaking
+the Lorenz cipher during the war, what changes that could be done
+without building and redistributing completely new cipher machines, would
+be most likely to prevent further successful cryptanalysis?</li>
+   </div></p>
+<p><div class="bonusq">
+<strong>Triple-Gold-Star Challenge!</strong> Decrypt the ciphertext
+defined as <code>CHALLENGE_CIPHERTEXT</code> in <a href="static/docs/ciphertext.py"><code>chiphertext.py</code></a> (this is not included in the <code>project4</code> repository, use <a href="static/docs/ciphertext.py">the link to download</a>).  You should also download <a href="static/docs/challenge.py"><code>challenge.py</code></a>, which includes the wheel definitions for the challenge and the code used to generate it.  </p>
+<p>The challenge ciphertext message is standard English.  You should be
+happy that it is long (although should debug your code on shorter
+message): the more ciphertext you have, the easier it is to find
+statistical patterns.  This message was encrypted using a simulated
+Lorenz cipher, without any of the simplifications used for the rest of
+this project.  Hence, the keyspace is far to large for a brute-force
+attack, even with modern computing resources.  The parts of the <a href="http://udacity.com/course/cs387">Udacity
+cs387: Applied Cryptography</a> (Lesson 1)
+about the Lorenz cipher and how it was cryptanalyzed should be helpful
+for solving this.<br />
+   </div></p>
+<p><strong>Anyone who solves the "Triple-Gold-Star Challenge" will be offered a
+paid summer position in <a href="http://www.jeffersonswheel.org/">Dave's research
+group</a>.</strong> (A good attempt is also probably
+worthy of a summer position, but not guaranteed.)</p>
+<p></p>
+
+<p><div class="credits">
+   <B>Credits:</B> This problem set was originally
+        created for CS200 Spring 2002 by Jon Erdman and David Evans, and
+        tested by Stephen Liang.  It was revised for CS200 Spring 2003
+        and CS150 Fall 2005 by David
+        Evans, for CS 150 Spring 2009 by Wes Weimer, and for cs1120 Fall
+        2009 by David Evans. It was revised for Python in 2012 by Jonathan
+        Burket and Lenny Li, and updated for Spring 2016 by David Evans.
+   </div></p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/project4 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:12:30 GMT -->
+</html>

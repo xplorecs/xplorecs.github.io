@@ -1,0 +1,706 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/project2 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:11:59 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Project 2: Genomes Galore</h1>
+<p><div class="turnin">
+<strong>Deliverable:</strong> Bring in to class on <strong>Monday, 15 February</strong> a stapled
+turn-in containing your answers to all of the questions (which should all be in your <code>project2.py</code> file).
+   </div></p>
+<h4>Purpose</h4>
+<ul>
+<li>Practice programming with functions, including using <code>if</code> statements, <code>while</code> loops, and definitions.</li>
+<li>Become familiar with Lists and how they can be used to manage complex data.</li>
+<li>Understand and construct recursive definitions.</li>
+<li>Learn just enough genomics to be dangerous.</li>
+</ul>
+<h4>Preparation</h4>
+<p>This project assumes you have completed Udacity cs101 <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48727569/">Lesson 3: <em>How to
+Manage
+Data</em></a>
+(<a href="http://www.cs.virginia.edu/~evans/cs101/unit3-notes.pdf">Notes</a>) and
+<a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48391984">Lesson 3: <em>Problem
+Set</em></a> except
+for the "three gold stars" problems (the last two of the problem set)
+which you are not expected to do.  If you have not already done that, it
+is strongly encouraged that you do so before continuing with this
+assignment.</p>
+<h4>Collaboration Policy</h4>
+<p>For this assignment, you may discuss the assignment with anyone you want
+and get help from others, so long as it is help in the spirit of
+learning how to do things yourself not getting answers you don't
+understand.  You should understand everything you turn in for the
+assignment well enough to be able to produce it completely on your own.</p>
+<p>Remember to follow the <a href="pledge.html">course pledge</a> you read and signed at
+the beginning of the semester.  For this assignment, you may consult any
+outside resources, including books, papers, web sites and people, you
+wish <i>except</i> for materials from previous cs1120 courses or direct
+solutions to the given problems.  You may consult an outside person
+(e.g., another friend who is a CS major but is not in this class) who is
+not a member of the course staff, but that person cannot type anything
+in for you and all work must remain your own and outside sources should
+never give you specific answers to problem set questions.</p>
+<p>If you use resources other than the class materials, lectures and course
+staff, you should document this in your turn-in.</p>
+<p>You are <b>strongly encouraged</b> to take advantage of the scheduled
+ help hours and office hours for this course.</p>
+<h2>Eliminating Listlessness</h2>
+<p>Before getting into genomics, it is important to have a good
+understanding of how the List datatype works in Python and how to use
+it.</p>
+<p><div class=q>
+<strong>Exercise A:</strong> For this exercise, for each Python fragment below:</p>
+<ol>
+<li>
+<p>Without using the Python interpreter, predict if the fragment is a
+valid Python expression.  If it is valid, you should derive its expected
+value.  If it is invalid, you should understand why and guess what error
+the Python interpreter will produce.</p>
+</li>
+<li>
+<p>Then, try evaluating the fragment in your Python interpreter (this is
+easiest to do by just running the fragment in the Python shell).  </p>
+</li>
+<li>
+<p>If the value or error produced by the Python interpreter does not
+match your expectations, figure out why.  You should play around with
+evaluating other expressions to make sure you understand what the given
+fragment is evaluating the way it does.</p>
+</li>
+</ol>
+<p>a) &nbsp;&nbsp;&nbsp; <code>[1, 2] + 3</code><br />
+b) &nbsp;&nbsp;&nbsp; <code>[1, 2] + [3]</code><br />
+c) &nbsp;&nbsp;&nbsp; <code>[1] + [2, 3]</code><br />
+d) &nbsp;&nbsp;&nbsp; <code>1  + [2, 3]</code><br />
+e) &nbsp;&nbsp;&nbsp; <code>[1,2][0]</code><br />
+f) &nbsp;&nbsp;&nbsp; <code>"dna"[1:]</code><br />
+g) &nbsp;&nbsp;&nbsp; <code>([1,2][1:])[0]</code><br />
+h) &nbsp;&nbsp;&nbsp; <code>len([1,2,3][1:])</code><br />
+i) &nbsp;&nbsp;&nbsp; <code>len([1,2,3][0])</code><br />
+j) &nbsp;&nbsp;&nbsp; <code>len([1,2,3] + 4)</code><br />
+k) &nbsp;&nbsp;&nbsp; <code>len([6,7,8] + [])</code>  </p>
+<p>It is not necessary to turn in anything for this question, but you
+should ask questions about anything that does not make sense or is
+surprising.
+   </div></p>
+<h3>Project 2 Repository</h3>
+<p>Set up your project2 repository in the same way as you did for <a href="project1.html">project 1</a>:</p>
+<ul>
+<li>
+<p><strong>Fork Project 2.</strong>  Visit <a href="https://bitbucket.org/cs1120/project2/fork">https://bitbucket.org/cs1120/project2/fork</a>.  Make sure to check the "This is a private repository" box to make your forked repository private (only visible to yourself and people you authorize to access it).</p>
+</li>
+<li>
+<p><strong>Clone to your machine.</strong> To have a working copy of the repository on
+your machine, clone the forked repository in SourceTree by
+selecting <code>File | New/Clone</code> and enter the URL of the cloned
+repository. You can copy this from the project page you see in
+bitbucket.org afer forking the provided Project 2 repository.  It should
+be a URL like <code>https://&lt;your bitbucket id&gt;@bitbucket.org/&lt;your bitbucket
+id&gt;/project2.git</code>.</p>
+</li>
+</ul>
+<p>The project2 repository contains these files:</p>
+<ul>
+<li><code>project2.py</code> - This is the file you will edit and turn in (both electronically and as a printout) for this assignment.</li>
+<li><code>memoize.py</code> - Provides an implementation of a memoize decorator (this is used in the last part of the assignment).</li>
+<li><code>apoe.py</code> - Excepts from the base sequence for two variants of the APOE gene (associated with Alzheimer's disease).</li>
+</ul>
+<h2>Genomics Background</h2>
+<p>For this project, you will develop functions to solve some problems in
+genomics. The main problem we want to solve is known as the <a href="http://en.wikipedia.org/wiki/Sequence_alignment"><em>sequence
+alignment</em></a> problem.</p>
+<p>Sequence alignment is used to compare genomes to understand how they
+might be related, both in terms of their function and how they might
+have evolved from common ancestors.  </p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/d/db/DNA_orbit_animated_static_thumb.png/170px-DNA_orbit_animated_static_thumb.png" alt="" align="right" hspace="12" vspace="12" /></p>
+<p>Most information in biology is encoded in DNA, a nucleic acid with two
+very useful properties for storing and processing information. The first
+is that DNA is very stable, so preserves information for a long
+time. This is why it was possible
+to <a href="http://news.bbc.co.uk/2/hi/science/nature/4535190.stm">sequence
+DNA from a woolly mammoth</a>, even though it was over 300,000 years
+old.  DNA is also an incredibly dense way of storing information &mdash;
+a single cubic millimeter of DNA (weighing about one gram) can reliably
+store <a href="http://hms.harvard.edu/news/writing-book-dna-8-16-12">about a quadrillion
+bits</a> of data!</p>
+<p><div class="sidequote">
+It has not escaped our notice that the specific pairing that we have postulated immediately suggests a possible copying mechanism for the genetic material.
+       <div class="sidequotee">
+James&nbsp;Watson and Francis&nbsp;Crick, <a href="www.nature.com/nature/dna50/watsoncrick.html"><em>Molecular Structure of Nucleic Acids</em></a>, Nature, 25&nbsp;April&nbsp;1953.
+       </div>
+   </div></p>
+<p>Another important property of DNA is that it can be reliably
+replicated. DNA is composed of two chains of nucleotides that are
+intertwined in a double helix. The chains are connected by chemical
+bonds. Each nucleotide is one of four bases: Adenine (A), Cytosine (C),
+Guanine (G), and Thymine (T).</p>
+<p>Because of their chemical structure, only certain pairs of the bases can
+form bonds — Adenine bonds with Thymine, and Cytosine bonds with
+Guanine.  We call bases that bond with each other <em>complementary</em>: the
+complement of <strong>A</strong> is <strong>T</strong>, the complement of <strong>T</strong> is <strong>A</strong>, the
+complement of <strong>C</strong> is <strong>G</strong>, and the complement of <strong>G</strong> is <strong>C</strong>.</p>
+<p>These bonds connect the two strands of the double helix, so the two
+chains are redundant. The second chain contains no extra information, it
+can be completely determined by the first chain because of the chemical
+bonds. For example, anywhere we know there is an A in the first chain,
+we know there is a T in the other chain. This means that DNA can be
+copied by unraveling the strands to produce two separate strands. The
+nucleotides in each strand will then form chemical bonds with their
+complementary bases, thus forming a new double-stranded DNA that is
+equivalent to the first.</p>
+<p>We use the strings <code>'A'</code>, <code>'C'</code>, <code>'G'</code>, and <code>'T'</code> to represent the four
+bases. You can test to see if two strings are equal with the double
+equal sign <code>==</code>.  For example: </p>
+<pre class="brush: python;">
+>>> 'A' == 'A'
+True
+>>> 'A' == 'C'
+False
+>>> 'ACAT' == 'ADOG'
+False
+</pre>
+
+<p><div class="q"><strong>Problem 1:</strong> Define a function <code>nucleotide_complement</code> that takes as input a
+single base represented by one of <code>'A'</code>, <code>'C'</code>, <code>'T'</code>, or <code>'G'</code> and returns the complement of that base 
+(also a one-letter string).
+   </div></p>
+<p>You should get these interactions:</p>
+<pre class="brush: python;">
+>>> nucleotide_complement('A')
+'T'
+>>> nucleotide_complement('G')
+'C'
+>>> nucleotide_complement('C')
+'G'
+>>> nucleotide_complement('T')
+'A'
+</pre>
+
+<p><div class="note">Paranoid programmers (which should be everyone!) will be worried about what happens if the input to your function is not a valid base (e.g., <tt>nucleotide_complement('U')</tt>).  For now, it is okay to have any behavior (including generating an error or launching the missiles) for an invalid input, but it is essential as a programmer to be thinking about what will happen if someone runs your code with a bad input.
+   </div></p>
+<p>We'll want to find the complement of an entire DNA sequence, not just a
+single nucleotide. Conveniently, Python allows you to treat lists and
+strings uniformly in many cases (where a string behaves like a list of
+characters):</p>
+<pre class="brush: python;">
+>>> 'CAT'[0]
+'C'
+>>> ['C', 'A', 'T'][0] 
+'C'
+>>> 'CAT'[1:] 
+'AT'
+>>> ['C', 'A', 'T'][1:] 
+['A', 'T']
+>>> 'DOG' + 'COW'
+'DOGCOW'
+>>> ['D', 'O', 'G'] + ['C', 'O', 'W']
+['D', 'O', 'G', 'C', 'O', 'W']
+</pre>
+
+<p>Note that lists of single-character string and strings are not the same,
+though.  For example, </p>
+<pre class="brush: python;">
+['D', 'O', 'G'] + 'COW'
+</pre>
+
+<p>produces an error since it is not possible to concatenate a list and
+string.</p>
+<p><div class="q">
+<strong>Problem 2.</strong> Define a function <code>sequence_complement</code> that takes as input a string
+representing a DNA sequence (or a list of letters representing a DNA
+sequence: if you write your function in a straightforward way, the same code will work in both cases!), and 
+a list of symbols that are the complement of that sequence. </p>
+<p>For example,</p>
+<pre class="brush: python;">
+>>> sequence_complement(['A','C','A','T'])
+['T', 'G', 'T', 'A'] 
+>>> sequence_complement([])
+[] 
+>>> sequence_complement("GATTACA")
+['C', 'T', 'A', 'A', 'T', 'G', 'T']
+>>> sequence_complement("")
+[] 
+</pre>
+
+</div>
+
+<p><div class="hint">
+<strong>Hint 1:</strong> the body of this function can be <em>very</em> short!  </p>
+<p><strong>Hint 0:</strong> the test for your base case should work for both strings (the empty string is the base case) and lists (the empty list is the base case).  So, neither <code>sequence == []</code> (only works for lists) or <code>sequence == '""'</code> will work for both, but a simple test based on <code>len(sequence)</code> will!
+   </div></p>
+<h2>Hamming Distance</h2>
+<p>The DNA copying mechanism is quite reliable, making about 1 error for
+every 100,000 nucleotides. The human genome (that is, all of a
+human&#8217;s genetic information) is about 3 billion base pairs long
+(only a small fraction of which is actually every translated into
+proteins), though, so that means every time a human cell (which contains
+two versions of the genome, one inherited from each parent) divides
+there would be about 120,000 errors. </p>
+<p>Fortunately, biology also has mechanisms for error-correction that fix
+most of the copying mistakes. After the error correction, the remaining
+number of mistakes is about one per 100 million bases copied (so, about
+60 mistakes across a human genome).  In addition to copying errors,
+exposure to radiation and other environmental factors can alter the
+genome.  (For more on this,
+see <a href="http://www.nature.com/scitable/topicpage/dna-replication-and-causes-of-mutation-409"><em>DNA
+Replication and Causes of Mutation</em></a>, Nature Education, 2008.)</p>
+<p>The mutations that remain after the error-correction are mostly
+inconsequential, but some of them change proteins encoded in the DNA
+that are produced by the cell.  Most consequential changes are
+disastrous, resulting in a cell that cannot develop into a normal
+organism. In other cases, a single mutation does not prevent a viable
+organism from developing but results in a disease (e.g., cystic
+fibrosis, sickle-cell anemia, and color blindness are examples of
+conditions that result from a single mutation changing a base pair in
+the genome in a way that causes a cell to be unable to produce an
+important protein).</p>
+<p>Very occasionally, the copying mistakes turn out to be useful and lead
+to an organism that is more likely to survive and reproduce than
+organisms whose DNA does not have the mutations. As a result of natural
+selection, the new, mutated, version of the DNA will (over many
+generations) become the dominant version.</p>
+<p>A very rough measure of the distance between two nucleotide sequences is
+to just count the number of positions where the bases are
+different. This is known as the <em>Hamming distance</em>. (The Hamming
+distance is very useful for error-correcting codes and cryptography,
+but, as we will see soon, not actually very useful in genomics.  It was
+developed by <a href="https://en.wikipedia.org/wiki/Richard_Hamming">Richard
+Hamming</a> during work on
+error-correcting codes for communication at Bell Labs in the 1940s.)</p>
+<p><div class="q">
+<strong>Problem 3.</strong> Define a function <code>count_matches</code> that takes as
+inputs a list and a value, and outputs the number of elements in the
+list that match the value. 
+   </div></p>
+<p>For example:</p>
+<pre class="brush: python;">
+>>> count_matches(['A','C','A','T'], 'A')
+2
+>>> count_matches([], 'A')
+0
+>>> count_matches(['A','C'], 'G')
+0
+</pre>
+
+<p><div class="hint"> 
+Note that <code>count_matches</code> is not actually useful for defining Hamming
+distance, but this question will give you practice with an easier
+function that operates on lists before trying Hamming distance.
+   </div></p>
+<p><div class="q">
+<strong>Problem 4.</strong> Define a function <code>hamming_distance</code> that takes
+as inputs two lists (or two strings, your function should work for
+both, and will if you write it sensibly) and outputs the number of
+positions where the list elements are different. 
+   </div></p>
+<p>For your <code>hamming_distance</code> function, you may assume that both inputs
+are the same length (although it would be even better to define a
+function that does not assume this!).</p>
+<p>Here are some examples:</p>
+<pre class="brush: python;">
+>>> hamming_distance([], [])
+0
+>>> hamming_distance(['A', 'C', 'A', 'T'], ['A', 'C', 'T', 'A'])
+2       # last two elements do not match
+>>> hamming_distance("erode", "geode")
+2       # first two characters do not match
+</pre>
+
+<p><div class="hint"> 
+Since Hamming distance is a common and useful function, it is not hard
+to find implementations of it by searching the web (including a Python
+implementation on the wikipedia page). <strong>You should write your own
+implementation, and must understand everything in your code.</strong>  After
+you've written your own implementation using things we've learned so far
+in class, you can look at other implementations if you want.
+   </div></p>
+<h2>Levenshtein Distance</h2>
+<p>In reality, not all of the copying mistakes are point mutations,
+however. It is also (relatively) common for there to be a copying error
+where one or more bases are skipped (a deletion), or added (an
+insertion) into the (mis-)copy. This makes it tougher to measure how
+closely related two sequences are. For example, a single base insertion
+at the beginning of a sequence makes every subsequent base a mismatch
+and the Hamming distance would be (nearly) the length of the rest of the
+sequence even though there was only a single copying mistake.</p>
+<p>To account for this we need a more complex way of measuring distance,
+known as <a
+href="http://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein
+distance</a>, or more simply, <em>edit distance</em>. </p>
+<p>The edit distance metric accounts for the three different types of
+copying errors that might occur: </p>
+<ol>
+<li>a base could be skipped in the copy (<em>deletion</em>)</li>
+<li>a base could be inserted between two of the original bases (<em>insertion</em>)</li>
+<li>or a base could be replaced with a different base (<em>mutation</em>). </li>
+</ol>
+<p>To understand how closely related two DNA sequences are, a biologists
+wants to know the number of copying errors that separate them. (In
+reality, if both sequences may have started from a common ancestor, the
+errors happened along the paths to both of the sequences. But, an
+insertion in one sequence is similar to a deletion in the other
+sequence, so it is still useful to just look for the number of copying
+errors between the two comparison sequences.)</p>
+<p>The goal of <em>sequence alignment</em> is to find the minimum number of edits
+necessary to make two (or more) sequences identical. Biologists usually
+think of this as inserting <em>gaps</em> in the sequences to make them line up
+better (hence the name, <em>alignment</em>).  (In real biology, not all changes
+are equally likely and insertions and deletions tend to occur in chunks
+of multiple bases at a time, so more complex edit distance metrics are
+used instead of simple Levenshtein distance. See the bonus questions
+to try a more realistic model.)</p>
+<p><div class="q">
+<strong>Exercise B.</strong> Manually figure out the Levenshtein distance for each pair
+of sequences below.  (You don't need to turn anything in for this, but
+should make sure your answers are correct, since you will use them to
+test your code.)</p>
+<table cellpadding=8>
+<tr>
+<td align="center">(a)</td><td align="center">(b)</td><td align="center">(c)</td><td align="center">(d)</td><td align="center">(e)</td></tr>
+
+<tr>
+<td>
+<tt>ACAT</tt><br>
+<tt>ACA</tt>
+</td>
+<td>
+<tt>AACCT</tt> <br>  <tt>CCCCG</tt>
+</td>
+<td>
+<tt>GATTACA</tt> <br> <tt>GACACA</tt>
+</td>
+<td> <tt>ACAT</tt> <br> <tt>C</tt>
+</td>
+<td>
+<tt>AAAAAAAAAAAAAAAAAA</tt> <br> <tt>AAAAAAAAAAAAAAAAAA</tt>
+</td>
+</tr>
+</table>
+
+</div>
+
+<h3>Breaking Down the Problem</h3>
+<p>As <a href="https://www.whitehouse.gov/the-press-office/2016/01/30/weekly-address-giving-every-student-opportunity-learn-through-computer">President Obama
+explained</a>,
+computer scientists learn how to solve difficult problems by breaking
+them into smaller pieces.</p>
+<p>Since edit distance involves sequences of bases, a smaller problem would
+just be a shorter sequence.  Let's see if we can define the edit
+distance of two sequences in terms of the edit distance of two shorter
+sequences.</p>
+<p>Suppose we are given two sequences, <em>x</em>, with bases <em>x</em><sub>1</sub>
+<em>x</em><sub>2</sub> <em>x</em><sub>3</sub> ... <em>x</em><sub><em>n</em></sub>, and <em>y</em>, with
+bases <em>y</em><sub>1</sub> <em>y</em><sub>2</sub> <em>y</em><sub>3</sub>
+... <em>y</em><sub><em>n</em></sub>.  We are looking for the minimum number of edits
+needed to transform <em>x</em> into <em>y</em>.</p>
+<p>Then the edit distance can be computed as follows:</p>
+<ol>
+<li>
+<p>If <em>x</em> is empty (i.e., <em>n</em> is zero, so there are no bases in <em>x</em>),
+  then you have to insert all of the bases in <em>y</em> to make <em>y</em> (starting
+  from <em>x</em>, the empty sequence).  Hence, the edit distance is <em>m</em>.</p>
+</li>
+<li>
+<p>If <em>y</em> is empty (i.e., <em>m</em> is zero), then we need to delete all of
+the bases in <em>x</em> to produce <em>y</em>. Hence, the edit distance is <em>n</em>.</p>
+</li>
+<li>
+<p>Otherwise, both <em>x</em> and <em>y</em> have at least one base (<em>x</em><sub>1</sub>
+and <em>y</em><sub>1</sub>).  We have four possibilities to consider, and
+should pick the one that results in the lowest edit distance.  The four cases are:<br />
+   (1) The sequences <em>x</em> and <em>y</em> start with the same base (that is,
+   <em>x</em><sub>1</sub> == <em>y</em><sub>1</sub>).  We can match up these two
+   bases, and the edit distance is the distance between the remaining
+   sequences: (<em>x</em><sub>2</sub> ... <em>x</em><sub><em>n</em></sub>) and
+   (<em>y</em><sub>2</sub> ... <em>y</em><sub><em>n</em></sub>).<br />
+   (2) The shortest path starts by deleting <em>x</em><sub>1</sub>.  The edit
+   distance is the distance between the remaning bases of <em>x</em>
+   (<em>x</em><sub>2</sub> ... <em>x</em><sub><em>n</em></sub>) and <em>y</em>, plus one because of
+   the deletion of <em>x</em><sub>1</sub>.<br />
+   (3) The shortest path starts by deleting <em>y</em><sub>1</sub>.  The edit
+   distance is the distance between <em>x</em> and the remaning bases of <em>y</em>
+   (<em>y</em><sub>2</sub> ... <em>y</em><sub><em>n</em></sub>), plus one because of
+   the deletion of <em>y</em><sub>1</sub>.<br />
+   (4) The shortest path starts by mutating <em>x</em><sub>1</sub> into
+   <em>y</em><sub>1</sub>.  Then, the edit distance is the distance between the
+   remaining sequences, (<em>x</em><sub>2</sub> ... <em>x</em><sub><em>n</em></sub>) and
+   (<em>y</em><sub>2</sub> ... <em>y</em><sub><em>n</em></sub>), plus one because of the
+   mutation.</p>
+</li>
+</ol>
+<p>That's it! The parts that say "the edit distance between the remaining
+sequences" can be implemented as recursive function calls, where we are
+making progress because at least one of the input sequences is now one
+base shorter (for cases (1) and (4), both of the sequences are shorter).
+Since we keep making progress by shortening the sequences, eventually we
+will reach the base case where one of the sequences is empty and we know
+the answer right away (the length of the other sequence).</p>
+<p><div class="q">
+<strong>Problem 5.</strong> Define a function, <code>edit_distance</code>, that takes as input
+two lists (or two strings &mdash; your code should work for both) and
+returns the Levenshtein distance between those sequences.  (This is
+challenging!  There are some hints below, and don't get frustrated
+instead of taking advantage of the available help.)
+   </div></p>
+<p><strong>Use <code>min</code>.</strong> Python has a built-in <code>min</code> function that takes any
+number of arguments and returns the value of the smallest one:</p>
+<pre class="brush: python;">
+>>> min(5, 7) 
+5
+>>> min(5, 1, 7, 3)
+1
+>>> min(min(5, 2), min(7, 3))
+2
+</pre>
+
+<p><strong>Test as you code.</strong> Test your function on simple examples first, and
+confirm that it works, before trying more complex examples.  You should
+make a function with the testing code, so you can re-execute it easily
+when you change your <code>edit_distance</code> function.  Start with test cases
+where the sequences are empty, and then move on to test cases with one
+base in each sequence, before trying tests with longer sequences.  </p>
+<p>Here's a suggestion for how to write a testing function:
+<pre class="brush: python;">
+def test_distance():
+    def test_one(s, t, dist):
+        print("Testing: " + s + " -&gt; " + t + " == " + dist)
+        assert edit_distance(s, t) == dist
+        print("Correct!")
+    # Now, we can use test_one to check the distance between any two strings
+    test_one('', '', 0)
+    test_one('', 'A', 1)
+    test_one('A', '', 1)
+    test_one('T', 'T', 0)
+    # ...
+    test_one('GATTACA', 'GACACA', 2)
+</pre></p>
+<p>The way <code>edit_distance</code> is described involves a huge amount of
+computation, even for fairly short sequences.  So, don't be surprised if
+your function doesn't finish when you try it on longer sequences
+(although it should finish quickly for sequences of length up to 4 or 5
+bases).  In the next section, we look at how to make it execute more
+quickly (but make sure you have a correct, slow implementation first).</p>
+<h2>Memoizing</h2>
+<p>We have a serious problem if our <code>edit_distance</code> function takes too long
+to execute on strings like <code>AAAAAAAAAAAAAAAAAA</code> (10 bases), since
+proteins contain hundreds of amino acids (each of which requires 3 bases
+to encode). If we want to solve any interesting problems in biology we
+need an <code>edit_distance</code> function that is much faster than this one.
+(Soon, we will get more precise about what it costs to execute a
+procedure.  This is the main focus of Lesson 5 of the cs101 course and
+<a href="http://computingbook.org/Cost.pdf">Chapter 7</a> of the coursebook.  But,
+for now, we just want to build an intuition about how much computation
+is going on when this function runs.)</p>
+<p>Why is the <code>edit_distance</code> function you defined (assuming you followed
+the method in the provided description) so slow?  Think about this
+yourself first before reading on.</p>
+<p>The reason the recursive definition of edit distance as described is so
+slow is because it is doing so much redundant work. For example, suppose
+were are computing <code>edit_distance("ACT","GCT")</code>. Using the three
+options, we want to find:</p>
+<pre class="brush: python;">
+min((1 + edit_distance("CT","GCT")),
+    (1 + edit_distance("ACT","CT")),
+    (1 + edit_distance("CT","CT")))
+</pre>
+
+<p>To evaluate this application expression, the interpreter needs to
+evaluate all the subexpressions that are inputs to <code>min</code>. </p>
+<p>The first operand subexpression is <code>(1 + edit_distance("CT","GCT"))</code>,
+which requires evaluating <code>edit_distance("CT","GCT")</code>. As before, we
+need to find the minimum of the three options. In this case,</p>
+<pre class="brush: python;">
+min((1 + edit_distance("T","GCT")),
+    (1 + edit_distance("CT","CT")),
+    (1 + edit_distance("T","CT")))
+</pre>
+
+<p>Note that one of these, <code>(1 + edit_distance("CT","CT"))</code> is
+identical to the third option for the first <code>edit_distance</code> call.</p>
+<p>But, the interpreter doesn&#8217;t know that. It just follows the
+evaluation rules, re-evaluating the same expression every time it
+appears.  In evaluating a large <code>edit_distance</code> application, there are
+quadrillions of identical evaluations of <code>edit_distance</code>, all of which
+are redundantly evaluated by the evaluator.</p>
+<p>One solution is to store the results of previous evaluations, so they
+don&#8217;t need to be recomputed. This is known as <em>memoizing</em>.
+(An alternate approach, which requires rethinking the algorithm to do
+things in the reverse direction, is known as <em>dynamic programming</em>, but
+we won't get into that now.)</p>
+<p>Memoizing is fairly easy to do in many programming languages. Python
+provides a way to "decorate" functions and indicate that they should be
+memoized.</p>
+<p>We have provided code to do so below (and in <code>memoize.py</code> in the
+project2 repository). It is not necessary for you to understand how
+<code>memoize</code> is defined (indeed, it uses some structures and techniques
+that we have not yet introduced).</p>
+<p>The <code>memoize</code> function takes as input a function and outputs a new
+function. The output function is similar to the input function, except
+whenever it is evaluated it stores the result in a table. If it is
+re-evaluated on the same inputs, instead of needing to evaluate the full
+function, it looks up the value from the previous evaluation in the
+table and evaluates to that value right away.</p>
+<pre class="brush: python;">
+def memoize(function):
+    """ Memoization decorator for a function taking one or more arguments. """
+    class MemoStore(dict):
+        """
+        Dictionary to keep track of results from previous calls to function.
+        """
+        def __getitem__(self, *key):
+            """
+            Returns the result of applying the function to the arguments, *key.  If the
+            result is already stored in the dictionary, returns it directly.  If not,
+            __missing__ will be called to evaluate the function on the inputs, store that
+            result in the dictionary, and return it.
+            """
+            return dict.__getitem__(self, key)
+
+        def __missing__(self, key):
+            """
+            Adds the result of applying function to *key arguments to the dictionary, and
+            returns the result.
+            """
+            ret = self[key] = function(*key)
+            return ret
+
+    return MemoStore().__getitem__
+</pre>
+
+<p>With <code>memoize</code> defined, we can decorate any function by using <code>@memoize.memoize</code>
+before its definition.  This means calls to the function will be
+replaced with calls to the new function that is the result of
+<code>memoize(function)</code>.</p>
+<p>Here's how to use it for your <code>edit_distance</code> function:</p>
+<pre class="brush: python;">
+@memoize
+def edit_distance(a,b):
+    ...
+</pre>
+
+<p>After adding the <code>@memoize</code> decorator, you should be able to re-run all
+your previous tests with the same results (but faster execution, which
+will only be noticable for longer sequences).</p>
+<p>Now you're ready to try a more ambitious (and realistic) example!</p>
+<p>In the <code>apoe.py</code> file we have included some (abridged) actual gene data:
+a normal "mus musculus apolipoprotein E" gene (call it <i>apoe</i>) and
+the E4 variant of it associated with Alzheimer's disease.</p>
+<p>An individual who has the E4 variant in both copies of their genome is
+about 30 times more likely to develop Alzheimer&#8217;s disease by age
+75, compared to individuals who have both copies of their genome with
+the normal variant. With no copies of the E4 variant, someone has a 7%
+chance of developing Alzheimer&#8217;s; with one E4 variant, there is a
+14% chance; with both copies as E4 variant, the chance of developing
+Alzheimer&#8217;s by age 75 is around 80%.</p>
+<p><div class="q">
+<strong>Problem 6.</strong> Compute the edit_distance between <code>APOE_NORMAL</code> and
+<code>APOE_BAD</code> using your memoized <code>edit_distance</code> function.  (Without
+memoization, you'll probably have to terminate the Python process
+without getting a result.)
+   </div></p>
+<p><div class="turnin">
+Remember to bring to class on Monday, 15 February, a <em>stapled</em> printout of all your answers (which should all be in your <code>project2.py</code> file.
+    </div></p>
+<h3>Teasers</h3>
+<p><strong>Edit distance and auto-correcting.</strong> Try searching for some mispelled
+phrases in Google, DuckDuckGo, or Bing.  For example, <a href="https://duckduckgo.com/?q=tyler+swaft&amp;t=ffab">tyler
+swaft</a> ("Did you mean
+taylor swift?"),
+<a href="https://encrypted.google.com/search?hl=en&amp;q=ooobbamma#hl=en&amp;q=ooobbahmma">ooobbamma</a>,
+or <a href="https://www.bing.com/search?q=tom+jeffson">tom jeffson</a>.  Search
+engines are using methods similar to edit distance to guess what you
+mean when your query doesn't match lots of documents.  Try some
+experiments with <a href="http://davedavefind.appspot.com/search?search_query=evil">your favorite search
+engine</a> to see
+how many substitutions, insertions, and deletions it can handle (this
+will vary depending on how popular the search term you are close to is).
+For an excellent more in-depth discussion of this, with an
+implementation of a full spelling corrector in 21 elegant lines Python
+code, see Peter Norvig's <a href="http://norvig.com/spell-correct.html"><em>How to Write a Spelling
+Corrector</em></a>.</p>
+<p><strong>Evolutionary edit distance.</strong> We are simplifying things to assume all
+types of copying errors are equally likely. In biology, this is not the
+cases, and it is more likely for a long sequence of bases to be inserted
+(or deleted) at once, than for the same number of point mutations. So,
+biological algorithms for measuring evolutionary distance such as
+the <a href="http://en.wikipedia.org/wiki/Smith–Waterman_algorithm">Smith-Waterman
+algorithm</a> are a bit more complicated than the model we use where
+single substitutions, insertions, and deletions all have the same cost
+(one edit).  With more sophisticated edit distance metrics used in
+biology, the cost is different for different subsitutions (because of
+the way amino acids are encoded, many point mutations have no impact on
+the actual protein produced by a gene, which means they are "less
+costly"), and the cost of a multiple-base insertion or deletion is a
+function of its length (but less than the cost of that many independent
+single-base insertions).</p>
+<p><strong>List comprehensions.</strong> We have focused on writing recursive functions,
+using only simple Python constructs that are essentially shared by
+nearly every programming language.  A more Pythonic way to write
+functions that operate on every element of a list, such as
+<code>sequence_complement</code> or <code>hamming_distance</code> would be to use list
+comprehensions.  They would allow us to turn a multi-line loop or
+recursive function into a single line of code (that is harder to
+understand until one gets comfortable with reading list comprehensions,
+but for experienced Python programmers becomes easier to read).  A fun
+tutorial on list comprehensions is Trey Hunner's <a href="https://treyhunner.com/2015/12/python-list-comprehensions-now-in-color/"><em>Python List
+Comprehensions: Explained
+Visually</em></a>.
+Try to rewrite the functions you defined using list comprehensions.</p>
+<p><strong>Dynamic Programming.</strong> Another way to compute functions like edit
+distance efficiently is to us <em>dynamic programming</em>.  Similarly to using
+memoization, this avoids the redundant computation inherent in a
+straightforward recursive solution, but instead of doing it by storing
+results in the order they happen to be computed, it builds up a table of
+results in a particular order.  The <a href="https://en.wikipedia.org/wiki/Dynamic_programming">wikipedia
+page</a> has an
+explanation and a lot of examples.</p>
+<div class="credits"><strong>Credits:</strong> This problem set was
+originally developed for UVa cs1120 Fall 2011 by David Evans with help from
+Ivan Alagenchev, Jonathan Burket, Peter Chapman, Jiamin Chen, Joseph
+Featherston, Valerie Sapp, and Kristina Shichanin. Cameron Mura provided
+assistance with the biology (but is not responsible for any biological
+mistakes or gross oversimplifications here!). Wes Weimer revised it for
+Python in Fall 2012, and Yuchi Tian and David Evans revamped it for Spring 2016.</div></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/project2 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:12:00 GMT -->
+</html>

@@ -1,0 +1,98 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/yellowbelt by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:10:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Yellow Belt Promotion</h1>
+<p>If you received a Gold Star on <a href="project1.html">Project 1</a>, you have earned your Yellow Belt!</p>
+<p>If not, here's what to do to get promoted.</p>
+<h3>Green Star</h3>
+<p>If you received a Green Star of Project 1, you can earn your yellow belt
+by solving the problem below.  You can submit your answer by email (to
+<a href="mailto:evans@virginia.edu"><em>evans@virginia.edu</em></a>) with
+subject line <code>Yellow Belt Problem</code>.  If your from address does not match
+your UVA ID, make sure to include your name and UVA ID in the email.</p>
+<p><div class="q">
+<strong>Problem Yellow:</strong> Define a function <code>make_yellower</code> that takes as input a color, and returns a color that is the average of the input color and <code>YELLOW</code>. 
+   </div></p>
+<p>Your <code>make_yellower</code> function should behave like this:</p>
+<pre class="brush: python;">
+>>> by = make_yellower(BLUE)
+>>> get_red(by)
+127.5
+>>> get_green(by)
+127.5
+>>> wy = make_yellower(WHITE)
+>>> get_red(wy), get_green(wy), get_blue(wy)
+(255.0, 255.0, 127.5)
+>>> wyy = make_yellower(wy)
+>>> get_red(wyy), get_green(wyy), get_blue(wyy)
+(255.0, 255.0, 63.75)
+</pre>
+
+<h3>No Star</h3>
+<p>If you did not receive any star for Project 1, to advance to the Yellow Belt level you need to:</p>
+<p><strong>1.</strong> Complete <a href="project1.html">Project 1</a>.  You may look at the solutions that
+were discussed in class, but should not <em>copy</em> them.  You should write
+your own code, and not go back to the solutions once you start writing your code.</p>
+<p><strong>2.</strong> Solve the <code>is_redder</code> problem below:</p>
+<p><div class="q"> 
+<strong>Problem Redder:</strong> Define a function <code>is_redder</code>
+that takes two colors as inputs, and returns <code>True</code> if the first color
+is more red than the second color.  (You may consider a color <em>more red</em>
+if its red component is higher than the other color, even if this doesn't match our perception well.)
+   </div></p>
+<p>You should get these interactions:</p>
+<pre class="brush: python;">
+>>> is_redder(RED, BLACK)
+True
+>>> is_redder(BLACK, RED)
+False
+>>> is_redder(RED, PURPLE)
+True
+</pre>
+
+<p><strong>3.</strong> Solve the Problem Yellow above.  (You can add this to your <code>turnin.py</code> file.)</p>
+<p>Submit your completed <code>turnin.py</code> file by email.</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/yellowbelt by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:10:23 GMT -->
+</html>

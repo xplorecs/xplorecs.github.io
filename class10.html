@@ -1,0 +1,159 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class10 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:20 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 10 - Notes</h1>
+<div class="printing"><a href="static/docs/class10.pdf">PDF for Printing</a></div>
+
+<h3>Upcoming Schedule</h3>
+<p><a href="project2.html">Project 2</a> is due at the beginning of class on <strong>Monday, 15 February</strong>.  </p>
+<p>Yuchi has office hours right <strong>after class today</strong>, and has scheduled
+additional office hours, <strong>3-4:30pm on Sunday in Rice 532</strong>.</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="5c0a01d8552444d3a41a95596ba054c7" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<p><center>
+<a href="http://www.cs.virginia.edu/evans/xplorecs16/class10-post.pptx">[Download (PPTX)]</a>
+</center></p>
+<h2>Gravitational Waves</h2>
+<p>P. B. Abbot, et al., <a href="https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.116.061102"><em>Observation of Gravitational Waves from a Binary Black Hole Merger</em></a>. Physical Review Letters, 12 February 2016.</p>
+<p>The Guardian, <a href="https://www.theguardian.com/science/2016/feb/11/gravitational-waves-discovery-hailed-as-breakthrough-of-the-century"><em>Gravitational waves: breakthrough discovery after two centuries of expectation</em></a>, 11 February 2016.  (Best popular explanation of what they did with figures.)</p>
+<p>Science, <a href="http://www.sciencemag.org/news/2016/02/here-s-first-person-spot-those-gravitational-waves"><em>Here’s the first person to spot those gravitational
+waves</em></a>,
+11 February 2016. (Interesting account of detecting the first signs of
+the gravitational waves. For security people, especially interesting to
+hear about how the lead researchers planned to inject fake signals into
+the data to keep the rest of the team alert, but this signal was
+detected before the injection system was actually in place.)</p>
+<p><a href="https://versions.ligo.org/cgit/">Git Repositories for LIGO project</a><br />
+<a href="https://versions.ligo.org/cgit/pycoh/tree/pycoh/signals.py">signals.py</a></p>
+<h2>Programming with Lists</h2>
+<pre class="brush: python;">
+def make_pair(a, b):
+    return [a, b]
+
+def pair_first(pair):
+    return pair[0]
+
+def pair_last(pair):
+    return pair[1]
+
+# Let's make triples!
+
+def make_triple(a, b, c):
+    return make_pair(a, make_pair(b, c))
+
+def triple_first(trip):
+    return pair_first(trip)
+
+def triple_second(trip):
+    return pair_first(pair_last(trip))
+
+def triple_third(trip):
+    return pair_last(pair_last(trip))
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+# A list is a pair where the second part is a list, or None
+
+def make_list(first, second):
+    return make_pair(first, second)
+
+def list_first(lst):
+    return pair_first(lst)
+
+def list_rest(lst):
+    return pair_last(lst)
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<p><strong>Defining List Procedures:</strong></p>
+<ol>
+<li>
+<p><em>Be very optimistic!</em> Since lists themselves are recursive data
+structures, most problems involving lists can be solved with recursive
+procedures.</p>
+</li>
+<li>
+<p><strong>Base Case.</strong> Think of the simplest version of the problem,
+something you can already solve. This is the base case. For lists, this
+is usually when the list is empty or a singleton.</p>
+</li>
+<li>
+<p><strong>Recursive Case.</strong> Consider how you would solve the problem using
+the result for a slightly smaller version of the problem. This is the
+recursive case. For lists, the smaller version of the problem is usually
+the rest of the list.  So, the procedure combines the
+result of doing something with the first element (<code>p[0]</code>) with making a
+recursive call on the rest of the elements (<code>p[1:]</code>).</p>
+</li>
+</ol>
+<pre class="brush: python;">
+def list_length(lst):
+   # Returns the number of elements in lst.
+
+
+
+
+
+
+
+
+
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<h2>Code</h2>
+<p>Here's the code in <a href="http://www.pythontutor.com/visualize.html#code=def+make_pair(a,+b%29%3A%0A++++return+%5Ba,+b%5D%0A%0Adef+pair_first(pair%29%3A%0A++++return+pair%5B0%5D%0A%0Adef+pair_last(pair%29%3A%0A++++return+pair%5B1%5D%0A%0A%0Adef+make_list(a,+b%29%3A%0A++++return+make_pair(a,+b%29%0A++++%0Adef+list_first(lst%29%3A%0A++++return+pair_first(lst%29%0A++++%0Adef+list_rest(lst%29%3A%0A++++return+pair_last(lst%29%0A++++%0Adef+list_length(lst%29%3A%0A++++if+lst+%3D%3D+None%3A%0A++++++++return+0%0A++++else%3A%0A++++++++return+1+%2B+list_length(list_rest(lst%29%29%0A++++++++%0Ap+%3D+make_list('one',++None%29%0Aq+%3D+make_list('two',+p%29%0Ar+%3D+make_list('three',+q%29%0A%0Aprint+(list_length(r%29%29%0A%0A%0A%0A%0A&mode=display&origin=opt-frontend.js&cumulative=false&heapPrimitives=false&textReferences=false&py=3&rawInputLstJSON=%5B%5D&curInstr=63)">PythonTutor.com</a> (try stepping backwards and forwards through the code to make sure you understand how <code>list_length</code> works):</p>
+<iframe width="800" height="500" frameborder="0" src="http://pythontutor.com/iframe-embed.html#code=def+make_pair(a,+b%29%3A%0A++++return+%5Ba,+b%5D%0A%0Adef+pair_first(pair%29%3A%0A++++return+pair%5B0%5D%0A%0Adef+pair_last(pair%29%3A%0A++++return+pair%5B1%5D%0A%0A%0Adef+make_list(a,+b%29%3A%0A++++return+make_pair(a,+b%29%0A++++%0Adef+list_first(lst%29%3A%0A++++return+pair_first(lst%29%0A++++%0Adef+list_rest(lst%29%3A%0A++++return+pair_last(lst%29%0A++++%0Adef+list_length(lst%29%3A%0A++++if+lst+%3D%3D+None%3A%0A++++++++return+0%0A++++else%3A%0A++++++++return+1+%2B+list_length(list_rest(lst%29%29%0A++++++++%0Ap+%3D+make_list('one',++None%29%0Aq+%3D+make_list('two',+p%29%0Ar+%3D+make_list('three',+q%29%0A%0Aprint+(list_length(r%29%29%0A%0A%0A%0A%0A&origin=opt-frontend.js&cumulative=false&heapPrimitives=false&textReferences=false&py=3&rawInputLstJSON=%5B%5D&curInstr=63&codeDivWidth=350&codeDivHeight=400"> </iframe></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class10 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:34 GMT -->
+</html>

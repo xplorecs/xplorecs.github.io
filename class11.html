@@ -1,0 +1,277 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class11 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 11 - Notes</h1>
+<div class="printing"><a href="static/docs/class11.pdf">PDF for Printing</a></div>
+
+<h3>Schedule</h3>
+<p><a href="project3.html">Project 3</a> is due on Friday, 26 February (moved back because
+of the snow day).  Read the collaboration policy carefully &mdash; you
+may work either alone or with a partner on Project 3 if you want, but
+see project page for details.</p>
+<p>If you don't want to risk being scooped by an 8th-grader, you should
+definitiely read <a href="http://computingbook.org/Machines.pdf">Chapter 6:
+<em>Machines</em></a> of the course book
+before Friday's class.</p>
+<p>Computer Science Distinguished Alumni Speaker: <strong>Jason Mars</strong>, <em>Let's Get
+  Sirius</em>.  Friday at 3:30pm in Rice 130 (followed by reception).  For
+  some background, see <a href="http://www.jasonmars.org/">www.jasonmars.org</a> (or
+  embedded video on on-line notes).</p>
+<div class="notpdf">
+<center><video controls="controls" muted autoplay loop width="100%" onclick="this.muted=0;" ><source src="http://jasonmars.org/wp-content/uploads/jmblurb.mp4" style="vertical-align: top;" /></video><br>Click video for sound</center>
+</div>
+
+<!--endpdf-->
+
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="b5386f9b92214c32b3a6963a0b873c37" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Code</h2>
+<p><a href="static/docs/class11.py">class11.py</a></p>
+<h2>Higher-Order Functions</h2>
+<p>A <strong>higher-order function</strong> is a function that manipulates functions.  A
+function can take functions as inputs (you've seen this already in
+<a href="project1.html">Project 1</a>!), and can return functions as outputs.  As you
+will see in <a href="project3.html">Project 3</a>, being able to pass around and return
+functions like this is very powerful.</p>
+<h4>Making Pairs without Lists</h4>
+<pre class="brush: python;">
+def make_pair(a, b):
+    def selector(which):
+        if which:
+            return a
+        else:
+            return b
+    return selector
+
+def pair_first(pair):
+    # Finish this code:
+
+
+
+def pair_last(pair):
+    # Finish this code:
+
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<h2>Programming with Lists and Functions</h2>
+<pre class="brush: python;">
+def list_increment(lst):
+    """
+    Returns a new list that contains all the elements in the input list incremented by 1.
+    For example, list_increment([1, 2, 3]) should return [2, 3, 4].
+    """
+</pre>
+
+<!--python-->
+
+<h1></h1>
+<h1></h1>
+<pre class="brush: python;">
+def list_double(lst):
+    """
+    Returns a new list that contains all the elements in the input list doubled.
+    For example, list_increment([1, 2, 3]) should return [2, 4, 6].
+    """
+</pre>
+
+<!--python-->
+
+<h1></h1>
+<h1></h1>
+<pre class="brush: python;">
+def increment(n): return n + 1
+
+def list_map(fn, lst):
+    """
+    Returns a new list that contains the result of applying fn to all the 
+    elements in the input list.
+
+    For example, list_map(increment, [1, 2, 3]) should return [2, 3, 4].
+    """
+</pre>
+
+<!--python-->
+
+<h1></h1>
+<h1></h1>
+<p>Show how to define <code>list_double</code> using <code>list_map</code>:</p>
+<div class="notpdf">
+<div class="biggap"></div>
+</div>
+
+<!--endpdf-->
+
+<!--page-->
+
+<h3>Yellow Belts: List Procedure Practice</h3>
+<p>These problems are for "yellow belts" (not yet confident you can define
+recursive procedures that operate on lists).</p>
+<pre class="brush: python;">
+def list_sum(lst):
+   # Returns the sum of the elements in lst.
+
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<pre class="brush: python;">
+def list_max(lst):
+   # Returns the maximum (according to >) element in the lst.
+
+</pre>
+
+<!--python-->
+
+<p>Define a function, <code>is_list(obj)</code> that returns <code>True</code> if and only if the input object is a list.</p>
+<pre class="brush: python;">
+def is_list(obj):
+
+
+
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<pre class="brush: python;">
+def list_flip(lst):
+   # Returns a new list, where each element
+   # is the negation of the elements in the input lst.
+
+
+
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<pre class="brush: python;">
+def list_combine(lsta, lstb):
+   # Returns a new list, where each element is the sum
+   # of the corresponding elements in lsta and lstb.  
+   # Note: assumes list_length(lsta) == list_length(lstb)
+
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<pre class="brush: python;">
+def intsto(n):
+   # Returns a list of whole numbers from 1 to n.  (Requires n is a natural number.)
+
+
+
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<p>(Note: there is a built-in function <code>range</code> that is similar to <code>intsto</code>.)</p>
+<pre class="brush: python;">
+def list_append(lsta, lstb):
+   # Returns a new list that is the result of appending lstb to lsta.
+
+
+
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<h3>Green Belts Only: Fun with List Comprehensions</h3>
+<p>These problems are for "green belts" (confident about list procedures
+and able to complete Project 2, even if you haven't been promoted yet).
+Please don't get confused by this until you are very comfortable writing
+recursive procedures on lists (and can solve the "Yellow Belt"
+problems).</p>
+<p>Unlike other Python constructs that we will define precisely, for list
+comprehensions it is best to build an intuition for what they do with
+experiments.</p>
+<p>Here are some examples using list comprehensions.  </p>
+<p>Try to guess what they do, and then try evaluating them in your Python
+interpreter.  Assume the variables <code>lst</code>, <code>lst1</code>, and <code>lst2</code> have been
+initialized to lists, e.g., <code>lst = [1, 2, 3]</code>, but you should figure out
+what these would do on any list inputs.</p>
+<pre class="brush: python;">
+[m for m in lst]
+
+[-m for m in lst]
+
+[abs(m) for m in lst]
+
+sum([1 for e in lst])
+
+[m1 + m2 for m1, m2 in zip(lst1, lst2)]  # figure out what zip does separately
+
+[m1 == m2 for m1, m2 in zip(lst1, lst2)]
+
+sum([not m1 == m2 for m1, m2 in zip(lst1, lst2)])
+</pre>
+
+<!--python-->
+
+<p><strong>Comprehending List Comprehensions.</strong> Rewrite your implementations of
+<code>sequence_complement</code>, <code>count_matches</code>, and <code>hamming_distance</code> as
+one-line list comprehensions.</p>
+<h1></h1>
+<h1></h1>
+<h1></h1>
+<p><strong>Triple Gold Star Challenge.</strong> Write <code>edit_distance</code> using a list comprehension (and no
+  loops or recursive calls).</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class11 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:44 GMT -->
+</html>

@@ -1,0 +1,127 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class24 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:33 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 24 - Objects and Classes</h1>
+<h2>Schedule</h2>
+<p><a href="project5.html">Project 5: Tic-Tac-Go!</a> is now posted.  To be well on track
+to complete the Red Belt (criterion for earning an A in the course), you
+should complete it by <strong>Monday, 11 April</strong>.</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="9ad270fd26df412e8d969ea03e58ccb7" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Notes</h2>
+<p>What is an <em>object</em>?</p>
+<div class="biggap"></div>
+
+<p>What is a <em>class</em>?</p>
+<div class="biggap"></div>
+
+<h1>Defining a Class</h1>
+<pre class="brush: python;">
+class Dog:
+    def __init__(self):
+        self.hungry = True
+
+    def eat(self):
+        self.hungry = False
+
+    def bark(self):
+        if self.hungry:
+            print("ham ham ham ham!")
+        else:
+            print("yap yap yap")
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<h1>Exploring Objects</h1>
+<p>Python provides some useful built-in functions for exploring objects.</p>
+<p><code>type(object)</code> returns the type of <em>object</em>:</p>
+<pre class="brush: python;">
+>>> type(3)
+<class 'int'>
+>>> type("hello")
+<class 'str'>
+>>> type([1, 2, 3])
+<class 'list'>
+>>> scooby = Dog()
+>>> type(scooby)
+<class '__main__.Dog'>
+</pre>
+
+<!--python-->
+
+<p><code>isinstance(object, type)</code> returns <code>True</code> if <em>object</em> is an instance of type <em>type</em>, <code>False</code> otherwise:</p>
+<pre class="brush: python;">
+assert isinstance(scooby, object)
+assert isinstance(3, int)
+assert not isinstance(3, str)
+assert isinstance(scooby, Dog)
+assert isinstance(scooby, object)
+assert isinstance(3, object)
+</pre>
+
+<!--python-->
+
+<p><code>dir(object)</code> returns a list of all the valid attributes for <em>object</em> (i.e., <code>object.attribute</code>):</p>
+<pre class="brush: python;">
+>>> dir(3)
+['__abs__', '__add__', ..., '__xor__', 'bit_length', 'conjugate', 'denominator', 
+ 'from_bytes', 'imag', 'numerator', 'real', 'to_bytes']
+>>> dir(scooby)
+['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', ..., 
+ '__str__', '__subclasshook__', '__weakref__', 'bark', 'eat', 'hungry']
+</pre>
+
+<!--python-->
+
+<p>Note that we only defined the <code>__init__</code>, <code>bark</code>, <code>eat</code>, and <code>hungry</code>
+methods for <code>Dog</code>.  All the other methods were inherited from its
+(default) superclass, <code>object</code>.</p>
+<div class="gap"></div></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class24 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:33 GMT -->
+</html>

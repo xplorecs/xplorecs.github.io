@@ -1,0 +1,49 @@
+Subject: Snow Day!
+From:    David Evans <evans@virginia.edu>
+Date:    1/21/16, 7:39 PM
+
+Hi all,
+
+As you've probably heard, a massive blizzard is coming and the
+University has declared tomorrow as snow day!
+
+We'll revise the schedule accordingly:
+
+- Please complete the "before 8:29pm Thursday" items on
+http://www.xplorecs.org/class1 no later than noon tomorrow, except you
+should now remember to bring the signed course pledge back to class
+Monday.
+
+- For the items listed for "11:29pm on Sunday, 24 January", you should
+still be able to complete the first two of these (read Chapter 2 of the
+coursebook, and the Udacity cs101 course through completing "Problem Set
+1"), but the first opportunity to take the "white belt test" will be
+postponed to Wednesday's class (Jan 27).  For the Udacity cs101 course,
+you should attempt to at least complete the "Lesson 1: How to Get
+Started" and "Lesson 1: Problem Set" sections (the last question #9, is
+marked as a "double gold star" question - you should attempt to solve
+this, but don't be stressed if you can't get it).  It is not expected
+that you do the "Lesson 1: Problem Set (Optional)" section (although you
+may find it useful to try these extra problems).  You don't need to
+watch the "Lesson 1: Q&A" segment, although might find it worth watching
+for Peter Chapman's (UVA BACS 2012) comedic talents!
+
+Be wary that Udacity will try to get you to give them a credit card
+number and register for various non-free things, but none of these are
+necessary for what you will do in this course.  You do need to register
+(provide an email address or use Facebook or Google single sign-on), but
+do not need to do anything that is not free on the site.
+
+- If you are on the waiting list now, if you complete the "before 8:29pm
+Thursday" items and your registration survey id matches the one on the
+waiting list, you are in the class.  (I don't think there is a way for
+me to do this automatically in SIS; instead, I'll set up a permission so
+you can enroll in the class, and I believe you'll receive a notification
+to do this, but will still need to actually do the enrollment in SIS.)
+
+I'll be on slack between sledding and snow-person-making opportunities
+tomorrow if you have any questions (and on email).
+
+Have a great snow day,
+
+--- Dave

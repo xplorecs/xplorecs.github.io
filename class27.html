@@ -1,0 +1,217 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class27 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:08 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 27 - Of Trees and Logs</h1>
+<div class="printing"><a href="static/docs/class27.pdf">PDF for Printing</a></div>
+
+<h2>Schedule</h2>
+<p>Everyone should either have (1) completed the Blue Belt level and be
+working on Project 5 (target completion by next Monday, 11 April), or
+(2) be making progress to completing the Blue Belt level.  If you are
+stuck, not making progress, or unsure what you should be doing, make
+sure to check in with me today (in person, slack, or email) or at office
+hours tomorrow.</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="603ff0b109624f69969683187875ca48" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Notes and Questions</h2>
+<p>What is the <em>search problem</em>?</p>
+<div class="gap"></div>
+
+<p><strong>FindMatch Problem:</strong>  </p>
+<p><strong>Inputs:</strong> <code>lst</code>, a list of <em>N</em> elements of type <em>T</em>; <code>ftest</code>, a test function <em>T</em> &rarr; Bool.<br />
+<strong>Output:</strong> an element, <em>e</em>, of <code>lst</code> such that <code>ftest(e)</code> is True, or <code>None</code> if no such element exists </p>
+<p>What is the complexity of FindMatch?</p>
+<pre class="brush: python;">
+def find_match(lst, ftest):
+    """
+    If there is any element e in lst that
+    satisfies ftest(e) == True, returns a
+    satisfying element e.
+
+    Otherwise, returns None.
+    """
+</pre>
+
+<!--python-->
+
+<div class="biggap"></div>
+
+<p>What can we do if the asymptotic complexity of the problem we want to solve is too high?
+<div class="biggap"></div></p>
+<!--page-->
+
+<h2>Trees</h2>
+<p>Recall: A <em>List</em> is either (1) None, or (2) a pair whose second part is a <em>List</em>.</p>
+<p>What is a <em>Tree</em>?
+<div class="biggap"></div></p>
+<pre class="brush: python;">
+class Tree:
+    """
+    A Tree is a data structure where nodes have
+    zero or more children, and one parent (except
+    the root which has no parent).
+
+    All the children and parents are Tree objects or None.
+    """
+    def __init__(self, value):
+        self._parent = None
+        self._children = []
+        self._value = value
+
+    def add_child(self, child):
+        assert isinstance(child, Tree) 
+        self._children.append(child)
+        child._parent = self
+
+    def traverse(self):
+        """
+        Returns a list of all Tree objects in this tree.
+        """
+        result = [self]
+        for subtree in self._children:
+            if subtree:
+                result += subtree.traverse()
+            else:
+                result += [None]
+        return result
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<h1>Binary Tree</h1>
+<pre class="brush: python;">
+from tree import Tree
+
+class BinaryTree(Tree):
+    """
+    A tree where there are at most 2 children per node.
+    """
+
+    def __init__(self, value):
+        super().__init__(value)
+        self._children = [None, None]
+
+    def add_child(self, child):
+        raise RuntimeError("Add child not allowed!")
+
+    def set_left_child(self, child):
+        assert isinstance(child, BinaryTree)
+        assert not self.left_child()
+        self._children[0] = child
+
+    def set_right_child(self, child):
+        assert isinstance(child, BinaryTree)
+        assert not self.right_child()
+        self._children[1] = child
+
+    def left_child(self):
+        return self._children[0]
+
+    def right_child(self):
+        return self._children[1]
+
+    def traverse(self):
+        nodes = []
+        if self.left_child():
+            nodes += self.left_child().traverse()
+        nodes.append(self)
+        if self.right_child():
+            nodes += self.right_child().traverse()
+        return nodes
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<h1>Ordered Binary Tree</h1>
+<pre class="brush: python;">
+from binarytree import BinaryTree
+
+class OrderedBinaryTree(BinaryTree):
+    """
+    A tree where the ordered invariant is preserved:
+        if left_node is left of current_node,
+            fcompare(left_node.value, current_node.value)
+        must be True
+    """
+
+    def __init__(self, value, fcompare = lambda a, b: a < b):
+        super().__init__(value)
+        self._fcompare = fcompare
+
+    def add_child(self, child):
+        raise RuntimeError("Cannot add children directly!")
+
+    def add_node(self, node):
+        """Inserts this child in a proper location."""
+        assert isinstance(node, OrderedBinaryTree)
+
+        if self._fcompare(node._value, self._value):
+            if self.left_child():
+                self.left_child().add_node(node)
+            else:
+                self.set_left_child(node)
+        else:
+            if self.right_child():
+                self.right_child().add_node(node)
+            else:
+                self.set_right_child(node)
+</pre>
+
+<!--python-->
+
+<p>What is the complexity of searching for a node in an OrderedBinaryTree?</p>
+<div class="gap"></div>
+
+<h2>Code</h2>
+<p><a href="static/docs/tree.py">tree.py</a><br />
+<a href="static/docs/binarytree.py">binarytree.py</a><br />
+<a href="static/docs/orderedbinarytree.py">orderedbinarytree.py</a></p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class27 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:13 GMT -->
+</html>

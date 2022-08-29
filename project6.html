@@ -1,0 +1,412 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/project6 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:01 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Project 6: Charming Snakes with Mesmerizing Memoizers</h1>
+<div class="turnin">
+
+<p><strong>Deliverables:</strong> For this assignment, there is no paper turn-in required for this problem set.  All of your answers should be clearly marked in the <code>charme.py</code> file you modify and submit electronically by email to <em>evans@virginia.edu</em>.
+To be eligible for the first Red Belt test opportunity, you should complete Project 6 by <strong>Friday, 22 April</strong>.</p>
+</div>
+
+<h3>Purpose</h3>
+<ol>
+<li>
+<p>Understand how language interpreters work</p>
+</li>
+<li>
+<p>Gain experience with a programming language quite different from Python.</p>
+</li>
+<li>
+<p>Understand the meta-circular evaluator</p>
+</li>
+<li>
+<p>Ruminate on the nature of universal programming languages</p>
+</li>
+<li>
+<p>Learn how changing the evaluation rules changes programming and running time</p>
+</li>
+</ol>
+<h4>Collaboration Policy</h4>
+<p>For this assignment, you may <em>work alone</em> or <em>work with a partner</em>. </p>
+<p><strong>If you work with a partner, you and your partner should submit a
+single assignment with both of your names and UVA ids on it.</strong> You and
+your partner should work on all the problems together, and both of you
+must completely understand everything you turn in.  You should also take
+turns driving (typing) when you are at the computer.</p>
+<p>Regardless of whether you work alone or with a partner, you may discuss
+the assignment with anyone you want and get help from others, so long as
+it is help in the spirit of learning how to do things yourself not
+getting answers you don't understand.  You should understand everything
+you turn in for the assignment well enough to be able to produce it
+completely on your own.</p>
+<p>Remember to follow the <a href="pledge.html">course pledge</a> you read and signed at
+the beginning of the semester.  For this assignment, you may consult any
+outside resources, including books, papers, web sites and people, you
+wish <i>except</i> for materials from previous cs1120 courses or direct
+solutions to the given problems.  You may consult anyone you want, but
+that person cannot type anything in for you and all work must remain
+your own and outside sources should never give you specific answers to
+problem set questions.</p>
+<p>If you use resources other than the class materials, lectures and course
+staff, you should document this in your turn-in.</p>
+<p>You are <strong>strongly encouraged</strong> to take advantage of the scheduled
+ help hours and office hours for this course.</p>
+<h1>Background</h1>
+<p>Languages are powerful tools for thinking.  One way to solve problems is
+to think of a language in which a solution to the problem can be easily
+expressed, and then to implement that language.  This is the <em>"great Hop
+forward"</em> that Grace Hopper made in the 1950s: we can produce programs
+that implement languages.  The input to the program is an expression
+specification in some language.  If the program is an interpreter, the
+result is the value of that expression.</p>
+<p>In this problem set, we provide a working interpreter for the Charme
+language, which is approximately a subset of Scheme.  Scheme is a simple
+programming language (which you've encountered some in the coursebook)
+that is designed to support a functional style of programming where
+programs are built by composing functions.</p>
+<p>The interpreter implements the Scheme evaluation rules with state. Your
+assignment involves understanding the interpreter and making some
+additions and changes to it.  </p>
+<p>If you are successful, you will produce an interpreter for the language
+<em>Mesmerize</em> in which the original Fibonacci procedure that includes two
+recursive calls will have running time that is approximately linear in
+the <em>value</em> of its input (compared to the exponential time it would have
+with a normal Scheme interpreter), and the simple edit distance
+procedure from <a href="project2.html">Project 2</a> runs fast enough for reasonably
+large inputs (analyzing its actual running time is left as a bonus
+problem).</p>
+<h3>Preparation</h3>
+<p>Read <a href="http://www.computingbook.org/Interpreters.pdf">Chapter 11:
+Interpreters</a> of the course book.  The starting code for this project
+is explained in Chapter 11.</p>
+<h3>Project 6 Repository</h3>
+<p>Set up your project6 repository in the same way as you did for previous
+projects.</p>
+<ul>
+<li>
+<p><strong>Fork Project 6.</strong> Visit
+<a href="https://bitbucket.org/cs1120/project6/fork">https://bitbucket.org/cs1120/project6/fork</a>.
+Make sure to check the "This is a private repository" box to make your
+forked repository private (only visible to yourself and people you
+authorize to access it).  If you are working with a partner, just one of
+you should fork the repository.  Then, add the other partner's bitbucket
+id to have access to it.</p>
+</li>
+<li>
+<p><strong>Clone to your machine.</strong> To have a working copy of the repository on
+your machine, clone the forked repository in SourceTree by
+selecting <code>File | New/Clone</code> and enter the URL of the cloned
+repository. You can copy this from the project page you see in
+bitbucket.org afer forking the provided Project 5 repository.  It should
+be a URL like <code>https://&lt;your bitbucket id&gt;@bitbucket.org/&lt;your bitbucket
+id&gt;/project6.git</code>.  If you are working with a partner, <em>both</em> partners
+should clone the forked repository, so you each have a local copy of it.
+(For this project, you should work together when you work on the code.
+In general, though, using git allows many people to work on the same
+code and share their changes, and handle conflicts when two people edit
+the same file.)</p>
+</li>
+</ul>
+<p>The project6 repository contains just one file: <code>charme.py</code>.  </p>
+<p><div class="warning">
+For the questions in this assignment, you will modify <em>charme.py</em> which you will submit electronically when you are
+finished. Please <b>mark clearly (using comments)</b> the 
+changes you have made for Problems 3 - 8.
+   </div></p>
+<h3>Getting Started With Charme</h3>
+<p>Open <code>charme.py</code> and select <tt>Run | Run Module</tt> (F5) to load the
+definitions into the interpreter.  This file contains all the code from
+Chapter 11 of the course book, with some modifications to make it work
+in Python 3 (the code provided in the book is for Python 2).</p>
+<p>It defines a procedure <code>meval</code> that takes two inputs: a list that
+represents a Charme expression and an environment.  It outputs the value
+of the input expression.  </p>
+<p>The <code>initializeGlobalEnvironment()</code> procedure initializes the global
+environment in the global variable <code>globalEnvironment</code>.  We can use the
+as the second input to <code>meval</code>.</p>
+<p>You can try some evaluations using <code>meval</code> directly: </p>
+<pre class="brush: python;">
+>>> initializeGlobalEnvironment()
+>>> meval('23', globalEnvironment)
+23
+>>> meval(['+', '1', '2'], globalEnvironment)
+3
+</pre>
+
+<!--python-->
+
+<p>This is a bit awkward since the first input is not in the standard
+Charme notation, but is the data structure that results from parsing
+<code>"(+ 1 2)"</code>.</p>
+<p>The <code>parse</code> function takes a string representing one or more Charme
+expressions and returns a list containing each input expression as a
+structured list. For example:</p>
+<pre class="brush: python;">
+>>> parse("23")
+['23']
+>>> parse("(+ 1 2 (* 3 4))")
+[['+', '1', '2', ['*', '3', '4']]]
+>>> parse("(define square (lambda (x) (* x x)))")
+[['define', 'square', ['lambda', ['x'], ['*', 'x', 'x']]]]
+</pre>
+
+<!--python-->
+
+<p>Since <code>parse</code> takes one or more expressions and produces a list of
+expressions as its output, we cannot pass the result from <code>parse</code>
+directly to <code>meval</code>.  If we just parse one expression, we just want to
+pass the first element of the <code>parse</code> output to <code>meval</code>:</p>
+<pre class="brush: python;">
+>>> meval(parse("(+ 1 2 (* 3 4))")[0], globalEnvironment)
+15
+</pre>
+
+<!--python-->
+
+<p>It is a bit awkward to remember the <code>[0]</code> and to pass in the
+<code>globalEnvironment</code>, so we have defined a function
+<code>evalInGlobal(_expr_)</code> that takes a string representing a single Charme
+expression and evaluates it in the <code>globalEnvironment</code>:</p>
+<pre class="brush: python;">
+def evalInGlobal(expr):
+    return meval(parse(expr)[0], globalEnvironment)
+</pre>
+
+<!--python-->
+
+<p>For example:</p>
+<pre class="brush: python;">
+>>> initializeGlobalEnvironment()
+>>> evalInGlobal("(define square (lambda (x) (* x x)))")
+>>> evalInGlobal("(square 4)")
+16
+>>> evalInGlobal("square")
+<__main__.Procedure instance at 0x03C0BE18>
+</pre>
+
+<!--python-->
+
+<p>(Of course, the actual address in memory where your procedure is stored
+will vary).</p>
+<p>We have also provided the <code>evalLoop()</code> function that provides an
+interactions buffer for Charme, similar to the Python shell.</p>
+<p>From the perspective of our shiny new interpreter, a Charme program is
+just a string that we parse and evaluate.</p>
+<p><div class="q">
+<strong>Problem 1.</strong> Define a factorial procedure in Charme. Express your
+procedure as <em>string</em> in Python by defining a variable called
+<code>charme_factorial</code>.  When you evaluate <code>evalInGlobal(charme_factorial)</code>,
+it should define a Charme procedure called <code>factorial</code>.<br />
+   </div></p>
+<p>When you've complete Problem 1 correctly, you should see output like this: </p>
+<pre class="brush: python;">
+>>> initializeGlobalEnvironment()
+>>> evalInGlobal(charme_factorial)
+>>> evalInGlobal("(factorial 5)")
+120
+</pre>
+
+<!--python-->
+
+<h2>Adding Primitives</h2>
+<p>The set of primitives provided by our Charme interpreter is
+<em>sufficient</em>, in that it is enough to express every computation.  (One
+way to prove this would be to implement a Turing Machine simulator in
+Charme.)  However, it is not enough to express every computation in a
+convenient way.</p>
+<p><div class="q">
+<strong>Problem 2.</strong> Extend the Charme interpreter by adding a primitive
+procedure <code>&lt;=</code> (less than or equal to) to the global environment.  You
+will need to define a procedure that implements the primitive, and
+modify <code>initializeGlobalEnvironment</code> to install your primitive.
+   </div></p>
+<p>It should behave like this:</p>
+<pre class="brush: python;">
+>>> initializeGlobalEnvironment()
+>>> evalInGlobal("(<= 5 3)") 
+False 
+>>> evalInGlobal("(<= 3 7)") 
+True
+</pre>
+
+<!--python-->
+
+<p>Our Charme interpreter does not provide any primitives for lists.  As we
+saw in <a href="class11.html">Class 11</a>, it is possible to define everything you
+need to make pairs and then lists just using procedures that are already
+provided by Charme.</p>
+<p>However, it would be more convenient if some primitives for
+manipulating pairs are provided.  </p>
+<p><div class="q">
+<strong>Problem 3.</strong> Extend the Charme interpreter by adding primitive
+functions <code>cons</code> (this is the Scheme name for <code>make_pair</code>), <code>car</code> (the Scheme name for <code>pair_first</code>) and <code>cdr</code> (the Scheme name for <code>pair_last</code>) that behave similarly to the primitive Scheme procedures.  (Read on for some hints.)
+   </div></p>
+<p>You should start by defining a <code>class</code> that represents a cons cell (a
+pair).  For example, you might define a <code>Pair</code> class that has an
+<code>__init__</code> method that takes two inputs (the first and second parts of
+the pair), and provides methods for <code>get_first</code> and <code>get_last</code> that
+retrieve the respective parts of the <code>Pair</code> object.</p>
+<p>You must also define a <code>__str__(self)</code> method for your class so that
+<code>evalLoop</code> and <code>evalToplevelExp</code> will print out your Pair objects in a readable way.</p>
+<p>You should get the following interactions in the <code>evalLoop()</code>:</p>
+<pre class="brush: python;">
+Charme> (cons 1 2)
+(1 . 2)
+Charme> (car (cons 1 2))
+1
+Charme> (cdr (cons 1 2))
+2
+Charme> quit
+</pre>
+
+<!--python-->
+
+<p><div class="q">
+<strong>Problem 4.</strong> Extend the Charme interpreter by defining the <code>null</code> and
+<code>null?</code> primitives.  (Note that unlike in Charme, names in Python cannot
+include question marks, so you will have to use a different name for the
+Python procedure you use to implement <code>null?</code>.)  (<strong>Hint:</strong> You could use Python's <code>None</code> value to represent <code>null</code>.)
+   </div></p>
+<p><div class="q">
+<strong>Problem 5.</strong> Extend the Charme interpreter by defining the <code>list</code>
+primitive procedure.  Like the Scheme <code>list</code> primitive procedure, it
+should take any number of operands and produce as output a list containing
+each operand as an element in order.
+   </div></p>
+<p>After finishing these questions, you should get the following
+interactions in the <code>evalLoop()</code>:</p>
+<pre class="brush: python;">
+Charme> (define a (list 1 2 3 4))
+Charme> (car a)
+1
+Charme> (null? a)
+False
+Charme> (null? (list ))
+True
+Charme> (cdr (cdr a))
+(3 4)
+</pre>
+
+<!--python-->
+
+<p><div class="indented">
+Note that the last output is the way Scheme prints lists, and you are
+encouraged to make your Charme interpreter also print out lists this
+way.  It is acceptable, though, to print out lists in a more
+straightforward way, so they would be displayed as normal cons pairs.
+Then, this would look like, <code>(3 . (4 . None))</code>, instead.
+   </div></p>
+<h2>Special Forms</h2>
+<p>The provided Charme interpreter does not include the <code>cond</code> special
+form.  Before attempting to answer the next question, we recommend
+carefully understanding the evaluation rule for the conditional
+expression (as described in Section 10.1.2 of the coursebook).</p>
+<p><div class="q">
+<strong>Problem 6.</strong> Extend the Charme interpreter to support the <code>cond</code>
+special form, with the same meaning as the Scheme cond expression.
+(Your Charme cond expression does not need to support the
+special <code>else</code> syntax supported by Scheme.)
+   </div></p>
+<p>After adding <code>cond</code> to your Charme interpreter, you should get the
+following interactions using <code>evalLoop()</code>:</p>
+<pre class="brush: python;">
+Charme> (cond)
+None
+Charme> (cond ((> 1 2) 2))
+None
+Charme> (cond ((> 1 2) 2) ((> 3 2) 3))
+3
+Charme> (define fibo (lambda (n) (cond ((= n 1) 1) ((= n 2) 1) (true
+(+ (fibo (- n 1)) (fibo (- n 2)))))))
+None
+Charme> (fibo 10)
+55
+</pre>
+
+<!--python-->
+
+<h2>Memoizing</h2>
+<p>Memoizing is a technique for improving efficiency by storing and reusing
+the results of previous procedure applications.  If a procedure has no
+side effects and uses no global variables, everytime it is evaluated on
+the same operands it produces the same result.  You should remember
+memoizing from <a href="project2.html">Project 2</a>.</p>
+<p>To implement memoizing, we need to save the results of all function
+applications in a table.  When a function application is evaluated,
+first, we lookup the application in the table to see if it has already
+been computed.  If there is a known value, that is the result of the
+evaluation and no further computation need be done.  If there is not,
+then the function application is evaluated, the result is stored in the
+table, and the result is returned as the value.</p>
+<p><div class="q">
+<strong>Problem 7.</strong> Modify the Charme interpreter to support memoizing for all
+function applications.  (<strong>Hint:</strong> Python dictionaries will be very useful for this!)
+   </div></p>
+<p>Once you have modified the interpreter, you should be able to evaluate
+<code>(fibo 60)</code> without changing the definition of <code>fibo</code> above.  By
+changing the meaning of the application evaluation rule, a procedure
+that previously had running time exponential in the value of the input,
+now has running time that is linear in the value of the input!</p>
+<p><div class="q">
+<strong>Problem 8. (Bonus)</strong> [This question is a "bonus question".  It is not
+necessary to answer this to pass Project 6, but an exemplary answer to
+this question, along with completion of Problems 1-8 from <a href="project5.html">Project
+5</a>, will be justification for automatic promotion to Red
+Belt.]</p>
+<p><b>a.</b> Define a Charme procedure that implements the edit distance
+function from <a href="project2.html">Project 2</a>.</p>
+<p><b>b.</b> Analyze the running time of your procedure, using the memoized
+Charme interpreter.</p>
+<p><b>c.</b> Analyze the running time of your procedure, using the standard
+Charme interpreter (without memoization)
+   </div></p>
+<h3>Deliverables</h3>
+<p><strong>Reminder:</strong> For this assignment, there is no paper turn-in required for
+this problem set.  All of your answers should be clearly marked in the
+<code>charme.py</code> file you modify and submit electronically by email to
+<em>evans@virginia.edu</em>.  To be eligible for the first Red Belt test
+opportunity, you should complete Project 6 by <strong>Friday, 22 April</strong>.</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/project6 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:01 GMT -->
+</html>

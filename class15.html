@@ -1,0 +1,175 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class15 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:59 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 15 - Worksheet</h1>
+<div class="printing"><a href="static/docs/class15.pdf">PDF for Printing</a></div>
+
+<h3>Upcoming Schedule</h3>
+<p><a href="project3.html">Project 3</a> is due <strong>Monday, 29 February</strong>.  Before
+submitting Project 3 you must have complete the Orange Belt (either by
+getting a "Gold star" on <a href="project2.html">Project 2</a> or completing the
+promotion requirements.  </p>
+<p><strong>Orange Belt promotion requirements.</strong> The requirements for the Orange
+Belt promotion are now updated (as of 5:30pm on Friday, 26 February).
+If you have not already submitted a solution, the requirements to earn
+Orange Belt promotion are now:</p>
+<ol>
+<li>
+<p>Complete everything listed on the <a href="class13.html">Class 13 notes</a>.</p>
+</li>
+<li>
+<p>Define a function, <code>list_append</code> that takes as input two lists, and
+returns a new list that contains all of the elements of the first and
+second list in order.  For example,</p>
+</li>
+</ol>
+<pre class="brush: python;">
+>>> p1 = [1, 2, 3]
+>>> p2 = [4, 5, 6]
+>>> p3 = list_append(p1, p2)
+>>> p3
+[1, 2, 3, 4, 5, 6]
+>>> p2[1] = 7 # should not change p3
+>>> p1[0] = 4 # should not change p3
+>>> p3
+[1, 2, 3, 4, 5, 6]
+</pre>
+
+<!--python-->
+
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="75417fe796634c51b97cb4a18e078566" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Code</h2>
+<p><a href="static/docs/class15.py">class15.py</a></div></p>
+<h2>Generalizing List Functions</h2>
+<pre class="brush: python;">
+def list_map(fn, lst):
+    if not lst:
+        return []
+    else:
+        return [fn(lst[0])] + list_map(fn, lst[1:])
+
+def list_map(fn, lst):
+    result = []
+    for e in lst:
+        result.append(fn(e))
+    return result
+
+def list_map(fn, lst):
+    return [fn(e) for e in lst]
+</pre>
+
+<!--python-->
+
+<p>Define <code>list_increment</code> and <code>list_print</code> using <code>list_map</code>.</p>
+<div class="biggap"></div>
+
+<pre class="brush: python;">
+def make_list_mapper(fn):
+    def mapper(lst):
+        return list_map(fn, lst)
+    return mapper
+
+list_doubler = 
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<h2>Lambda Expressions</h2>
+<p><code>lambda</code> makes a function:</p>
+<pre class="brush: python;">
+lambda param1, param2: expression
+</pre>
+
+<!--python-->
+
+<p>is comparable to:
+<pre class="brush: python;">
+def new_func(param1, param2):
+    return expression
+</pre><!--python--></p>
+<p>The name <code>lambda</code> comes from <a href="https://en.wikipedia.org/wiki/Lambda_calculus">Lambda
+Calculus</a>, which was
+invented by Alonzo Church in the 1930s.  Along with the Turing machine
+model we have already informally introduced, Lambda Calculus was the
+earliest model of a universal computer (and still one of the most widely
+used models).  We'll explore this more towards the end of the semester,
+but for now, you can use <code>lambda</code> as a shortcut to make a function in
+Python.</p>
+<pre class="brush: python;">
+def make_list_mapper(fn):
+    return lambda lst: list_map(fn, lst)
+
+list_increment = 
+</pre>
+
+<!--python-->
+
+<h3>Generalizing Generalizers</h3>
+<pre class="brush: python;">
+def list_accumulator(fn, lst, base):
+    result = base
+    for el in lst:
+        result = fn(result, el)
+    return result
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+def list_map(fn, lst):
+    return list_accumulator(__________________, ________, ______)
+
+def list_length(fn, lst):
+    return list_accumulator(__________________, ________, ______)
+
+</pre>
+
+<!--python--></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class15 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:10:08 GMT -->
+</html>

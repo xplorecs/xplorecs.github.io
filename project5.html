@@ -1,0 +1,804 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/project5 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:12:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Project 5: Tic-Tac-Go!</h1>
+<div class=turnin>
+
+<p><strong>Deliverables:</strong> To be on track for completing the Red Belt (A in
+  course), it is recommended that you complete this assignment by
+  <strong>Monday, 11 April</strong>.  Bring in to class a stapled turn-in containing
+  your written answers to all the questions, including all the code your wrote.
+   </div></p>
+<h3>Purpose</h3>
+<ol>
+<li>
+<p>Learn about object-oriented programming and programming using classes
+and inheritance in Python.</p>
+</li>
+<li>
+<p>Get more practice programming with functions and analyzing execution
+cost.</p>
+</li>
+<li>
+<p>Get a more realistic programming experience, where you are given less
+guidance how to write code to solve an interesting problem.</p>
+</li>
+<li>
+<p>Experience simple machine learning that can achive super-human
+performance (at least on super-silly tasks).</p>
+</li>
+</ol>
+<h4>Collaboration Policy</h4>
+<p>For this assignment, you may <em>work alone</em> or <em>work with a partner</em>. </p>
+<p><strong>If you work with a partner, you and your partner should submit a
+single assignment with both of your names and UVA ids on it.</strong> You and
+your partner should work on all the problems together, and both of you
+must completely understand everything you turn in.  You should also take
+turns driving (typing) when you are at the computer.</p>
+<p>Regardless of whether you work alone or with a partner, you may discuss
+the assignment with anyone you want and get help from others, so long as
+it is help in the spirit of learning how to do things yourself not
+getting answers you don't understand.  You should understand everything
+you turn in for the assignment well enough to be able to produce it
+completely on your own.</p>
+<p>Remember to follow the <a href="pledge.html">course pledge</a> you read and signed at
+the beginning of the semester.  For this assignment, you may consult any
+outside resources, including books, papers, web sites and people, you
+wish <i>except</i> for materials from previous cs1120 courses or direct
+solutions to the given problems.  You may consult anyone you want, but
+that person cannot type anything in for you and all work must remain
+your own and outside sources should never give you specific answers to
+problem set questions.</p>
+<p>If you use resources other than the class materials, lectures and course
+staff, you should document this in your turn-in.</p>
+<p>You are <strong>strongly encouraged</strong> to take advantage of the scheduled
+ help hours and office hours for this course.</p>
+<h1>Objects and Classes</h1>
+<p>Objects provide a way to package functions and state in ways that make
+programming more convenient and (sometimes) make programs easier to
+modify and understand.  </p>
+<p>Python provides the <code>class</code> construct for defining a <em>class</em> which
+provides a way to make objects.  A class provides an <code>__init__</code> method
+which is used to create a new object of the class type, and may define
+methods that are functions operating on objects of the class type.</p>
+<p>In this project, we will use classes to represent the state of a board
+game, players who play a game, and other objects useful in building a
+generic game-playing bot.</p>
+<p>The intial repository provides most of the code for a Tic-Tac-Toe game
+including a bot that learns to play a passable (but not perfect) game of
+Tic-Tac-Toe.  Your main take for this project is to create new classes
+that implement the game of Go and a Go-playing bot.  </p>
+<h3>Project 5 Repository</h3>
+<p>Set up your project5 repository in the same way as you did for previous projects.</p>
+<ul>
+<li>
+<p><strong>Fork Project 5.</strong> Visit
+<a href="https://bitbucket.org/cs1120/project5/fork">https://bitbucket.org/cs1120/project5/fork</a>.
+Make sure to check the "This is a private repository" box to make your
+forked repository private (only visible to yourself and people you
+authorize to access it).  If you are working with a partner, just one of
+you should fork the repository.  Then, add the other partner's bitbucket
+id to have access to it.</p>
+</li>
+<li>
+<p><strong>Clone to your machine.</strong> To have a working copy of the repository on
+your machine, clone the forked repository in SourceTree by
+selecting <code>File | New/Clone</code> and enter the URL of the cloned
+repository. You can copy this from the project page you see in
+bitbucket.org afer forking the provided Project 5 repository.  It should
+be a URL like <code>https://&lt;your bitbucket id&gt;@bitbucket.org/&lt;your bitbucket
+id&gt;/project5.git</code>.  If you are working with a partner, <em>both</em> partners
+should clone the forked repository, so you each have a local copy of it.
+(For this project, you should work together when you work on the code.
+In general, though, using git allows many people to work on the same
+code and share their changes, and handle conflicts when two people edit
+the same file.)</p>
+</li>
+</ul>
+<p>The project5 repository contains many files, and a good solution to
+project5 will involve creating several new files of your own.  The
+provided code is a Tic-Tac-Toe game and learning player.  You can use
+this code in any way you want to build a (mini) Go learning player.  </p>
+<p>Unlike previous projects, there is no template for writing your answers!
+It is up to you to figure out how to solve the problems.  A good
+solution will take advantage of the provided code by using inheritance,
+but not need to make changes to it.</p>
+<ul>
+<li>
+<p><code>game.py</code> &mdash; Defines the <code>Game</code> class for playing two-player,
+  perfect information, turn-based games.</p>
+</li>
+<li>
+<p><code>board.py</code> &mdash; Defines the <code>Board</code> class for representing a simple
+  board with no structure or game rules.</p>
+</li>
+<li>
+<p><code>squareboard.py</code> &mdash; Defines the <code>SquareBoard</code> class, a subclass
+  of <code>Board</code>, for representing a square board where the positions can be
+  referenced with a <code>Position</code> object (also defined by a class in this
+  file) which contains two coordinates.</p>
+</li>
+<li>
+<p><code>tictactoe.py</code> &mdash; Defines the <code>TicTacToeBoard</code> class, a subclass
+  of <code>SquareBoard</code>, for playing games of Tic-Tac-Toe.</p>
+</li>
+<li>
+<p><code>player.py</code> &mdash; Defines a generic <code>Player</code> class.</p>
+</li>
+<li>
+<p><code>humanplayer.py</code> &mdash; Defines a <code>HumanPlayer</code> class, a subclass of
+  <code>Player</code>, that uses user input to select moves.</p>
+</li>
+<li>
+<p><code>randomplayer.py</code> &mdash; Defines a <code>RandomPlayer</code> class, a subclass of
+  <code>Player</code>, that plays (badly, for most games!) by randomly picking a
+  legal move.</p>
+</li>
+<li>
+<p><code>learningplayer.py</code> &mdash; Defines a <code>LearningPlayer</code> class, a
+  subclass of <code>Player</code>, that learns to play a game based on learning
+  from games played.  Note that the learning player does not know
+  anything about the game it is learning to play, and can be used to
+  learn to play any move and state-based game.</p>
+</li>
+</ul>
+<p><div class=warning> <strong>Warning:</strong> This project expects you to figure
+out a lot more on your own than previous projects.  It is unwise to jump
+in and start programming without thinking through your design carefully
+and making sure you understand what you should about the provided code.
+We recommend you <b>start early</b> and <b>take advantage of the
+scheduled help hours</b>.<br />
+   </div></p>
+<p><center>
+<iframe width="800" height="450" src="https://www.youtube-nocookie.com/embed/g-dKXOlsf98?rel=0" frameborder="0" allowfullscreen></iframe>
+</center></p>
+<h2>Understanding Tic-Tac-Toe</h2>
+<p>Before getting started with Go, you should understand the provided
+Tic-Tac-Toe game and learning player.</p>
+<p>There are two main ways to understand complex programs: <em>top-down</em> and
+<em>bottom-up</em>.  With a top-down approach, we look at the high level design
+of the program, treating many of the modules as "black boxes" (until we
+later go into their details).  In most cases, it is best to combine
+top-down and bottom-up understanding: get an understanding of the
+high-level components of the system, and then drill down into the
+details of particular components as necessary.</p>
+<p>We will provide a walkthrough introduction to the provided code (along
+with some questions you need to answer to verify understanding it), but
+you should also feel free to examine and play around with the provided
+code on your own.</p>
+<h4>Playing a Game</h4>
+<p>The <code>game.py</code> module provides the <code>Game</code> class that implements a
+generic, turn-based perfect-information game.</p>
+<p>Here is the class definition (which will be explained below): (this is
+the full code, but with comments removed, see <code>game.py</code> for the
+commented code)</p>
+<pre class="brush: python;">
+class Game:
+    """
+    A Game represents a turn-based game with
+    public and complete state (perfect information).
+    """
+
+    def __init__(self, players, state):
+        """
+        Initializes a new Game with the given
+        players and initial state.
+        """
+        # all players must be of type Player
+        assert all([isinstance(player, Player) for player in players])
+        self._players = players
+
+        # the state must be a GameState
+        assert isinstance(state, GameState)
+        self._state = state
+
+    def play(self, show_moves = False):
+        """
+        Play the game.  Each players gets a turn in order,
+        until the game is over.
+
+        Returns a pair: (winner, list of moves)
+        where each move in moves is a list of the moves
+        for each player for that round.
+        """
+        moves = []
+        all_pass = False
+        while not all_pass:
+            moves.append([])
+            all_pass = True
+
+            for player in self._players:
+                if self._state.game_over():
+                    break
+
+                move = player.turn(self._state)
+                moves[-1].append(move)
+
+                if move:
+                    assert self._state.legal_move(player, move)
+                    self._state.make_move(player, move)
+                    all_pass = False
+
+                if show_moves:
+                    print("State after " + player.mark() + " moves " \
+                          + str(move) if move else "[pass]")
+                    print(str(self._state))
+
+        return (self._state.outcome(), moves)
+</pre>
+
+<!--python-->
+
+<p>The <code>Game</code> class defines two methods: <code>__init__</code> initializes a game,
+recording the <code>players</code> and initial <code>state</code> in instance variables,
+<code>_players</code> and <code>_state</code>.  We use the <code>_</code> at the beginning of these names
+to indicate that they are meant to be internal to the class
+implementation, and should not be used outside it.  (Unlike many
+languages, Python does not provide any enforcement of attribute
+visibility; it is only by convention that names beginning with <code>_</code> are
+not supposed to be used outside the class.)</p>
+<p>The <code>play</code> method plays a game, recording the moves.  Note that it does
+not make any assumptions about the actual game or players, just that the
+players all take turns making moves in order, and the came continues
+until it is over.  It is up to the objects passed in as <code>players</code> and
+<code>state</code> when the game is created to determine the rules of the game and
+how it is played.</p>
+<p>The <code>play</code> method uses methods provided by the <code>state</code> object, and
+requires that they have these behaviors (for the game play to work):</p>
+<ul>
+<li>
+<p><code>state.game_over()</code>: returns True when the game is over, and False otherwise.</p>
+</li>
+<li>
+<p><code>state.legal_move(player, move)</code>: returns True is <code>move</code> is a legal move for <code>player</code> from this state.</p>
+</li>
+<li>
+<p><code>state.make_move(player, move)</code>: updates the game state to reflect <code>player</code> making the move <code>move</code>.</p>
+</li>
+<li>
+<p><code>state.outcome()</code>: returns the outcome of the game (e.g., winning player or draw)</p>
+</li>
+</ul>
+<p>It is up to the class that implements the <code>state</code> object, which should
+be a subclass of <code>GameState</code> to implement these methods to provide the
+desired behavior of the game.</p>
+<p>The <code>play</code> method also uses one method provided by the <code>player</code> object:</p>
+<ul>
+<li><code>player.turn(players, state)</code>: returns the move <code>player</code> makes given this game <code>state</code>.  </li>
+</ul>
+<p>It is up to the class that implements the <code>player</code> object to define the
+<code>turn</code> method to make a good, legal move in the game.  (Note that the
+<code>play</code> method verifies that the move is a <code>legal_move</code> before making it,
+to catch players cheating.)</p>
+<p>To make sure you understand the definition of the <code>play</code> method, answer Problems 1 and 2.</p>
+<p><div class="q"> 
+<strong>Problem 1.</strong> For a standard game of Tic-Tac-Toe on a 3x3 board with 2
+players, what is the maximum length of the list of moves returned as the
+second return value returned by <code>play</code>?
+   </div></p>
+<p><div class="q"> </p>
+<p><strong>Problem 2.</strong> For each of the following games, answer if they could fit
+  into what would be supported by the <code>Game</code> class.  If a game does not
+  fit this generic model, explain why.</p>
+<p>a. <a href="http://www.nybooks.com/articles/2010/02/11/the-chess-master-and-the-computer/">Chess</a></p>
+<p>b. <a href="http://web.mat.bham.ac.uk/R.W.Kaye/minesw/minesw.htm">Minesweeper</a></p>
+<p>c. <a href="http://www.cs.virginia.edu/~evans/poker/">Poker</a></p>
+<p>d. <a href="http://www.robocup.org/">Soccer</a></p>
+</div>
+
+<h2>State of Play</h2>
+<p>The <code>GameState</code> class defines a generic game state, but doesn't implement any particular game:</p>
+<pre class="brush: python;">
+class GameState:
+    """
+    Generic GameState module. Actual games will need
+    to provide a subclass of GameState that actually
+    implements these methods.
+    """
+    def __init__(self):
+        pass
+
+    def make_move(self, player, move):
+        raise RuntimeException("No generic update implemented!")
+
+    def legal_move(self, player, move):
+        raise RuntimeException("No generic legal_move implemented!")
+
+    def game_over(self):
+        raise RuntimeException("No generic game_over implemented!")
+
+    def outcome(self):
+        raise RuntimeException("No generic outcome implemented!")
+
+    def serialize(self):
+
+        raise RuntimeException("No generic serialize implemented!")
+
+    def __str__(self):
+        return "<Generic Game State>"
+</pre>
+
+<!--python-->
+
+<p>This class provides no useful functionality, but is a starting base
+class for implementing the state of other games.  For both Tic-Tac-Toe
+and Go, the state can be represented as a board, where each position is
+either empty or contains one object.</p>
+<p>We have provided a <code>Board</code> class that implements a generic board (as a
+subclass of <code>GameState</code>) in <code>board.py</code> (excerpted below, see <code>board.py</code>
+for the full implementation):</p>
+<pre class="brush: python;">
+import copy
+from gamestate import GameState
+
+class Board(GameState):
+    """
+    Board game state - a set of positions, each of which can
+    contain one object (or nothing).
+    """
+
+    def __init__(self, size):
+        """
+        Initializes an empty board with size squares,
+        each containing None.
+        """
+        self._positions = size * [None]
+
+    def valid_position(self, position):
+        return position >= 0 and position < len(self._positions)
+
+    def empty_positions(self):
+        return [position for position in range(len(self._positions))
+                if not self.has_object(position)]
+
+    def has_object(self, position):
+        assert self.valid_position(position)
+        return self._positions[position] is not None
+
+    def get_object(self, position):
+        """
+        Returns the object at position, or None if it is empty.
+        """
+        assert self.valid_position(position)
+        return self._positions[position]
+
+    def remove_object(self, position):
+        """
+        Removes the object at position from the board.
+        """
+        assert self.has_object(position)
+        self._positions[position] = None
+
+    def place_object(self, position, obj):
+        """
+        Places the object obj at position.
+        Requires position is a valid, empty position on the board.
+        """
+        assert self.valid_position(position)
+        assert not self.has_object(position)
+        self._positions[position] = obj
+
+    ... # methods for converting a Board to a string not shown
+</pre>
+
+<!--python-->
+
+<p>Note that the <code>Board</code> has no structure - it just represents the state of
+the game with a flat list, with one element corresponding to each board
+position.</p>
+<p>Many games, including Tic-Tac-Toe and Go, are played on square boards,
+where it is helpful to think of the positions being organized in a
+two-dimensional grid.  The <code>SquareBoard</code> class inherits from <code>Board</code> to
+implement a two-dimensional, square board (see <code>squareboard.py</code> for the
+full implementation).  It also defines a <code>Position</code> class for
+representing a position on a square board with two coordinates.</p>
+<pre class="brush: python;">
+from board import Board
+
+class Position:
+    """
+    (x, y) position on a board
+    """
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        return "(" + str(self.x) + ", " + str(self.y) + ")"
+
+class SquareBoard(Board):
+    """
+    Square board (NxN positions arranged in a square).
+    """
+
+    def __init__(self, N):
+        super().__init__(N * N)
+        self._size = N
+
+    def _convert_position(self, pos):
+        if isinstance(pos, Position):
+            return pos.x + (pos.y * self._size)
+        else:
+            return pos
+
+    def _convert_to_position(self, pos):
+        res = Position(pos % self._size, pos // self._size)
+        assert self._convert_position(res) == pos
+        return res
+
+    def valid_position(self, pos):
+        return super().valid_position(self, self._convert_position(pos))
+
+    def empty_positions(self):
+        return [self._convert_to_position(pos)
+                for pos in super().empty_positions()]
+
+    def has_object(self, pos):
+        return super().has_object(self._convert_position(pos))
+
+    def get_object(self, pos):
+        return super().get_object(self._convert_position(pos))
+
+    def remove_object(self, pos):
+        return super().remove_object(self._convert_position(pos))
+
+    def place_object(self, pos, obj):
+        return super().place_object(self._convert_position(pos), obj)
+
+    def __str__(self):            
+        return "[" \
+               + '\n '.join([' '.join([self.obj_unparse(self.get_object(Position(x, y)))
+                                  for x in range(self._size)])    
+                        for y in range(self._size)]) \
+                    + "]"
+</pre>
+
+<!--python-->
+
+<p>Notice how <code>SquareBoard</code> uses <code>super()</code> to access the superclass
+methods.  All of the methods for accessing positions on the square board
+are implemented by converting the position to the corresponding location
+on the superclass <code>Board</code>.</p>
+<p><div class="q"> 
+<strong>Problem 3.</strong> Why does <code>_convert_position</code> need to check
+  <code>isinstance(pos, Position)</code>?  A good answer would explain how
+  <code>_convert_position</code> might be called with an input that is the number
+  of a square on the superclass <code>Board</code> representation.  (Hint: when
+  <code>place_object</code> is invoked on a <code>SquareBoard</code> object, the
+  <code>super().place_object(...)</code> method is called.  Inside the
+  <code>Board.place_object</code> method, it calls <code>self.has_object(position)</code>.
+  What method will be called when the <code>self</code> object is a <code>SquareBoard</code>?  You are encouraged to add tracing <code>print</code>s to the code to verify what is really going on here.)
+   </div></p>
+<h2>Noughts and Crosses</h2>
+<p>To play <a href="https://en.wikipedia.org/wiki/Tic-tac-toe">Tic-Tac-Toe</a>, we
+need a game state that knows the rules of Tic-Tac-Toe.  The provided
+<code>TicTacToeBoard</code> is a subclass of <code>SquareBoard</code> that encodes the rules
+of Tic-Tac-Toe.</p>
+<p>The rules are simple, other than determining the outcome of the game,
+which requires checking all vertical, horizontal, and diagonal lines.</p>
+<pre class="brush: python;">
+class TicTacToeBoard(SquareBoard):
+    """
+    Board for playing (generalized) Tic-Tac-Toe.
+    """
+
+    def __init__(self, N):
+        super().__init__(N)
+
+    def possible_moves(self, _player):
+        """
+        Returns the list of possible moves: all empty squares.
+        """
+        return self.empty_positions()
+
+    def legal_move(self, player, position):
+        """
+        A move is legal if the selected position is empty.
+        """
+        return not self.has_object(position)
+
+    def make_move(self, player, position):
+        """
+        Places the mark for player at position.
+        """
+        assert self.legal_move(player, position)
+        self.place_object(position, player.mark())
+
+    def game_over(self):
+        """
+        The game is over if the board is full, or there is a winner.
+        """
+        return not self.empty_positions() or self.outcome()
+
+    def outcome(self):
+        """
+        Returns state of game:
+            Mark: win for player with that mark
+            None: draw
+
+        A player wins the game if they have a line of N of their marks
+        (either vertical, horizontal, or diagonal).  If more than one
+        player has a winning line, the game is invalid.
+        """
+        N = self._size
+
+        lines = \
+          [[Position(x, y) for x in range(N)] for y in range(N)] + \
+          [[Position(x, y) for y in range(N)] for x in range(N)] + \
+          [[Position(x, x) for x in range(N)]] + \
+          [[Position((N - 1) - x, x) for x in range(N)]]
+
+        winner = None
+        for line in lines:
+            mark = self.get_object(line[0])
+            if mark:
+                for position in line:
+                    if not self.get_object(position) == mark:
+                        mark = None
+                        break
+                if mark:
+                    # fails if there are two winners!
+                    assert not winner or winner == mark
+                    winner = mark
+        return winner
+</pre>
+
+<!--python-->
+
+<p><div class="q"> 
+<strong>Problem 4.</strong> What is the asymptotic running time for the <code>outcome</code>
+method?  Be careful to state any important assumptions you need, and to
+define any variables you use in your answer.</p>
+<p>(Hint 1: your answer should involve <code>N</code>, the dimension of the
+board.)  (Hint 2: If you don't understand the list comprehensions used
+to initializes <code>lines</code>, try adding some code to print out the value of
+<code>lines</code>.)
+   </div></p>
+<h2>Your Move</h2>
+<p>Games are not much fun without someone (or at least an object!) to play them.</p>
+<p>We have provided several classes for different kinds of players:
+<code>Player</code> (generic player), <code>RandomPlayer</code> (picks a random legal move),
+<code>HumanPlayer</code> (requests moves as user input), and <code>LearningPlayer</code>.</p>
+<p><div class="q">
+<strong>Problem 5.</strong> Define a <code>play_human_game()</code> function that allows a human
+  to play a 3x3 game of Tic-Tac-Toe against a <code>RandomPlayer</code>.  Test out
+  your code (and your Tic-Tac-Toe skills!) by playing a few games.  </p>
+<p>You should create a new file for your function.  You will need to use
+  <code>import</code> statements to import the necessary definitions from other
+  modules.  For example, <code>from humanplayer import HumanPlayer</code> will
+  import the <code>HumanPlayer</code> class definition.
+   </div></p>
+<h2>Learning to Play</h2>
+<p>Tic-Tac-Toe is such a small and simple game that it is easy to play
+optimally by searching the space of all possible games.  But, instead of
+building an optimal player, we will use a generic learning method that
+can (in theory) be used to play any game.</p>
+<p>The <code>LearningPlayer</code> class defines a learning player.  The idea is very
+simple: keep a dictionary that associates game states with outcomes, and
+after each training game, update the outcomes associated with each game
+state seen during the game to reflect the result of the game.  For
+example, if the player won the game, all of the states seen during the
+game led to a win, so are "good" states.  (Of course, whether a state is
+actually good depends on what moves the other player made also, so it is
+not guaranteed that just because a particular state was seen in a
+winning game that it is always good.)</p>
+<p>The most important code in <code>learningplayer.py</code> is excerpted below (see
+the file for the full code):</p>
+<pre class="brush: python;">
+class LearningPlayer(Player):
+    """
+    Grandmaster of every game (in theory)!
+    """
+
+    def __init__(self, name, mark):
+        super().__init__(name, mark)
+
+        # each key in training is a serialized game state,
+        # the entry is a [win, draw, lose] count for all
+        # training games containing that state.
+        self._training = {}
+
+    def learn_from_game(self, state, winner, players, moves):
+        """
+        Learns from the game represented by moves (starting from
+        initial state with players given), that had result winner.
+
+        The training data for each state seen in the game is updated
+        according to the outcome.
+        """
+        result = self._game_result(winner) # 0 = win, 1 = draw, 2 = loss
+        for rmove in moves:
+            for pi in range(len(rmove)):
+                pmove = rmove[pi]
+                player = players[pi]
+                staterep = state.serialize()
+                if staterep not in self._training:
+                    self._training[staterep] = [0, 0, 0]
+                self._training[staterep][result] += 1
+                state.make_move(player, pmove)
+
+    def train(self, state, players):
+        """
+        Trains the player by playing a game with players
+        with initial state given by state.
+        """
+        origstate = state.copy()
+        ttg = Game(players, state)
+        (winner, moves) = ttg.play()
+        self.learn_from_game(origstate, winner, players, moves)
+
+    def turn(self, state):
+        moves = state.possible_moves(self)
+        if moves:
+            bestscore = None
+            bestmove = None
+            untried_moves = []
+            # Try each move, and see how the outcomes are at the resulting state.
+            for move in moves:
+               newstate = state.copy()
+               newstate.make_move(self, move)
+               canonical = newstate.serialize()
+               if canonical in self._training:
+                   outcomes = self._training[canonical]
+                   # wins are good, loses are bad (ignore draws)
+                   noutcomes = sum(outcomes)
+                   score = outcomes[0] - 2 * outcomes[2]
+                   if not bestmove or score > bestscore:
+                       bestmove = move
+                       bestscore = score
+               else: # unseen position
+                   untried_moves.append(move)
+
+            if bestmove:
+                if score > 20:
+                    return bestmove
+                elif score > 0 and random.random() > 0.2:
+                    return bestmove
+                elif untried_moves: 
+                    return random.choice(untried_moves)
+                else:
+                    return bestmove
+            else:                               
+                return random.choice(untried_moves) 
+        else:
+            return None
+</pre>
+
+<!--python-->
+
+<div class="q">
+
+<p><strong>Problem 6.</strong> Define a <code>train_player(learner, initialstate, opponent,
+  ngames)</code> function that trains a <code>LearningPlayer</code> object by playing
+  <code>ngames</code> against the <code>opponent</code> (a <code>Player</code> object), starting with the
+  <code>initialstate</code> (e.g., <code>TicTacToeBoard(3)</code> to train a player to play
+  tic-tac-toe).  </p>
+<p>You should test your <code>LearningPlayer</code> object after training by playing
+  1000 games against a <code>RandomPlayer</code> (or try playing it yourself as a
+  <code>HumanPlayer</code>).  You may give your <code>LearningPlayer</code> the advantage of
+  playing first.
+ </div></p>
+<div class="q">
+
+<p><strong>Problem 7.</strong> Try some experiments with your <code>train_player</code> function to
+  answer (1) how many training games are needed to train a passable
+  tic-tac-toe player? (2) does it make a difference who the player is
+  trained against? (3) (Challenge bonus!) how close to optimal is your
+  trained player?
+    </div></p>
+<h2>Walloping AlphaGo</h2>
+<p>Playing Tic-Tac-Toe isn't very exciting since every 7-year-old knows how
+to always get at least a draw.  But, because of object-oriented
+programming and the power of inheritance, it doesn't take much to extend
+our code to make a Go-playing monster.</p>
+<p>It should implement the rules of Go as presented in <a href="class24.html">Class 24</a>
+(and described in more detail on the <a href="https://en.wikipedia.org/wiki/Rules_of_go">Go Wikipedia
+Page</a>:</p>
+<ul>
+<li>Rule of Liberties: after a new stone is placed, stones on the board
+  with no liberties should be removed.  All the stones of the opponent's
+  color (that is, the opposite of the color of the newly-placed stone)
+  should be removed first; then, all the stones of the placer's color
+  should be removed (note that this order matters, it will not produce
+  the correct position if you don't remove all the opponent's stones
+  before checking the player's stones for liberties, since each stone
+  that is removed can effect the liberties of other stones).</li>
+</ul>
+<p>The liberties of a stone are the empty squares that are directly
+  adjacent to that square (horizontally or vertically; diagonal does not
+  count).  If a stone is adjacent to a stone of its own color, the
+  liberties of the stones are merged.  This continues for all adjacent
+  stones of one color, so you can think of these connected stones as one
+  super-stone.</p>
+<ul>
+<li>Rule of Ko: it is not legal to make a move that would result in
+  repeating a previous board position.  There are a different versions
+  of this rule.  You should implement the version of the rule that
+  disallows any previous position (this is different from what I said in
+  class, but I believe is actually simpler to implement than the version
+  that just considers the immediately previous positions).  You should
+  first implement your Go game without worrying about this rule, but it
+  will be necessary to implement it to avoid having games that repeat a
+  sequence of positions forever.)</li>
+</ul>
+<p>If you are confused about the rules of Go, please ask, and we'll add
+clarifications here.</p>
+<p><div class="q">
+<strong>Problem 8.</strong> Extend the provided code to make a <code>GoBoard</code> game state
+  class, and train a Go player that can play a passable game of Go on a
+  very small board.<br />
+    </div></p>
+<p>For now, we leave it completely up to you to figure out how to do this.
+But, depending on how it is going, we may add hints and suggestions if
+this seems too daunting.  If you've got here and have no ideas how to
+proceed, post messages on Slack (<code>#general</code> is fine) asking for help.</p>
+<p><div class="bonusq">
+<strong>Quadruple-Gold-Star Challenge!</strong> Make a Go player that can play a
+  competitive (with an amateur human Go player) game of Go on a 9x9
+  board.  A good solution is worth a paid summer position in <a href="http://www.jeffersonswheel.org/">Dave's
+  research group</a> as well as automatic Red Belt promotion.
+   </div></p>
+<h2>Deeper Reading</h2>
+<p>David Silver, et al. <a href="static/docs/naturego.pdf"><em>
+Mastering the Game of Go with Deep Neural Networks and Tree Search</em></a>, Nature, January 2016.</p>
+<p>Although the DeepMind team claims that building a world champion Go
+player was believed to be decades away, other researchers were not so
+sure.  In this 2007 article, Feng-Hsiung Hsu (who led the Deep Blue
+project at IBM), predicts "I believe that a world-champion-level Go
+machine can be built within 10 years" (so by 2017, which is just about
+spot on!): <A
+href="http://spectrum.ieee.org/computing/software/cracking-go"><em>
+Cracking GO: Brute-force computation has eclipsed humans in chess, and
+it could soon do the same in this ancient Asian game</em></a>, IEEE
+Spectrum, 1 October 2007.</p>
+<p>The Turing Archive has Alan Turing's <a
+href="http://www.turingarchive.org/viewer/?id=461">thoughts on machines
+playing chess</a>.</p>
+<p><div class="credits">
+<b>Credits:</b> This project is new for cs1120 Spring 2016, and was
+developed by David Evans.</p>
+</div></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/project5 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:12:32 GMT -->
+</html>

@@ -1,0 +1,209 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class17 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:10:11 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 17 - Notes</h1>
+<div class="printing"><a href="static/docs/class17.pdf">PDF for Printing</a></div>
+
+<h3>Upcoming Schedule</h3>
+<p><strong>By 11:59am tomorrow</strong> (Thursday), submit the <a href="http://needlink.html/">Pre-Break Course Survey</a>.</p>
+<p><a href="project4.html">Project 4</a> is due Wednesday, 16 March (but if you don't get
+started this week, you should expect to work on it over spring break).</p>
+<p>By Friday, March 4, everyone should have read <a href="http://computingbook.org/Cost.pdf">Chapter 7:
+<em>Cost</em></a> of the course book and
+completed <a href="http://www.cs.virginia.edu/evans/cs101/unit5-notes.pdf">Lesson 5: <em>How Programs
+Run</em></a> of the Udacity
+course.</p>
+<h3>Slides</h3>
+<script async class="speakerdeck-embed" data-id="40c049d5d6bf493b8aa95a73cf09cb37" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Code</h2>
+<p><a href="static/docs/class17.py">class17.py</a></div></p>
+<h3>Cost of Addition</h3>
+<pre class="brush: python;">
+def mba_add(a, b):
+    if b == 0:
+        return a
+    else:
+        return 1 + mba_add(a, b - 1)
+
+def mba_add(a, b):
+    for _ in range(b):
+        a = a + 1
+    return a
+</pre>
+
+<!--python-->
+
+<p>How does the amount of work required to execute <code>mba_add</code> (either
+version) scale with the <em>magnitude</em> of the inputs?</p>
+<div class="biggap"></div>
+
+<p>How does the amount of work required to execute <code>mba_add</code> (either
+version) scale with the <em>size</em> (length) of the inputs?  (Does it matter
+if the inputs are written using decimal digits or binary bits?)</p>
+<div class="biggap"></div>
+
+<!--page-->
+
+<h1>Third-Grade Addition</h1>
+<pre class="brush: python;">
+def generate_addition_table():
+    entries = []
+    for a in range(10):
+        for b in range(10):
+            val = (a + b) % 10
+            carry = (a + b) > 10
+            entries.append("('" + str(a) + "', '" + str(b) + "'): ('" +
+                           str(val) + "', " + str(carry) + ")")
+    return "{" + ', '.join(entries) + "}"
+
+ADDITION_TABLE = { ('0', '0'): ('0', False), ..., ('9', '9'): ('8', True)}
+
+NEXT_DIGIT = {'0': '1', '1': '2', '2': '3', ..., '7': '8', '8': '9'}
+
+def add_one(a, b, carry):
+    value, newcarry = ADDITION_TABLE[(a, b)]
+    if carry:
+        if value == '9':
+            value = '0'
+            assert not newcarry
+            newcarry = True
+        else:
+            value = NEXT_DIGIT[value]
+    return value, newcarry
+
+def thirdgrade_add(a, b):
+    adigits = [digit for digit in list(str(a))]
+    bdigits = [digit for digit in list(str(b))]
+    adigits.reverse()
+    bdigits.reverse()
+    maxlen = max(len(adigits), len(bdigits))
+    while len(adigits) < maxlen: adigits.append('0')         
+    while len(bdigits) < maxlen: bdigits.append('0') 
+    assert len(adigits) == len(bdigits)
+    result = []
+    carry = False
+    for digits in zip(adigits, bdigits):
+        value, carry = add_one(digits[0], digits[1], carry)
+        result.append(value)
+    if carry:
+        result.append('1')
+    result.reverse()
+    return ''.join(result)
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<h1>Problems, Procedures, Algorithms, and Programs</h1>
+<p>A <strong>problem</strong> is defined by the set of possible inputs and the desired
+property of the output.  </p>
+<p>A <strong>procedure</strong> is a precise description of an information process.</p>
+<p>An <strong>algorithm</strong> is a <em>procedure</em> that solves a <em>problem</em>.  To <em>solve</em> a
+problem, an algorithm must (eventually) produce the correct output for
+any problem input.  (This means it must always finish!)</p>
+<p>A <strong>program</strong> is a description of a procedure that can be executed by a
+computer.  A <strong>Python 3 program</strong> is a description of a procedure that
+can be executed by a Python 3 interpreter.</p>
+<h2>Addition</h2>
+<p>What is the Addition problem?</p>
+<p><blockquote>
+   <strong>Inputs:</strong>
+   <div class="biggap"></div></p>
+<p><strong>Output:</strong>
+   <div class="biggap"></div>
+   </blockquote></p>
+<h2>Cost</h2>
+<p>The <strong>cost of a problem</strong> is the cost to execute the least expensive
+algorithm that can solve the problem.  Knowing the cost of a problem
+precisely is extremely difficult since it means knowing the <em>best
+possible</em> way of solving that problem.</p>
+<p>The <strong>cost of an algorithm</strong> is the cost to execute that algorithm on
+some computer (or abstract computing model). Knowing the cost of an
+algorithm is just a matter of understanding what the algorithm does on
+all inputs (which may still be hard, but is reasoning about a concrete
+description of a procedure).</p>
+<h2>Cost of Addition</h2>
+<p>What is the cost of the <code>mba_add</code> algorithm?</p>
+<div class="biggap"></div>
+
+<p>What is the cost of the Addition problem?</p>
+<div class="biggap"></div>
+
+<!--page-->
+
+<h1>Merkle's Puzzles</h1>
+<p><strong>Protocol:</strong></p>
+<h1></h1>
+<h1></h1>
+<h1></h1>
+<h1></h1>
+<p><em>N</em> is the number of puzzles.<br />
+<em>w</em> is the amount of work to solve each puzzle.  </p>
+<p>How much work does the legitimate receiver need to do?</p>
+<div class="biggap"></div>
+
+<p>How much work does the eavesdropper need to do?</p>
+<div class="biggap"></div>
+
+<h2>Links</h2>
+<p>Ralph Merkle's <a href="http://merkle.com/1974/">history of public-key
+cryptography</a>, including his (rejected)
+<a href="http://www.merkle.com/1974/FirstCS244projectProposal.pdf">undergraduate course
+proposal</a>, and
+<a href="http://www.merkle.com/1974/RejectionLetter.pdf">rejection letter</a> (that
+is actually quite savvy, talking about the work advantage being too
+little).</p>
+<p><a href="https://www.youtube.com/watch?v=e3VxAM2oqYI&amp;list=PLAwxTw4SYaPnCeih6BPvJ5GdqqThGcWlX&amp;index=135">Applied Cryptography section on Merkle's
+Puzzles</a>
+(this is a direct link to the videos, or you can watch them with the
+interactive quizzes in the Udacity player</p>
+<p><a href="http://www.nytimes.com/2016/03/02/technology/cryptography-pioneers-to-win-turing-award.html"><em>Cryptography Pioneers Win Turing Award</em></a>, New York Times, 1 March 2016.</p>
+<p><a href="http://www.acm.org/media-center/2016/march/turing-award-2015">Turing Award
+Announcement</a>,
+29 February 2016.</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class17 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:10:23 GMT -->
+</html>

@@ -1,0 +1,165 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class25 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:13 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 25 - Sorting and Searching</h1>
+<div class="printing"><a href="static/docs/class25.pdf">PDF for Printing</a></div>
+
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="d760152c8e564f18a59b8c8991f68ce2" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Algorithms, Programs, and Problems</h2>
+<p>What is an <em>algorithm</em>?
+<div class="gap"></div></p>
+<p>What is the difference between an <em>algorithm</em> and a <em>program</em>?
+<div class="gap"></div></p>
+<p>What is the <em>sorting problem</em>?
+<div class="gap"></div></p>
+<p>What is a <em>sorting algorithm</em>?
+<div class="gap"></div></p>
+<h3>Selection Sort</h3>
+<pre class="brush: python;">
+def selection_sort(alist):
+    for index in range(0, len(alist)):
+        maxpos = index
+        maxvalue = alist[index]
+        for index1 in range(index, len(alist)):
+            if (alist[index1] < maxvalue):
+                maxpos = index1
+                maxvalue = alist[index1]
+        temp = alist[index]
+        alist[index] = alist[maxpos]
+        alist[maxpos] = temp
+</pre>
+
+<!--python-->
+
+<p>What is the asymptotic running time of <code>selection_sort</code>?  </p>
+<!--page-->
+
+<h3>Best-First Sort</h3>
+<pre class="brush: python;">
+def list_find_best(p):
+    """
+    Returns the index of the best (according to pick_better)
+    element in p.
+    """
+    if len(p) <= 1:
+        return 0
+    else:
+        bestpos = 1 + list_find_best(p[1:])
+        if p[0] <= p[bestpos]:
+            return 0
+        else:
+            return bestpos
+
+def list_sort_insert(cf, p):
+    if len(p) == 0:
+        return p
+    else:
+        return list_insert_one(cf, p[0], list_sort_insert(cf, p[1:]))//second change
+
+def list_sort_best_first(p):
+    p = list(p)
+    if len(p) == 0:
+        return p
+    else:
+        bestpos = list_find_best(p)
+        bestel = p.pop(bestpos) # removes p[bestpos] from p
+        return [bestel] + list_sort_best_first(p)
+</pre>
+
+<!--python-->
+
+<p>What is the best case running time for <code>list_sort_best_first</code>?
+<div class="gap"></div></p>
+<p>What is the average case running time for <code>list_sort_best_first</code>?
+<div class="gap"></div></p>
+<p>What is the worst case running time for <code>list_sort_best_first</code>?
+<div class="gap"></div></p>
+<!--page-->
+
+<h3>Insertion Sort</h3>
+<pre class="brush: python;">
+def list_insert_one(el, p):
+    if len(p) == 0:
+        return [el]
+    if el < p[0]:
+        return [el] + p
+    else:
+        return [p[0]] + list_insert_one(el, p[1:])
+
+def list_sort_insert(p):
+    if len(p) == 0:
+        return p
+    else:
+        return list_insert_one(p[0], list_sort_insert(p[1:]))
+</pre>
+
+<!--python-->
+
+<p>What is the best case running time for <code>list_sort_insert</code>?
+<div class="gap"></div></p>
+<p>What is the worst case running time for <code>list_sort_insert</code>?
+<div class="gap"></div></p>
+<h2>Generalizing Comparison</h2>
+<pre class="brush: python;">
+def list_insert_one(cf, el, p):
+    if len(p) == 0: 
+        return [el]
+    if cf(el, p[0]):
+        return [el] + p
+    else:
+        return [p[0]] + list_insert_one(cf, el, p[1:])
+
+def list_sort_insert(cf, p):
+    if len(p) == 0:
+        return p
+    else:
+        return list_insert_one(cf, p[0], list_sort_insert(p[1:]))
+</pre>
+
+<!--python--></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class25 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:33 GMT -->
+</html>

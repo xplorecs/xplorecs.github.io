@@ -1,0 +1,142 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class34 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:07:50 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 34 - Finishing the Interpreter</h1>
+<h2>Red Belt Test</h2>
+<p>The first opportunity to take the Red Belt test will be <strong>Monday, 25
+April</strong>.  The test will be take-home with limited resources (details
+will be explained on the exam).  Passing the red belt level ensures at
+least an A- in the course.</p>
+<p>To be eligible to take the Red Belt test, you need to complete Project 5
+and Project 6 (turn in by class Friday to have a chance to be eligible
+on Monday).  </p>
+<p>The Red Belt level includes everything in the class through Monday, 25
+April.  This includes:</p>
+<ul>
+<li>Everything that was covered by the Blue Belt test.</li>
+<li>Classes, Objects, and Types (covered by Project 5 and in classes)</li>
+<li>Interpreters (Chapter 11 and Project 6 and classes)</li>
+<li>Modeling Computation (Turing Machines, Finite State Machines)</li>
+<li>Computability (Chapter 12 and Friday and Monday’s Classes)</li>
+</ul>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="18500f5230ac4902bb684d6a076bb4ae" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Church-Turing Thesis</h2>
+<p>All <em>mechanical computers</em> are equally <em>powerful</em> (except for practical
+limits like memory size, time, display, energy, etc.).</p>
+<p>How should we define <em>power</em> of a computing machine?</p>
+<div class="biggap"></div>
+
+<p>A Turing Machine (with the right program) can simulate any mechanical computer.  <br />
+A Turing Machine (with the right program) can simulate a Python interpreter.<br />
+A Python interpreter (with the right program) can simulate a Turing Machine.<br />
+A Charme interpreter (with the right program) can simulate a Turing Machine.<br />
+A Charme interpreter (with the right program) can simulate a Python interpreter.<br />
+A Charme interpreter (with the right program) can simulate any mechanical computer.  </p>
+<p>What do we need to do to prove Charme is as <em>powerful</em> as Python?</p>
+<div class="biggap"></div>
+
+<!--page-->
+
+<h2>Apply and Eval</h2>
+<p>To <em>apply</em> a constructed procedure:</p>
+<ol>
+<li>
+<p><strong>Construct a new environment</strong>, whose parent is the environment of
+the applied procedure.  </p>
+</li>
+<li>
+<p>For each procedure parameter, create a place in the frame of the new
+environment with the name of the parameter. <strong>Evaluate each operand
+expression in the environment of the application</strong> and initialize the
+value in each place to the value of the corresponding operand
+expression.</p>
+</li>
+<li>
+<p><strong>Evaluate the body of the procedure in the newly created
+environment.</strong> The resulting value is the value of the application.</p>
+</li>
+</ol>
+<div class="biggap"></div>
+
+<pre class="brush: python;">
+class Procedure:
+    def __init__(self, params, body, env):
+        self._params = params
+        self._body = body
+        self._env = env
+    ...
+
+def evalLambda(expr,env):
+    assert isLambda(expr)
+    if len(expr) != 3: evalError ('Bad lambda expression: ...')
+    return Procedure(expr[1], expr[2], env)
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+def evalApplication(expr, env):
+    subexprvals = [meval(sexpr, env) for sexpr in expr]
+    return mapply(________________, ________________)
+
+def mapply(proc, operands):
+    if (isPrimitiveProcedure(proc)):
+        return proc(operands)
+    elif isinstance(proc, Procedure):
+        params = proc.getParams()
+        newenv = Environment(proc.getEnvironment())
+        if len(params) != len(operands):
+            evalError ('Parameter length mismatch: ...')
+        for i in range(0, len(params)):
+            newenv.addVariable(params[i], ___________)
+        return meval(______________, newenv)        
+    # error case
+</pre>
+
+<!--python--></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class34 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:07:50 GMT -->
+</html>

@@ -1,0 +1,125 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class6 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:59 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 6 - Worksheet</h1>
+<div class="printing"><a href="static/docs/class6.pdf">PDF for Printing</a></div>
+
+<h3>Project 1</h3>
+<p><a href="project1.html">Project 1</a> is due at the beginning of class on <strong>Friday</strong>
+(if you are not able to make it to class on Friday, you can drop it off
+at my office anytime before then).  Please follow the submission
+directions carefully (advice on how to print Python files has been added
+to the <a href="project1.html">Project 1 page</a>).</p>
+<h2>Replacement Grammars and Rules of Evaluation</h2>
+<p>For each of the following grammars: (a) desribe the language that can be
+produced starting from <em>S</em>; (b) if possible, write a simpler BNF grammar
+(fewer rules) that describes the same language; if not, explain why; and
+(c) determine rules of evaluation so that the value is interpreted as a
+binary number (with the rightmost bit being the least significant one).
+So, <strong>1</strong> should have value <em>1</em>, <strong>110</strong> should have value <em>6</em>, and
+<strong>10100</strong> should have value <em>20</em> (note that not all of these strings can
+be produced by all of the grammars below, but your evaluation rules
+should work for all strings that can be produced).</p>
+<p><strong>1.</strong>
+   <div class="bnf">
+   <em>S</em> ::= <strong>0</strong> <em>S</em><br />
+<em>S</em> ::= <em>S</em> <strong>1</strong><br />
+<em>S</em> ::= &epsilon;<br />
+   </div>
+<div class="gap"></div></p>
+<p><strong>2.</strong>
+   <div class="bnf">
+   <em>S</em> ::= <em>S</em> <strong>0</strong><br />
+<em>S</em> ::= <em>S</em> <strong>1</strong><br />
+<em>S</em> ::= &epsilon;
+   </div>
+<div class="gap"></div></p>
+<p><strong>3.</strong>
+   <div class="bnf">
+   <em>S</em> ::= <em>S</em> <em>S</em> <em>S</em><br />
+<em>S</em> ::= <em>T</em> <em>T</em><br />
+<em>T</em> ::= <strong>0</strong><br />
+<em>T</em> ::= <strong>1</strong>
+   </div>
+<div class="gap"></div></p>
+<!--page-->
+
+<p>Here is a fragment of the Python language described by the grammar for test conditions (like in an <strong>if</strong> statement):</p>
+<p><div class="bnf">
+   <em>Test</em> ::= <em>OrTest</em><br />
+<em>OrTest</em> ::= <em>AndTest</em> <em>OptOrTests</em><br />
+<em>OptOrTests</em> ::= <strong>or</strong> <em>AndTest</em> <em>OptOrTests</em><br />
+<em>OptOrTests</em> ::= &epsilon;<br />
+<em>AndTest</em> ::= <em>NotTest</em> <em>OptAndTests</em><br />
+<em>OptAndTests</em> ::= <strong>and</strong> <em>NotTest</em> <em>OptAndTests</em><br />
+<em>OptAndTests</em> ::= &epsilon;<br />
+<em>NotTest</em> ::= <strong>not</strong> <em>NotTest</em><br />
+<em>NotTest</em> ::= <em>Comparison</em><br />
+<em>Comparison</em> ::= <em>Expression</em> <em>OptComparisons</em><br />
+<em>Expression</em> ::= <em>NumberLiteral</em><br />
+<em>Expression</em> ::= <strong>True</strong> | <strong>False</strong><br />
+<em>OptComparisons</em> ::= <em>ComparisonOperator</em> <em>Expression</em> <em>OptComparisons</em><br />
+<em>OptComparisons</em> ::= &epsilon;<br />
+<em>ComparisonOperator</em> ::= <strong>&lt;</strong> | <strong>&gt;</strong> | <strong>=</strong> 
+   </div></p>
+<p>Assume that <em>NumberLiteral</em> is defined as in the previous class (that
+is, numbers like <strong>7</strong> and <strong>1120</strong>).</p>
+<p><strong>4.</strong> From the grammar, determine which of the following are valid <em>Test</em> expressions in Python:</p>
+<pre class="brush: python;">
+3 < 4
+3 and 4 or 5  
+3 < 4 > 5  
+3 < 4 and 4 > 5 or 4 < 5
+not not not not not not False
+not not not
+not 3 and 4
+</pre>
+
+<p>You can try evaluating them in the PYthon interpreter to check your answers and see how they evaluate.</p>
+<p><strong>5.</strong> (You're not expected to finish this, but see how far you can
+  get.)  Develop rules of evaluation for the grammar above that matches
+  how things are interpreted by the Python interpreter.</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class6 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:05 GMT -->
+</html>

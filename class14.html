@@ -1,0 +1,162 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class14 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:48 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 14 - Worksheet</h1>
+<div class="printing"><a href="static/docs/class14.pdf">PDF for Printing</a></div>
+
+<h3>Upcoming Schedule</h3>
+<p>Since we didn't get as far in class as expect, <a href="project3.html">Project 3</a> is
+extended to <strong>Monday, 29 February</strong>.  Before submitting Project 3 you
+must have complete the Orange Belt (either by getting a "Gold star" on
+<a href="project2.html">Project 2</a> or completing the promotion requirements from
+<a href="class13.html">Class 13 notes</a>.  </p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="92889e1d459b4267a40bc2b35c91ba06" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Nested Lists</h2>
+<pre class="brush: python;">
+def list_copy(lst):
+    """Returns a shallow copy of the input lst."""
+    if not lst:
+        return []
+    else:
+        return [lst[0]] + list_copy(lst[1:])
+
+def is_list(obj):
+    """Returns True iff obj is a list."""
+    return isinstance(obj, list)    
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+def list_deep_copy(lst):
+    """Returns a deep copy of the input list."""
+    if not lst:
+        return []
+    elif is_list(lst[0]):
+        return [list_deep_copy(lst[0])] + list_deep_copy(lst[1:])
+    else:
+        return [lst[0]] + list_deep_copy(lst[1:])
+</pre>
+
+<!--python-->
+
+<p>Demonstrate the difference between <code>list_copy</code> and <code>list_deep_copy</code> with some Python code that shows how they behave differently.</p>
+<div class="biggap"></div>
+
+<!--page-->
+
+<pre class="brush: python;">
+def list_deep_map(fn, lst):
+    """
+    Returns a new list with the same structure as lst, but with each element
+    replaced by the result of applying fn to that element.
+    """
+    if not lst:
+        return []
+    elif is_list(lst[0]):
+        # finish this code
+        #
+    else:
+        #
+        #
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+def list_accumulate(fn, lst, start):
+
+</pre>
+
+<!--python-->
+
+<h2></h2>
+<pre class="brush: python;">
+def list_sum(lst): 
+    def
+    #
+    return list_accumulate(_______________________, lst, ____)
+</pre>
+
+<!--python-->
+
+<h2></h2>
+<pre class="brush: python;">
+def list_length(lst): 
+    def 
+    #
+    return list_accumulate(_______________________, lst, ____)
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+def list_and(lst): 
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+def list_or(lst): 
+</pre>
+
+<!--python-->
+
+<pre class="brush: python;">
+def list_biggest(lst): 
+</pre>
+
+<!--python-->
+
+<h1></h1>
+<pre class="brush: python;">
+def list_deep_accumulate(lst, fn, base):
+</pre>
+
+<!--python--></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class14 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:59 GMT -->
+</html>

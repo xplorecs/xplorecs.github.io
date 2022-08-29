@@ -1,0 +1,88 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class26 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:13 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 26 - Complexity and Subclassing</h1>
+<h2>Syncing Repositories</h2>
+<p>I've made some updates to the provided code for Project 5.  You can see all the changes in bitbucket: <a href="https://bitbucket.org/cs1120/project5/commits/506eea0e7d6929e374fa2a3d00d45d8c5b114530">https://bitbucket.org/cs1120/project5/commits/506eea0e7d6929e374fa2a3d00d45d8c5b114530</a>.</p>
+<p>You can syncronize your forked repository with these changes by following these directions in SourceTree:</p>
+<ol>
+<li>
+<p>Select <code>Repository | Repository Settings</code> from the menu.</p>
+</li>
+<li>
+<p>You should see the <code>Remotes</code> pane, which will have one repository in it now.  Click <code>Add</code> to add a new remote.</p>
+</li>
+<li>
+<p>Give it a name (like <code>upstream</code>).  For the URL, enter <code>https://bitbucket.org/cs1120/project5</code>.  Click <code>Ok</code> to finish adding the remote repository.</p>
+</li>
+<li>
+<p>Click <code>Pull</code> in the main window, and for the repository in <code>Pull from repository</code> select <code>upstream</code> (the name you used in step 3).</p>
+</li>
+</ol>
+<p>This should update your version to match the provided code.  If there
+are any changes that cannot be automatically merged with your version,
+there will be conflicts that you will need to resolve by manually
+editing the conflicting files (this shouldn't happend, unless you
+modified the provided code files that have been updated).</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="a33a9a6585d249f997f76efef6a006ab" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Problems</h2>
+<p>The <em>complexity of a problem</em> is a short way of saying "the runtime cost
+of the least expensive algorithm possible solving the problem for the
+most expensive input of a given size".</p>
+<p>For most problems, it is very difficult to get a tight (<span
+class="math">&Theta;</span>) bound on the complexity of the problem
+since this requires reasoning about the <em>best possible algorithm</em>.
+Sorting is a rare exception where we know the complexity is in <span
+class="math">&Omega;(<em>N</em> log <em>N</em>)</span> and know of algorithms that
+solve the sorting problem with average-case running time in <span
+class="math">&Theta;(<em>N</em> log <em>N</em>)</span>, so can say the complexity of
+the problem is in <span class="math">&Theta;(<em>N</em> log <em>N</em>)</span> where
+<span class="math"><em>N</em></span> is the number of elements in the input.</p>
+<p>Even for (seemingly) simple problems like multiplcation, we do not yet
+know a tight bound on the complexity of the problem.</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class26 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:13 GMT -->
+</html>

@@ -1,0 +1,161 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class7 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:05 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 7 - Notes</h1>
+<div class="printing"><a href="static/docs/class7.pdf">PDF for Printing</a></div>
+
+<h3>Upcoming Schedule</h3>
+<p>Due now: <strong><a href="project1.html">Project 1</a></strong><br />
+Before <strong>Wednesday, 10 February</strong>:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Complete Udacity cs101 <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48727569/">Lesson 3: <em>How to Manage Data</em></a> (<a href="http://www.cs.virginia.edu/~evans/cs101/unit3-notes.pdf">Notes</a>) and <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48391984">Lesson 3: <em>Problem Set</em></a><br />
+Due on <strong>Monday, 15 February</strong>:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Project 2 (will be posted in a few days)<br />
+Before <strong>Friday, 19 February</strong>:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Udacity cs101 <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48689146">Lesson 4: <em>Responding to Queries</em></a> (<a href="http://www.cs.virginia.edu/~evans/cs101/unit4-notes.pdf">Notes</a>) and <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48737171/">Lesson 4: <em>Problem Set</em></a>  </p>
+<h3>Python Tutor</h3>
+<p>One great resource for understanding python code is Philip Guo’s <a href="http://pythontutor.com/">Python
+Tutor</a>.  It lets you step through Python code
+forwards and backwards, and visualize what is going on.
+<div class="notpdf">
+For example, here is some <a href="http://pythontutor.com/visualize.html#code=def+mystery(a,+b%29%3A%0A++++if+not+not+not+not+a%3A%0A++++++++return+not+mystery(not+a,+b%29%0A++++elif+not+not+not+not+b%3A%0A++++++++return+not+mystery(a,+not+b%29%0A++++else%3A%0A++++++++return+a+and+b%0A%0Aprint(mystery(True,+True%29%29&mode=display&origin=opt-frontend.js&cumulative=false&heapPrimitives=false&textReferences=false&py=3&rawInputLstJSON=%5B%5D&curInstr=13))">crazy and useless code</a>:</p>
+<iframe width="800" height="500" frameborder="0" src="http://pythontutor.com/iframe-embed.html#code=def+mystery(a,+b%29%3A%0A++++if+not+not+not+not+a%3A%0A++++++++return+not+mystery(not+a,+b%29%0A++++elif+not+not+not+not+b%3A%0A++++++++return+not+mystery(a,+not+b%29%0A++++else%3A%0A++++++++return+a+and+b%0A%0Aprint(mystery(True,+True%29%29&origin=opt-frontend.js&cumulative=false&heapPrimitives=false&textReferences=false&py=3&rawInputLstJSON=%5B%5D&curInstr=13&codeDivWidth=350&codeDivHeight=400"> </iframe>
+
+<p></div><!--endpdf--></p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="7f268d22f4404ba4b1b11800ab2b1401" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<p><center>
+<a href="http://www.cs.virginia.edu/evans/xplorecs16/class7-post.pptx">[Download (PPTX)]</a>
+</center></p>
+<h2>Binary Numbers and Rules of Evaluation</h2>
+<p>Binary numbers are base 2, instead of the base 10 decimal numbers we
+commonly use.  This means we can represent any number using only <strong>0</strong>s
+and <strong>1</strong>s, and the value of each <em>Bit</em> scales as a power of two (so
+instead of having a "ones" place, "tens" place, "hundreds" place,
+"thousands" place, we have a "ones" place", "twos" place, "fours" place,
+"eights" place, etc.).  In Python, a number literal that starts with
+<code>0b</code> is interpreted as a binary number:</p>
+<pre class="brush: python;">
+>>> 0b10
+2
+>>> 0b101
+5
+>>> 0b1120
+SyntaxError: invalid syntax
+</pre>
+
+<p>What is the value of <code>0b11111111</code> (as a decimal number)?</p>
+<div class="gap"></div>
+
+<p><div class="bnf">
+   <em>IntegerLiteral</em> ::= <em>BinLiteral</em><br />
+<em>BinLiteral</em> ::= <strong>0b</strong><em>BinDigits</em><br />
+<em>BinDigits</em> ::= <em>BinDigits</em> <em>BinDigit</em><br />
+<em>BinDigits</em> ::= <em>BinDigit</em><br />
+<em>BinDigit</em> ::= <strong>0</strong><br />
+<em>BinDigit</em> ::= <strong>1</strong>
+   </div></p>
+<p>Show how to derive <strong>0b101</strong> with this grammar starting with <em>IntegerLiteral</em>:
+<div class="gap"></div></p>
+<!--page-->
+
+<div class="notpdf">
+<div class="gap"></div>
+</div>
+
+<!--endpdf-->
+
+<p>Provide semantic rules for the grammar that give the value (as a decimal
+number) for every <em>BinaryLiteral</em>:</p>
+<p><div class="bnf">
+   (3) <em>BinDigit</em> ::= <strong>0</strong>                   <br />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value(<em>BinDigit</em>) =</p>
+<p>(4) <em>BinDigit</em> ::= <strong>1</strong>               <br />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value(<em>BinDigit</em>) =</p>
+<p>(2) <em>BinDigits</em> ::= <em>BinDigit</em><br />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value(<em>BinDigits</em>) = </p>
+<p>(1) <em>BinDigits</em> ::= <em>BinDigits</em> <em>BinDigit</em><br />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value(<em>BinDigits</em>) =
+   </div></p>
+<h3>Test Grammar</h3>
+<p>Here is a simplified excerpt of the <em>Test</em> grammar from
+<a href="https://docs.python.org/3/reference/grammar.html"><em>https://docs.python.org/3/reference/grammar.html</em></a>.</p>
+<p><div class="bnf">
+   <em>Test</em> ::= <em>NotTest</em><br />
+<em>NotTest</em> ::= <strong>not</strong> <em>NotTest</em><br />
+<em>NotTest</em> ::= <em>Expression</em><br />
+<em>Expression</em> ::= <strong>True</strong><br />
+<em>Expression</em> ::= <strong>False</strong><br />
+   </div></p>
+<div class="notpdf">
+From the grammar, determine which of the following are valid _Test_ expressions in Python:
+
+<pre class="brush: python;">
+0x11 < 0x011
+True and False and True
+0b11 < 0b100 > 0b101  
+not not not not not not False
+not not not
+not False and True
+</pre>
+You can try evaluating them in the Python interpreter to check your answers and see how they evaluate.
+
+</div>
+
+<!--endpdf-->
+
+<p>Develop rules of evaluation for the grammar above that matches how
+things are interpreted by the Python interpreter.</p>
+<div class="biggap"></div>
+
+<p><div class="quote">
+An MIT linguistics professor was lecturing his class the other day. "In English," he said, "a double negative forms a positive. However, in some languages, such as Russian, a double negative remains a negative. But there isn't a single language, not one, in which a double positive can express a negative."</p>
+<p>A voice from the back of the room piped up, "Yeah, right."
+   <div class="quotee">
+From <a href="http://www.ling.upenn.edu/~beatrice/humor/double-positive.html">Beatrice Santorini's Linguistic Humor collection</a>
+   </div>
+   </div></p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class7 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:12 GMT -->
+</html>

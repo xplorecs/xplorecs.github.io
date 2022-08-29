@@ -1,0 +1,237 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class19 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:10:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 19 - Notes</h1>
+<h3>Upcoming Schedule</h3>
+<p><a href="project4.html">Project 4</a> is due Wednesday, 16 March.  </p>
+<p><strong>To be eligible to take the Blue Belt test on Monday, 21 March</strong>, you
+must have (1) completed the Green Belt, and (2) submitted a satisfactory
+Project 4.  (If you are not eligible to take the first Blue Belt test
+opportunity, you will have more opportunities for Blue Belt promotion
+later.)</p>
+<p>The Blue Belt test will be during the class period on Monday, 21 March.
+Students who are not eligible to take the Blue Belt test will have a
+review class and help opportunity in a different location.  (We'll
+figure out the locations after determining how many students are ready
+to take the Blue Best test.)  </p>
+<p>To pass the Blue Belt level you should demonstrate:</p>
+<ul>
+<li>
+<p>Ability to write and reason about functions that use conditional and
+  looping statements.</p>
+</li>
+<li>
+<p>Ability to write and reason about functions that are defined
+  recursively.</p>
+</li>
+<li>
+<p>Understand the list data type, and how to write and reason about
+  functions that operator on lists (including lists of lists, and deeply
+  nested lists).</p>
+</li>
+<li>
+<p>Ability to analyze the cost of a function and basic understanding of
+  how computing machines work.</p>
+</li>
+</ul>
+<p>Being promoted to a Blue Belt ensures at least a B- as the final grade
+in the course (with exceptions for extreme cases of misbehaior such as
+not attempting to do anything else for the rest of the semester or
+cheating).</p>
+<h3>Slides</h3>
+<script async class="speakerdeck-embed" data-id="c59d031224ba48c386e47d4fc8106ca9" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h1>Asymptotic Notation</h1>
+<p><span class="math"><em>O</em></span> (Big-Oh): upper bound:</p>
+<blockquote>
+<p>A function <span class="math"><em>g</em></span> is in <span class="math"><em>O</em>(<em>f</em>)</span> iff there are positive constants <span class="math"><em>c</em></span> and
+<span class="math"><em>n</em><sub>0</sub></span> such that 
+<center>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="math"><em>g</em>(<em>n</em>) &le; <em>c__f</em>(<em>n</em>)</span>
+</center><br />
+  for all <span class="math"><em>n</em> &ge; <em>n</em><sub>0</sub></span>.</p>
+</blockquote>
+<p><span class="math">&Omega;</span>: lower bound:</p>
+<blockquote>
+<p>A function <span class="math"><em>g</em></span> is in <span class="math">&Omega;(<em>f</em>)</span> iff there are positive constants <span class="math"><em>c</em></span> and <span class="math"><em>n</em><sub>0</sub></span> such that 
+<center>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="math"><em>g</em>(<em>n</em>) &ge; <em>cf</em>(<em>n</em>)</span>
+</center>
+for all <span class="math"><em>n</em> &ge; <em>n</em><sub>0</sub></span>.</p>
+</blockquote>
+<p><span class="math">&Theta;</span>: tight bound: A function <span class="math"><em>g</em></span> is in <span class="math">&Theta;(<em>f</em>)</span> iff <span class="math"><em>g</em></span> is in
+<span class="math"><em>O</em>(<em>f</em>)</span> and <span class="math"><em>g</em></span> is in <span class="math">&Omega;(<em>f</em>)</span>.</p>
+<p>Draw a diagram showing: <span class="math"><em>n</em><sup>3</sup></span>, <span class="math"><em>O</em>(<em>n</em>)</span>, <span class="math"><em>O</em>(<em>n</em><sup>2</sup>)</span>, <span class="math">&Omega;(<em>n</em><sup>2</sup>)</span>, <span class="math">&Theta;(<em>n</em><sup>2</sup>)</span>, and <span class="math"><em>O</em>(1)</span>.  </p>
+<!--page-->
+
+<p>Why are these operators useful for understanding and describing the cost
+of executing programs?</p>
+<div class="biggap"></div>
+
+<p>If you want to know a cryptosystem is hard to break, what do you want to
+know about it (in terms of <span class="math"><em>O</em></span> or <span class="math">&Omega;</span>)?</p>
+<div class="gap"></div>
+
+<p>If you want to know your mega-fractal L-System drawing will finish in a
+reasonable time, what do you want to know about that program (in terms
+of <span class="math"><em>O</em></span> or <span class="math">&Omega;</span>)?</p>
+<div class="gap"></div>
+
+<p>Prove <span class="math"><em>f</em>(<em>n</em>) = <em>n</em></span> is in <span class="math"><em>O</em>(<em>n</em><sup>2</sup>)</span>:</p>
+<div class="biggap"></div>
+
+<p>Prove <span class="math"><em>f</em>(<em>n</em>) = <em>n</em></span> is not in <span class="math">&Omega;(<em>n</em><sup>2</sup>)</span>:</p>
+<div class="biggap"></div>
+
+<p>Prove <span class="math"><em>f</em>(<em>n</em>) = <em>n</em></span> is not in <span class="math">&Theta;(<em>n</em><sup>2</sup>)</span>:</p>
+<div class="biggap"></div>
+
+<p>Prove <span class="math"><em>f</em>(<em>n</em>) = <em>7n</em> + 13</span> is in <span class="math">&Theta;(<em>n</em>)</span>:</p>
+<!--page-->
+
+<h1>Cost of Computing</h1>
+<p>To reason about the cost of executing a program, we need to have a model
+of computation that makes it clear what we are actually measuring.
+Later in the class we'll look at the Turing machine model which provides
+a very precise and clear model of computation where each step is well
+defined and we can measure cost of computation as the number of steps to
+complete execution.  </p>
+<p>With Python code, we'll settle for a simpler, more intuitive model, that
+corresponds fairly closely (but not exactly) to the cost of running a
+program in the Python interpreter.  </p>
+<p>The assumption is that <em>each individual statement or expression
+evaluation takes constant time</em>.  This does not include the time for any
+functions called inside an evaluation.  So, we assume these operations
+are constant time (that is, we could count each of these as one unit of
+cost, and that cost does not scale with the size of the inputs or length
+of program):</p>
+<p><strong>Assignment statements.</strong> The cost of <code>a = expression</code> is just the cost
+  of evaluating the expression plus a small constant for moving the
+  value into the location of <code>a</code>.</p>
+<p><strong>Arithmetic and comparison operations on bounded values.</strong> If at least
+  one of the inputs to an operator (e.g., <code>+</code>, <code>*</code>, <code>==</code>, <code>&lt;=</code>, etc.)
+  has a bounded value (is known to be less than some fixed value), the
+  cost of computing the operation is constant.</p>
+<p><strong>List indexing and slicing.</strong> We will assume the cost of all list
+  operations is constant.  This is most definitely <em>not</em> true, but
+  estimating an accurate cost gets into how the underlying list
+  abstraction is implemented.  We'll keep things simple by assuming the
+  cost of both indexing (<code>a[i]</code>) is constant (this is probably nearly
+  true), and slicing (<code>a[1:]</code>) is also constant (this is false in
+  reality, but there are ways to implement lists that would make it
+  true).</p>
+<p><strong>Calling and returning from functions.</strong> The cost to call a function or
+  return from a function is constant.  Note that this does not include
+  the cost of actually executing the function, just the cost of calling it.</p>
+<p><strong>Control flow.</strong> The cost of an <code>if</code>, <code>while</code>, or <code>for</code> statement is
+  the cost of executing its components (and only constant additional
+  cost).  </p>
+<p>From these assumptions, we can reason about the cost of any Python
+program (at least those you'll see at this point of the course;
+additional assumptions may be needed for some later programs).</p>
+<h3>Loops</h3>
+<p>The cost of executing a loop is the average cost of each iteration times
+the number of iterations.  For example,</p>
+<pre class="brush: python;">
+sum = 0
+for i in range(n):
+   sum = sum + 1
+</pre>
+
+<!--python-->
+
+<p>The loop executes <code>n</code> times, and each iteration does a constant amount
+of work (the <code>+</code> operation, where the value of one of the inputs is
+bounded).  So, the total work of the loop is in &Theta;(<em>n</em>) where <em>n</em>
+is the value of <code>n</code>.</p>
+<!--page-->
+
+<h3>Nested Loops</h3>
+<pre class="brush: python;">
+sum = 0
+for i in range(n):
+   for j in range(n):
+       sum = sum + 1
+   sum = sum * 2
+</pre>
+
+<!--python-->
+
+<p>Here, the outer loop executes <code>n</code> times, so we need to figure out the
+cost of each iteration.  Its body includes a constant time <code>*</code>
+operation, but also a loop that executes <code>n</code> time.  The cost of the <code>for
+j in range(n): sum = sum + 1</code> loop is in <span class="math">&Theta;(<em>n</em>)</span> where <span class="math"><em>n</em></span> is the
+value of <code>n</code>, since it executes <span class="math"><em>n</em></span> iterations, each of which does
+constant work.  Hence, the total cost is <span class="math"><em>n</em> * &Theta;(<em>n</em>)</span> since there
+are <span class="math"><em>n</em></span> iterations of the <code>i</code> loop, each of which has cost in
+<span class="math">&Theta;(<em>n</em>)</span>.  This simplifies to a total cost for the loop in
+<span class="math">&Theta;(<em>n</em><sup>2</sup>)</span>.</p>
+<h3>Recursive Functions</h3>
+<p>Analyzing the cost of a recusive function is similar to a loop: we need
+to figure out the cost of each function execution, and multiply that by
+the number of executions.</p>
+<p>For example,</p>
+<pre class="brush: python;">
+def sum_list(lst):
+   if len(lst) == 0:
+       return 0
+   else:
+       return lst[0] + sum_list(lst[1:])
+</pre>
+
+<!--python-->
+
+<p>Recall our assumption that the list indexing and slicing operations have
+constant time, and assuming all of the elements in the list have bounded
+values, so does the <code>+</code> operation.  Hence, the cost of executing the
+function body (not counting the recursive call) is constant: <span class="math"><em>O</em>(1)</span>.</p>
+<p>The number of recursive calls is the number of elements in the list:
+each call shortens the length of the input list by one element, so we
+need <code>len(lst)</code> calls to reach the base case.  </p>
+<p>Hence, there are <span class="math"><em>n</em></span> executions of a constant-time function body, so the
+total cost is in <span class="math"><em>n</em> * <em>O</em>(1)</span> which simplifes to <span class="math">Theta;(<em>n</em>)</span> where <span class="math"><em>n</em></span> is
+the length of the input <code>lst</code>.</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class19 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:10:23 GMT -->
+</html>

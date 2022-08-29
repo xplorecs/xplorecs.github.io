@@ -1,0 +1,156 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class2 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:46 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+    
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 2 - Notes</h1>
+<p><div class="printing"><a href="static/docs/class2.pdf">PDF for Printing</a></div></p>
+<h3>White Belt Exam</h3>
+<p>Because of the snow day, the first opportunity to pass the white belt
+test will be in class this <strong>Wednesday, 27 January</strong>.  The test will be
+a short, in-class, on-paper test that includes some short answer
+questions and a few questions where you have to understand and write
+short Python code snippets.  The questions will cover these materials:</p>
+<ul>
+<li>Everything covered in <a href="class1.html">Class 1</a> and <a href="class2.html">Class 2</a> (today).</li>
+<li><a href="http://computingbook.org/Computing.pdf">Chapter 1</a> and <a href="http://computingbook.org/Language.pdf">Chapter 2</a> of the coursebook.</li>
+<li><a href="https://www.udacity.com/course/cs101">Udacity cs101</a> Lesson 1 and
+  Lesson 1: Problem Set.</li>
+<li>The <a href="pledge.html">Course Pledge</a>.</li>
+</ul>
+<p>If you have done and understand all of these before class Wednesday, you
+should be able to earn your white belt and be able to start working on
+your yellow belt.  Please take advantage of the upcoming scheduled
+office hours (Tuesday at 3:30, Rice 507), ask questions in the Slack
+group, and all the on-line resources.  If you don't pass the white belt
+test Wednesday, there will be later opportunities to pass it in
+different ways (which could involve an oral exam during office hours).</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="df66426eb99646239739d4611611be2a" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<p><center>
+<a href="http://www.cs.virginia.edu/evans/xplorecs16/class2-post.pptx">[Download (PPTX)]</a>
+</center></p>
+<h2>Notes and Questions</h2>
+<p>What is Computer Science? 
+<div class="gap"></div></p>
+<p>What is a language?
+<div class="gap"></div></p>
+<p>Languages are made of:</p>
+<ul>
+<li><strong>Primitives</strong> (almost<sup><em></sup> all languages have these) &#8211; the simplest surface forms with meaning (</em> surprisingly it is possible to make a powerful language without any primitives.  We will see one before the end of this class!)</li>
+<li><strong>Means of Combination</strong> (all languages have these) &#8211; rules of production (ways to make new surface forms from ones you already have)</li>
+<li><strong>Means of Abstraction</strong> (all powerful languages have these) &#8211; ways to use simple surface forms to represent complicated ones</li>
+</ul>
+<p><strong>Backus-Naur Form</strong> (BNF): A way of describing the surface forms in a language using replacement rules in the form:</p>
+<p><div class="bnf">
+<em>non-terminal</em> <tt>::=</tt> <em>replacement</em>
+   </div></p>
+<p>The rule means whenever you have what is on the left side of the
+<tt>::=</tt>, you can replace it with what is on the right side.</p>
+<p>What strings can the following BNF grammar produce?</p>
+<p><div class="bnf">
+<em>Sentence</em> ::= <em>Food Comparator Food</em><br />
+<em>Food</em> ::= <strong>Bodo&#8217;s Bagels</strong><br />
+<em>Food</em> ::= <strong>Einstein’s Bagels</strong><br />
+<em>Comparator</em> ::= <strong>are better than</strong><br />
+<em>Comparator</em> ::= <strong>are worse than</strong><br />
+   </div>
+<div class="gap"></div></p>
+<p>What strings can the following BNF grammar produce?</p>
+<p><div class="bnf">
+<em>Sentence</em> ::= <strong>I like</strong> <em>FoodList</em><br />
+<em>FoodList</em> ::= <em>Food</em><br />
+<em>FoodList</em> ::= <em>Food</em> <strong>and</strong> <em>FoodList</em><br />
+<em>Food</em> ::= <strong>Bodo’s Bagels</strong><br />
+<em>Food</em> ::= <strong>Einstein’s Bagels</strong><br />
+   </div>
+<div class="gap"></div></p>
+<p>When learning a new language, which of <em>primitives</em>, <em>means of
+combination</em>, or <em>means of abstraction</em> is hardest to learn?</p>
+<div class="spacer"></div>
+
+<p>Are there any non-recursive natural languages?
+<div class="spacer"></div></p>
+<p>What would happen to a society that spoke one?
+<div class="spacer"></div></p>
+<p><div class="pdfonly"><em>See on-line version for fun links and quotes.</em></div>
+   <div class="notpdf"></p>
+<h2>Fun Links</h2>
+<p><a href="https://docs.python.org/3/reference/grammar.html">Full Python Grammar</a>
+(This is a file that can be processed automatically by a a program to
+read Python programs, so it is a bit hard to read.  But, it is
+essentially the same BNF notation we have seen in class and the book.)</p>
+<p>The sentence, "Nine and a half turtles wearing orange aprons with
+watermelons on them began to simultaneously yodel as the conductor
+stepped on the kitchen table." is from the article <a href="http://www.ling.upenn.edu/~ycharles/sign708.pdf"><em>Who’s afraid of
+George Kingsley Zipf? Or: Do children and chimps have
+language?</em></a> (Charles
+Yang, <em>Significance: The Magazine of The Royal Statistical Society</em>,
+December 2013)</p>
+<p><a href="http://public.oed.com/the-oed-today/recent-updates-to-the-oed/december-2015-update/new-words-notes-december-2015/">`Yes way!' added to OED! (December 2015)</a>  (You can access the OED through UVA libraries to confirm this: <a href="http://www.oed.com.proxy.its.virginia.edu/view/Entry/231637?rskey=6gyaqJ&amp;result=8&amp;isAdvanced=true#eid987788801">yes, <em>adv</em></a></p>
+<p><div class="quote">
+Computers are actually pretty simple.  We&#8217;re sitting here on a
+bench in this cafe.  Let’s assume that you understood only the most
+rudimentary of directions and you asked how to find the rest room.  I
+would have to describe it to you in very specific and precise
+instructions.  I might say, &#8220;Scoot sideways two meters off the
+bench.  Stand erect.  Life left foot.  Bend left knee until it is
+horizontal.  Extend left foot and shift weight 300 centimeters
+forward.&#8221; and on and on.  If you could interpret all those
+instructions 100 times faster than any other person in this cafe, you
+would appear to be a magician: You could run over and grab a milk shake
+and bring it back and set it on the table and snap your fingers, and I’d
+think you make the milkshake appear, because it was so fast relative to
+my perception.  That’s exactly what a computer does.  It takes these
+very, very simple-minded instructions – &#8220;Go fetch a number, add it
+to this number, put the result there, perceive if it’s greater than this
+other number&#8221; – but executes them at a rate of, let&#8217;s say,
+1,000,000 per second.  At 1,000,000 per second, the results appear to be
+magic.  That&#8217;s a simple explanation, and the point is that people
+really don’t have to understand how computers work.  </p></p>
+<p><div class="quotee">
+Steve Jobs, <a
+href="http://www.scribd.com/doc/43945579/Playboy-Interview-With-Steve-Jobs">Interviewed
+in Playboy Magazine</a> (SSFW &mdash; no pictures, other than a fully clothed one of
+Steve, and just a little bit of bad language), February 1, 1985.  (Note: 3
+months later, in May 1985, Jobs was kicked-out of Apple.  If you read
+the whole interview, especially the part about Edwin Land, keep this in
+mind.)<br />
+   </div>
+   </div></p>
+<p></div><!--endpdf--></p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class2 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:53 GMT -->
+</html>

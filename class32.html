@@ -1,0 +1,157 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class32 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:07:50 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 32 - Interpreters</h1>
+<div class="printing"><a href="static/docs/class32.pdf">PDF for Printing</a></div>
+
+<h2>Schedule</h2>
+<p>To be eligible for automatic Red Belt promotion, you need to complete
+Project 6 (including a good answer to its bonus Problem 8) by <strong>Friday,
+22 April</strong>, and have also completed Project 5 (including Problem 8).
+Otherwise, you may qualify for the Red Belt exam by completing Problems
+1-7 of both Project 5 and Problem 6.  If you do this by Friday, 22
+April, you will be able to take the Red Belt exam starting Monday, 25
+April (and have an opportunity to ensure at least an A- in the course
+before the end of the semester).</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="ff81055dfad84ab5803a7723ed7382ab" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Interpreters</h2>
+<blockquote>
+<p><em>It is no exaggeration to regard this as the most fundamental idea in
+ programming:</em></p>
+<blockquote>
+<p><em>The evaluator, which determines the meaning of expressions
+ in the programming language, is just another program.</em></p>
+</blockquote>
+<p><em>To appreciate
+ this point is to change our images of ourselves as programmers. We come
+ to see ourselves as designers of languages, rather than only users of
+ languages designed by others.</em><br />
+Abelson and Sussman, <a href="https://mitpress.mit.edu/sicp/full-text/sicp/book/node75.html"><em>Structure and Interpretation of Computer Programs</em></a>.</p>
+</blockquote>
+<p>The evaluator takes as input an <em>expression</em> and an <em>environment</em>, and
+ outputs the <em>value</em> of that expression in the environment.</p>
+<h3>The Meta-Circular Evaluator</h3>
+<pre class="brush: python;">
+def meval(expr, env):
+    if isPrimitive(expr):     return evalPrimitive(expr)
+    elif isIf(expr):          return evalIf(expr, env) 
+    elif isDefinition(expr):  evalDefinition(expr, env)
+    elif isName(expr):        return evalName(expr, env)
+    elif isLambda(expr):      return evalLambda(expr, env)
+    elif isApplication(expr): return evalApplication(expr, env)
+    else:                     error ('Unknown expression type: ' + str(expr))
+</pre>
+
+<!--python-->
+
+<h2>Primitives</h2>
+<pre class="brush: python;">
+def evalPrimitive(expr):
+    if isNumber(expr):
+        return int(expr)
+    else:
+        return expr
+</pre>
+
+<!--python-->
+
+<h2>Primitive Procedures</h2>
+<pre class="brush: python;">
+def primitivePlus (operands):
+    if (len(operands) == 0):
+       return 0
+    else:
+       return operands[0] + primitivePlus (operands[1:])
+</pre>
+
+<!--python-->
+
+<h2>Application</h2>
+<p>To <em>apply</em> a constructed procedure:</p>
+<ol>
+<li>
+<p><strong>Construct a new environment</strong>, whose parent is the environment of
+the applied procedure.  </p>
+</li>
+<li>
+<p>For each procedure parameter, create a place in the frame of the new
+environment with the name of the parameter. <strong>Evaluate each operand
+expression in the environment of the application</strong> and initialize the
+value in each place to the value of the corresponding operand
+expression.</p>
+</li>
+<li>
+<p><strong>Evaluate the body of the procedure in the newly created
+environment.</strong> The resulting value is the value of the application.</p>
+</li>
+</ol>
+<p>How should we represent an <em>environment</em>?</p>
+<div class="biggap"></div>
+
+<pre class="brush: python;">
+def evalApplication(expr, env):
+    subexprvals = [meval(sexpr, env) for sexpr in expr]
+    return mapply(________________, ________________)
+
+def mapply(proc, operands):
+    if (isPrimitiveProcedure(proc)):
+        return proc(operands)
+    elif isinstance(proc, Procedure):
+        params = proc.getParams()
+        newenv = Environment(proc.getEnvironment())
+        if len(params) != len(operands):
+            evalError ('Parameter length mismatch: ...')
+        for i in range(0, len(params)):
+            newenv.addVariable(params[i], ___________)
+        return meval(______________, newenv)        
+    else:
+        # error case
+</pre>
+
+<!--python--></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class32 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:07:52 GMT -->
+</html>

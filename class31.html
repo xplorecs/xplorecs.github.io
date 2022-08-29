@@ -1,0 +1,149 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class31 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:07:52 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 31 - Turing Machines</h1>
+<div class="printing"><a href="static/docs/class31.pdf">PDF for Printing</a></div>
+
+<h2>Schedule</h2>
+<p>To be eligible for automatic Red Belt promotion, you need to complete
+Project 6 (including a good answer to its bonus Problem 8) by <strong>Friday,
+22 April</strong>, and have also completed Project 5 (including Problem 8).
+Otherwise, you may qualify for the Red Belt exam by completing Problems
+1-7 of both Project 5 and Problem 6.  If you do this by Friday, 22
+April, you will be able to take the Red Belt exam starting Monday, 25
+April (and have an opportunity to ensure at least an A- in the course
+before the end of the semester).</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="63621e340efd409f87a7700d85c1f370" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h3>Finite State Machines</h3>
+<p>A <em>Finite State Machine</em> is a very simple model of a machine that has a
+finite amount of memory (unlike the Turing Machine model which has an
+infinite amount of memory since the tape is infinitely long). </p>
+<p>A Finite State Machine consists of:</p>
+<ol>
+<li>
+<p>A finite alphabet of symbols (&Sigma;). There is a finite set of
+symbols that can be written into squares on the tape.</p>
+</li>
+<li>
+<p>A finite set of states (<em>Q</em>). Some of the states may be distinguished
+as <em>accepting states</em> (for the FSM for a Turing Machine, we typically
+have a distinguished state called “Halt” where the machine stops if that
+state is reached).  One of the states, <em>q</em><sub>0</sub> &isin; <em>Q</em>, is designated the <em>start state</em>.</p>
+</li>
+<li>
+<p>A set of decision rules (&delta;: <em>Q</em> &times; &Sigma; &rarr;
+<em>Q</em>). Each rule is a triple of the form: (<em>state</em>, <em>symbol</em>) &rarr;
+<em>nextstate</em>.  If the machine is currently in <em>state</em> and the next input
+symbol is <em>symbol</em>, after reading the symbol the state is now in
+<em>nextstate</em>.</p>
+</li>
+</ol>
+<p>A Finite State Machine processes its input in order, starting in the
+start state, <em>q</em><sub>0</sub>, seeing each input symbol only once and
+following the state rules. You can think of it as a machine that starts
+with the input on a finite tape, and process that input from left to
+right, reading one square at a time.  An input string is <em>accepted</em> by a
+finite state machine if the state machine ends in an <em>accepting state</em>
+after processing that input string to the end.</p>
+<p>Draw the machine described below and explain what language it recognizes
+(that is, the set of all strings it accepts):</p>
+<p><em>Q</em> = { <em>A</em>, <em>B</em> }<br />
+&Sigma; = { <strong>0</strong>, <strong>1</strong> }<br />
+<em>q</em><sub>0</sub> = <em>A</em><br />
+Accepting states: { <em>B</em> }  </p>
+<p>Transitions:</p>
+<p>(<em>A</em>, <strong>0</strong>) &rarr; <em>A</em><br />
+(<em>A</em>, <strong>1</strong>) &rarr; <em>B</em><br />
+(<em>B</em>, <strong>0</strong>) &rarr; <em>B</em><br />
+(<em>B</em>, <strong>1</strong>) &rarr; <em>A</em>  </p>
+<!--page-->
+
+<p>Can you make a finite statement machine that recognizes the language of
+balanced parentheses?</p>
+<p><div class="bnf">
+  <em>S</em> ::= <strong>(</strong> <em>S</em>  <strong>)</strong><br />
+<em>S</em> ::= &epsilon;
+  </div></p>
+<div class="biggap"></div>
+
+<h3>Turing Machine</h3>
+<p>A <em>Turing Machine</em> is an abstract model of a digital computer devised by
+Alan Turing in 1936.</p>
+<p>It consists of:</p>
+<ul>
+<li>
+<p>An infinitely long tape, divided into squares. (The tape is usually thought of as infinitely long only in one direction, but it is equivalent in power to a tape that is infinitely long in both directions.)</p>
+</li>
+<li>
+<p>A finite alphabet of symbols. There is a finite set of symbols that can be written into squares on the tape.</p>
+</li>
+<li>
+<p>A tape head that can read the alphabet symbol on a single square of the tape. For each step, the tape head reads the symbol at the current tape position, and can move one square either left or right.</p>
+</li>
+<li>
+<p>A <em>finite state machine</em> that controls the tape head.  Unlike the
+  standard FSM described earlier, each output rule for a Turing
+  Machine's FSM has three outputs: the new state, the symbol to write on
+  the tape (in the current square), and the direction to move (Left,
+  Right, or Halt).</p>
+</li>
+</ul>
+<p>What does this Turing Machine do?</p>
+<p>(<em>S</em>, <strong>1</strong>) &rarr; (<em>S</em>, <strong>0</strong>, R)<br />
+(<em>S</em>, <strong>0</strong>) &rarr; (<em>S</em>, <strong>1</strong>, R)<br />
+(<em>S</em>, <strong>#</strong>) &rarr; <strong>Halt</strong></p>
+<div class="gap"></div>
+
+<p><strong>Go Outcome Turing Machine.</strong> Design a Turing Machine that starts with
+an input tape that starts with a <strong>#</strong>, is followed by a series of <strong>X</strong>
+and <strong>O</strong> symbols, followed by a <strong>#</strong> at the end. The output should be
+<strong>1</strong> if there are more <strong>X</strong> symbols than <strong>O</strong> symbols on the input
+take, and <strong>0</strong> otherwise (they are equal, or more <strong>O</strong> symbols).  For
+example, if the input tape is <strong>#XOXXOOX#</strong> the output tape should be
+<strong>#1#</strong>.</p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class31 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:08:01 GMT -->
+</html>

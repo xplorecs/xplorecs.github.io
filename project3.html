@@ -1,0 +1,998 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/project3 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:12:00 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Project 3: Limning L-Systems</h1>
+<p><div class="turnin">
+<strong>Deliverables:</strong> (1) Bring in to class on <strong>Friday, 26 February</strong> a
+stapled turn-in containing your answers to all of the questions (which
+should all be in your <code>project3.py</code> file). (2) Post an image in the
+cs1120 slack group showing your most awesomest fractal.
+   </div></p>
+<h4>Purpose</h4>
+<ul>
+<li>Practice programming with recursive definitions and procedures</li>
+<li>Explore the power of rewrite rules</li>
+<li>Write recursive functions that manipulate lists</li>
+<li>Make a course logo better than <a href="static/images/lambdatree.png"><em>The Great Lambda Tree of Infinite Knowledge and Ultimate Power</em></a>.</li>
+</ul>
+<h4>Preparation</h4>
+<p>Before starting this project, you should complete Udacity cs101 <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48689146/m-48698556">Lesson
+4: <em>Responding to
+Queries</em></a>.
+It is not necessary to do the Lesson 4: Problem Set.</p>
+<h4>Collaboration Policy</h4>
+<p>For this assignment, you may <em>work alone</em> or <em>work with a partner</em>.  If
+you work with a partner, you and your partner should submit a single
+assignment with both of your names and UVA ids on it. You and your
+partner should work on all the problems together, and both of you must
+completely understand everything you turn in.  You should also take
+turns driving (typing) when you are at the computer.</p>
+<p>Regardless of whether you work alone or with a partner, you may discuss
+the assignment with anyone you want and get help from others, so long as
+it is help in the spirit of learning how to do things yourself not
+getting answers you don't understand.  You should understand everything
+you turn in for the assignment well enough to be able to produce it
+completely on your own.</p>
+<p>Remember to follow the <a href="pledge.html">course pledge</a> you read and signed at
+the beginning of the semester.  For this assignment, you may consult any
+outside resources, including books, papers, web sites and people, you
+wish <i>except</i> for materials from previous cs1120 courses or direct
+solutions to the given problems.  You may consult anyone you want, but
+that person cannot type anything in for you and all work must remain
+your own and outside sources should never give you specific answers to
+problem set questions.</p>
+<p>If you use resources other than the class materials, lectures and course
+staff, you should document this in your turn-in.</p>
+<p>You are <strong>strongly encouraged</strong> to take advantage of the scheduled
+ help hours and office hours for this course.</p>
+<h3>Project 3 Repository</h3>
+<p>Set up your project3 repository in the same way as you did for <a href="project1.html">project
+1</a> and <a href="project2.html">project 2</a>.  </p>
+<ul>
+<li>
+<p><strong>Fork Project 3.</strong> Visit
+<a href="https://bitbucket.org/cs1120/project3/fork">https://bitbucket.org/cs1120/project3/fork</a>.
+Make sure to check the "This is a private repository" box to make your
+forked repository private (only visible to yourself and people you
+authorize to access it).  If you are working with a partner, just one of
+you should fork the repository.  Then, add the other partner's bitbucket
+id to have access to it.</p>
+</li>
+<li>
+<p><strong>Clone to your machine.</strong> To have a working copy of the repository on
+your machine, clone the forked repository in SourceTree by
+selecting <code>File | New/Clone</code> and enter the URL of the cloned
+repository. You can copy this from the project page you see in
+bitbucket.org afer forking the provided Project 3 repository.  It should
+be a URL like <code>https://&lt;your bitbucket id&gt;@bitbucket.org/&lt;your bitbucket
+id&gt;/project3.git</code>.  If you are working with a partner, <em>both</em> partners
+should clone the forked repository, so you each have a local copy of it.
+(For this project, you should work together when you work on the code.
+In general, though, using git allows many people to work on the same
+code and share their changes, and handle conflicts when two people edit
+the same file.)</p>
+</li>
+</ul>
+<p>The project3 repository contains these files:</p>
+<ul>
+<li>
+<p><code>project3.py</code> &mdash; This is the file you will edit and turn in.</p>
+</li>
+<li>
+<p><code>lsystem.py</code> &mdash; Provides code for representing and manipulating
+  L-System commands.  (You will need to make a few changes to this file
+  for Exercise 1, but do not need to turn it in.)</p>
+</li>
+<li>
+<p><code>curves.py</code> &mdash; Code for colors, points, and curves.  (You will
+  not need to edit this file, but should understand almost everything in
+  it.)</p>
+</li>
+<li>
+<p><code>graphics.py</code> &mdash; Code for drawing. You do not need to look at
+  this file, unless you really want to.</p>
+</li>
+<li>
+<p><code>canvasvg.py</code> &mdash; provided library code for saving your fractals
+as image files on disk. This code does a lot of low-level image
+manipulation, and you do not need to read or understand this file.</p>
+</li>
+</ul>
+<p><div class=warning>
+<strong>Warning:</strong> This project expects you to write considerably more code
+than Project 2.  We recommend you <b>start early</b> and <b>take
+advantage of the scheduled help hours</b>.
+   </div></p>
+<h2>Background: L-System Fractals</h2>
+<p>In this problem set, you will explore a method of creating fractals
+known as the Lindenmayer system (or L-system).<br />
+<a href="http://en.wikipedia.org/wiki/Aristid_Lindenmayer">
+Aristid Lindemayer</a>, a
+theoretical biologist at the University of Utrecht, developed the
+L-system in 1968 as a mathematical theory of plant development.  In the
+late 1980s, he collaborated with Przemyslaw Prusinkiewicz, a computer
+scientist at the University of Regina, to explore computational
+properties of the L-system and developed many of the ideas on which this
+problem set is based.</p>
+<p>The idea behind L-system fractals is that we can describe a curve as a
+list of lines and turns, and create new curves by rewriting old
+curves. Everything in an L-system curve is either a forward line
+(denoted by <code>F</code>), or a right turn (denoted by <code>Ra</code> where <em>a</em> is an
+angle in degrees clockwise).  We denote left turns by using negative
+angles.</p>
+<p>We create fractals by recursively replacing all forward lines in a curve
+list with the original curve list.  Lindemayer found that many objects
+in nature could be described using regularly repeating patterns.  For
+example, the way some tree branches sprout from a trunk can be described
+using the pattern: <code>F O(R30 F) F O(R-60 F) F</code>.</p>
+<p>This is interpreted as: the trunk goes up one unit distance, a branch
+sprouts at an angle 30 degrees to the trunk and grows for one unit. The
+<code>O</code> means an offshoot &mdash; we draw the curve in the following
+parentheses, and then return to where we started before the
+offshoot. The trunk grows another unit and now another branch, this time
+at -60 degrees relative to the trunk grows for one units. Finally the
+trunk grows for one more unit.  The branches continue to sprout in this
+manner as they get smaller and smaller, and eventually we reach the
+leaves.</p>
+<p>We can describe this process using replacement rules.  The rules are
+similar to the BNF replacement rules we have used previously, with one
+big difference: instead of just picking one nonterminal to replace for
+each step, with the L-System rules we replace <em>all</em> occurences of the
+nonterminal with its replacement.</p>
+<p>For example:</p>
+<p><blockquote><strong>Start:</strong> <code>[F]</code><br />
+<strong>Rule:</strong>&nbsp; <code>F ::= [F, O[R30, F], F, O[R-60, F], F]</code>
+   </blockquote></p>
+<p>Here are the commands this produces after two iterations:</p>
+<p><blockquote><b>Iteration 0:</b> <code>[F]</code><br />
+<b>Iteration 1:</b> <code>[F, O[R30, F], F, O[R-60, F], F]</code><br />
+   <div class="hanging"><b>Iteration 2:</b><br />
+<code>[F, O[R30, F], F, O[R-60, F], F, O[R30, F, O[R30, F], F, O[R-60, F], F],</code><br />
+&nbsp;<code>F, O[R30, F], F, O[R-60, F], F, O[R-60, F, O[R30, F], F, O[R-60, F], F],</code><br />
+&nbsp;<code>F, O[R30, F], F, O[R-60, F], F]</code></div> 
+   </blockquote></p>
+<p>Here's what that looks like graphically:
+<center>
+<table>
+<tr>
+<td>
+<table cellspacing=10>
+<tr>
+<td align=center>
+<a href="static/images/tree0.png"><img src="static/images/tree0.png" width=304></a><br>
+Iteration 0
+</td align=center>
+<td align=center>
+<a href="static/images/tree1.png"><img src="static/images/tree1.png" width=304></a><br>
+Iteration 1
+</td align=center>
+</tr><tr>
+<td align=center>
+<a href="static/images/tree2.png"><img src="static/images/tree2.png" width=304></a><br>
+Iteration 2
+</td align=center>
+<td align=center>
+<a href="static/images/tree5.png"><img src="static/images/tree5.png" width=304></a><br>
+Iteration 5
+</td></p>
+<p></tr>
+</table>
+</td>
+<td align="center">
+<a href="static/images/lambdatree.png"><img align="right" src="static/images/lambdatree.png" width=300></a><br>
+Iteration 5 (with color)<br>
+<b><em>The Great Lambda Tree of<br>Infinite Knowledge and Ultimate Power</em></b>
+</td>
+</table></p>
+<p></center></p>
+<h4>Breaking down the Problem</h4>
+<p>We can divide the problem of producing an L-system fractal into two
+main parts: </p>
+<ol>
+<li>
+<p>Produce a list of L-system commands that represents
+the fractal by rewriting according to the L-system rule; and </p>
+</li>
+<li>
+<p>Drawing a list of L-system commands.</p>
+</li>
+</ol>
+<p>We will first work on producing the list of L-system commands, and then
+work on how to draw a list of L-system commands.</p>
+<h2>Representing L-System Commands</h2>
+<p>Here is a BNF grammar for L-system commands:
+   <blockquote>
+<ol>
+<li><em>CommandSequence</em> ::= <b>[</b> <em>CommandList</em> <b>]</b><br>
+<li><em>CommandList</em> ::= <em>Command</em><b>,</b> <em>CommandList</em><Br>
+<li><em>CommandList</em> ::= <em>Command</em><br>
+<li><em>Command</em> ::= <b>F</b><br>
+<li><em>Command</em> ::= <b>R</b><em>Angle</em><br>
+<li><em>Command</em> ::= <b>O</b> <em>CommandSequence</em><br>
+<li><em>Angle</em> ::= <em>OptSign</em> <em>Number</em><br>
+<li><em>OptSign</em> ::= <b>-</b><br>
+<li><em>OptSign</em> ::= &epsilon;<br>
+<li><em>Number</em> ::= <em>Digit</em> <em>Digits</em><br>
+<li><em>Digits</em> ::= <em>Digit</em> <em>Digits</em><br>
+<li><em>Digits</em> ::= &epsilon;<br>
+<li><em>Digit</em> ::= <b>0</b> | <b>1</b> | <b>2</b> | <b>3</b> | <b>4</b> | <b>5</b> | <b>6</b> | <b>7</b> | <b>8</b> | <b>9</b><br>
+</blockquote></p>
+<p>We need to find a way to turn strings in this grammar into lists and
+objects we can manipulate in a Python program. We will use a list of
+lists to represent a CommandList and a list of strings to represent
+different commands. For example, the list <code>['F']</code> will denote forward,
+<code>['R', angle]</code> will denote a rotation, and
+<code>['O', commandsequence]</code> will denote an offshoot. </p>
+<pre class="brush: python;">
+def make_forward_command():
+    """Returns an object that represents a forward command, Command ::= F"""
+    return ['F'] # creates a list of one element, 'F'
+
+def make_rotate_command(angle): 
+    """Returns an object that represents a right turn of angle degrees, Command ::= R Angle"""
+    return ['R', angle] # creates a list of two elements, 'R' and a number
+
+def make_offshoot_command(commandsequence): 
+    """Returns an object that represents an offshoot commnd of the input sequence, 
+       Command ::= O CommandSequence"""
+    return ['O', commandsequence] # creates a list of two elements, 'O' and another list 
+</pre>
+
+<p>It will be useful to have functions that take L-System commands as
+parameters, and return information about those commands.  The next
+problem is to define functions for manipulating L-System commands.</p>
+<p><div class="q">
+<strong>Exercise 1.</strong> Define the following functions in <code>lsystem.py</code> (note that
+  these are not in <code>project3.py</code>, and you do not need to turn in these
+  definitions; but they do need to be correct for the rest of the code
+  to work):</p>
+<p><div class="hanging">
+<code>is_forward(lcommand)</code> &dash; returns <code>True</code> if the input is a forward
+command (indicated by its first element being an <code>'F'</code>); otherwise,
+returns <code>False</code>.<br />
+   </div><div class="hanging">
+<code>is_rotate(lcommand)</code> &mdash; returns <code>True</code> if the
+input is a rotate command; otherwise, returns <code>False</code>.
+   </div><div class="hanging">
+<code>is_offshoot(lcommand)</code> &mdash; returns <code>True</code> if the input is an offshoot command; otherwise, returns <code>False</code>.
+   </div><div class="hanging">
+<code>get_angle(lcommand)</code> &#151; returns the angle of the input command,
+which must be a rotate command.  Produces an error if the command is not
+a rotate command (see <code>project3.py</code> for how to produce an error).
+   </div><div class="hanging">
+<code>get_offshoot_commands(lcommand)</code> &mdash; returns the offshoot command
+list associated with the input offshoot command.  Produces an error if
+the input is not an offshoot command.
+   </div>
+   </div></p>
+<p><div class="hint">
+   The provided code in the project3 repository actually already
+   includes the definitions requested in Exercise 1.  We forgot to
+   remove these before putting the code into the public repository.  So,
+   you don't need to do anything for Exercise 1, but should make sure
+   you understand all this code (and feel free to change the error messages to be more creative!)
+   </div></p>
+<p>If you define these functions correctly, you should produce these
+evaluations (after running the <code>lsystem.py</code> module):</p>
+<pre class="brush: python">
+>>> is_forward(make_forward_command())
+True
+>>> is_forward(make_rotate_command(90))
+False
+>>> get_angle(make_rotate_command(90))
+90
+>>> get_angle(make_forward_command())
+# Error (specifics of error are up to you)
+</pre>
+
+<p>You should be able to make up similar test cases yourself to check that
+all the functions you defined work correctly.</p>
+<h3>Else-If Statements</h3>
+<p>Before getting into fractals, we'll introduce one new Python programming
+construct.  When we have if else statements, there are two branches we
+can take: the if-branch and the else-branch. We can use <code>elif</code> (short
+for "else if") statements if we want to have more than just two branches
+in our program.  For example, <code>nucleotide_complement</code> from Project 2
+might be written:</p>
+<pre class="brush: python;">
+def nucleotide_complement(base):
+    if   base == 'G': return 'C'
+    elif base == 'C': return 'G'
+    elif base == 'A': return 'T'
+    elif base == 'T': return 'A'
+    else: # not a valid base
+        assert False
+</pre>
+
+<p><div class="q"> 
+<strong>Exercise 2.</strong> Demonstrate that using <code>elif</code> statements is never
+<em>necessary</em>.  That is, show that we can use always nested if-else
+statements to do the same thing any elif statements.  </p>
+<p>Answer this question by providing a convincing written argument. Strive
+to make your answer as general as and formal as possible. For example,
+just showing how the example above (one example) could be written does
+not necessarily handle all possible cases.  A good answer would show how
+to mechanically transform any <code>elif</code> construct into one with the same
+meaning that does not use <code>elif</code>.  (It is not necessary to turn anything
+in for this, but you should make sure you understand it, and ask
+questions if not.)
+    </div> </p>
+<p>We don't need to know how to use elif statements, but using them can
+make our code shorter and more readable.</p>
+<h2>Rewriting Curves</h2>
+<p>The power of the L-System commands comes from the rewriting mechanism.
+Recall how we described the tree fractal:</p>
+<p><blockquote><strong>Start:</strong> <code>[F]</code><br />
+<strong>Rule:</strong>&nbsp; <code>F ::= [F, O[R30, F], F, O[R-60, F], F]</code></p>
+<p>To produce levels of the tree fractal, we need a procedure that takes a
+list of L-system commands and replaces each <code>F</code> command with the
+list of L-system commands given by the rule.</p>
+<p>So, for every command in the list:</p>
+<ul>
+<li>If the command is a forward (<code>F</code>) command, replace it with the replacement commands.</li>
+<li>If the command is a turn (<code>Rangle</code>) command, keep it as is.</li>
+<li>If the command is an offshoot (<code>O[CommandSequence]</code>) command, recursively rewrite every command in the offshoot's command list the same way.  </li>
+</ul>
+<p>One slight complication is that the replacement commands are a list of
+L-system commands, and we want to end up with a flat list of L-System
+commands.</p>
+<p>For example, consider a simple L-System rewriting:</p>
+<p><blockquote><strong>Start:</strong> <code>[F]</code><br />
+<strong>Rule:</strong>&nbsp; <code>F ::= [F, R30, F]</code>
+</blockquote></p>
+<p>We want to get:</p>
+<p><blockquote>
+<b>Iteration1:</b> <code>[F, R30, F]</code><br />
+<b>Iteration2:</b> <code>[F, R30, F, R30, F, R30, F]</code><br />
+<b>Iteration3:</b> <code>[F, R30, F, R30, F, R30, F, R30, F, R30, F, R30, F, R30, F]</code><br />
+</blockquote></p>
+<p>However, if we naively replace each <code>F</code> with the list <code>[F, R30, F]</code>, we
+would instead get something a little different:</p>
+<p><blockquote>
+<b>Iteration1:</b> <code>[F, R30, F]</code><br />
+<b>Iteration2:</b> <code>[[F, R30, F], R30, [F, R30, F]]</code><br />
+<b>Iteration2:</b> <code>[[[F, R30, F], R30, [F, R30, F]], R30, [[F, R30, F], R30, [F, R30, F]]]</code><br />
+   </blockquote></p>
+<p>There are too many <code>[ ]</code>'s!.  </p>
+<p>To fix this problem, we need to <em>flatten</em> the result.  Flattening a list
+take a list which make contain nested lists (which themsleves may
+contain nested lists) and returns a list which is just all the
+(non-list) elements in all the lists in order.</p>
+<p><div class="q"> 
+<strong>Problem 1.</strong> Define a function, <code>flatten_commands</code>,
+that takes as input a possibly nested list of L-System commands and
+returns a flattened list containing the same commands in the same order,
+but without any nested lists.
+   </div></p>
+<p>Hint: <code>flatten_commands</code> is very similar to the <code>list_flatten</code> example
+from class, but that code won't work here since it would end up breaking
+into the L-System commands themselves since they are represented as
+lists.  If you understand that code, though, you should be able to adapt
+it to define <code>flatten_commands</code>.</p>
+<p><div class="q">
+<strong>Problem 2.</strong> Define a function <code>rewrite_lcommands</code> that takes a
+  list of L-system commands as its first parameter. The second parameter
+  is a list of L-system commands that should replace every forward
+  command in the first list of commands in the result.</p>
+<p>Hint: You'll have to handle both forward commands and also offshoot commands specially. 
+   </div></p>
+<p>If you define these procedures correctly, you should produce these evaluations:</p>
+<pre class="brush: python;">
+>>> rewrite_lcommands(['F'], [['F'],['R', 30], ['F']])
+[['F'], ['R', 30], ['F']]
+>>> rewrite_lcommands([['F'],['R', 30], ['F']], [['F'], ['F'], ['R', 30]])
+[['F'], ['F'], ['R', 30], ['R', 30], ['F'], ['F'], ['R', 30]]
+</pre>
+
+<p>To make interesting L-system curves, we will need to apply
+<code>rewrite_lcommands</code> many times.  We will leave that until the last
+problem since it will be a lot more fun to test this if we can actually
+draw our L-System fractals.  </p>
+<p><strong>Parsing and Unparsing.</strong> One thing that is very useful for debugging
+  and testing code is to have easy ways to turn strings into objects
+  (<em>parsing</em>), and to turn objects into strings (<em>unparsing</em>).  </p>
+<p>We have defined functions that parse and unprase L-System commands (in <code>lsystem.py</code>):</p>
+<p><div class="hanging">
+<code>unparse_lsystem_command(command)</code> returns a string representation of the L-System command.
+   </div><div class="hanging">
+<code>unparse_lsystem_sequence(commands)</code> returns a string representation of an L-System command sequence.
+   </div><div class="hanging">
+<code>parse_lsystem_command(command)</code> returns an L-System command object that corresponds to an input string.
+   </div><div class="hanging">
+<code>parse_lsystem_sequence(sequence)</code> returns an L-System command sequence (list of L-System commands) corresponding to the input string.
+   </div></p>
+<p>Here are some examples using these functions (instead of the much harder to read example above):</p>
+<pre class="brush: python;">
+>> rewrite_lcommands(parse_lsystem_sequence('[F, R30, F]'), 
+                     parse_lsystem_sequence('[F, F, R30]'))
+[['F'], ['F'], ['R', 30], ['R', 30], ['F'], ['F'], ['R', 30]]
+>>> unparse_lsystem_sequence(_)  
+'[F, F, R30, R30, F, F, R30]'
+</pre>
+
+<p>(Note that we use <code>_</code> in the second expression as a shortcut to getting the value of the last expression evaluated in the Python shell.)</p>
+<h2>Drawing L-System Fractals</h2>
+<p>To draw our L-system fractals, we need procedures for drawing curves.
+We consider a <a href="https://en.wikipedia.org/wiki/Plane_curve"><em>curve</em></a> any
+set of points in a two-dimensional space, so a straight line is a kind
+of curve as is a circle, or a complex drawing like a fractal.</p>
+<p>There are many different ways of thinking about curves.  Mathematicians
+sometimes think about curves as functions from an <em>x</em>-coordinate value
+to a <em>y</em>-coordinate value.  For example, <em>y</em> = 3_x_, describes a simple
+slanted line.  </p>
+<p>The problem with this way of thinking about curves is there can only be
+one <em>y</em> point for a given <em>x</em> point.  This makes it impossible to make
+simple curves like a circle where there are two <em>y</em> points for every <em>x</em>
+value on the curve.</p>
+<p>So, a more useful way of thinking about curves is as <strong>functions that
+map numbers to [<em>x</em>, <em>y</em>] points</strong>. We can produce infinitely many
+different points on the curve by evaluating the curve function with the
+(infinitely many different) real numbers between 0 and 1 inclusive. </p>
+<p>You can think of the number between 0 and 1 as <em>time</em> &mdash; the first
+point of the curve you draw will be the point returned by
+<code>curve(0.0)</code>, the middle part of the curve you draw will be the
+point returned by <code>curve(0.5)</code>, and the last part of the curve
+you draw will be the point returned by <code>curve(1.0)</code>.  </p>
+<p>Of course, we can't really evaluate the curve function at <em>every</em> real
+number between 0 and 1 because there are infinitely many of them &mdash;
+it would take too long (even with an infinitely fast computer)!
+Instead, we will evaluate it at a large (but finite) number of values
+distributed evenly between 0 and 1 to display an approximation of the
+curve.</p>
+<h4>Representing Points</h4>
+<p>We need a way to represent the points on our curves.  A point is a pair
+of two values, <em>x</em> and <em>y</em> representing the horizontal and vertical
+location of the point.</p>
+<p>We will use a coordinate system from (0, 0) to (1, 1): </p>
+<p><center>
+  <table>
+    <tbody>
+    <tr>
+      <td>(0.0, 1.0)</td>
+      <td></td>
+      <td>(1.0, 1.0)</td></tr>
+    <tr>
+      <td></td>
+      <td>
+        <table cellspacing=2 cellpadding=2 width=130 align=center bgcolor=black border=1>
+          <tbody>
+          <tr>
+            <td bgcolor=white height=130></td></tr></tbody></table></td>
+      <td></td></tr>
+    <tr>
+      <td>(0.0, 0.0)</td>
+      <td></td>
+      <td>(1.0, 0.0)</td></tr></tbody>
+   </table>
+   </center></p>
+<p>A point has an <em>x</em> and <em>y</em> coordinate.  So, to represent points we
+  define procedures <code>make_point</code>, <code>point_x</code> and <code>point_y</code>.  We use lists
+  to represent points.</p>
+<p>Our pictures will be more interesting if points can have color too.  So,
+  we represent a colored point using a list of three values: <code>x</code>,
+  <code>y</code> and <code>color</code>: </p>
+<pre class="brush: python"> 
+def make_point(x, y): 
+    return [x, y, BLACK] # default color is
+
+def make_colored_point(x, y, c):
+    return [x, y, c]
+
+def point_x(point):
+    return point[0]
+
+def point_y(point):
+    return point[1]
+
+def point_color(point):
+    return point[2]
+</pre>
+
+<p>We have provided some procedures for drawing on the window in
+<code>graphics.py</code> including:</p>
+<p><div class="hanging">
+<code>window_draw_point(point)</code> &mdash; Draw the <em>point</em> on the window.<br />
+    For example, <code>window_draw_point(make_point(0.5, 0.5))</code> puts a
+    black dot in the center of the window. (The point is only one
+    pixel, so it is hard to see.)
+   </div>
+   <div class="hanging">
+<code>window_draw_line(pointa, pointb)</code> &mdash; Draw a black line from
+    <em>pointa</em> to <em>pointb</em>.<br />
+For example,
+    <code>window_draw_line(make_point(0.0, 0.0), make_point(1.0, 1.0))</code> draws
+    a diagonal line from the bottom left corner to the top right corner.
+   </div></p>
+<p>Read through <code>curves.py</code> for other useful drawing functions.</p>
+<h3>Drawing Curves</h3>
+
+<p>Building upon points, we can make curves and lines (straight lines are
+just a special kind of curve). </p>
+<p>Curves are procedures from values to points. One way to represent a
+curve is as a function that returns a point for every input value
+between 0.0 and 1.0. Ideally, there would be infinitely many points to
+draw on the curve, but in practice, we will need to select a fininte
+number of points to evaluate that we hope provides a good approximation
+of the curve to draw.</p>
+<p>For example, the following here is a function that defines a curve that
+is a horizontal line accross the window:</p>
+<pre class="brush: python;"> 
+def mid_line(t):
+    return make_point(t, 0.5) 
+</pre>
+
+<p>If we call <code>mid_line</code> with an input value <em>x</em>, it returns the point <code>(x,
+0.5)</code>. Hence, if we apply <code>mid_line</code> to all the values between 0.0 and
+1.0, we get a horizontal line.  </p>
+<p>Of course, we can't really apply it to <em>all</em> the values, but can draw
+enough of them that it will look like the full curve, a solid horizontal
+line.  So, to draw a curve we need to apply the curve procedure to many
+values in the range from 0.0 to 1.0 and draw each point it evaluates to.</p>
+<p>The <code>draw_curve_points</code> procedure does that:</p>
+<pre class="brush: python;">
+def draw_curve_points(curve, npoints):
+    for step in range(npoints + 1):
+        window_draw_point(curve(step / npoints))
+</pre>
+
+<p>The procedure <code>draw_curve_points</code> takes a function representing a curve,
+and <code>npoints</code>, the number of points to draw.  It draws <em>npoints</em> +
+1 evenly spaced points for the curve.</p>
+<p>For example, if <code>npoints</code> is 5, <code>draw_curve_points</code> will draw the curve
+with time inputs 0.0, 0.2, 0.4, 0.6, 0.8, and 1.0.  Note that this is
+actually 6 points, since the loop uses <code>range(npoints + 1)</code> to include
+both the <code>0.0</code> and <code>1.0</code> points.  (Improving <code>draw_curve_points</code> to draw
+n points including the 0.0 and 1.0 times, with the others evenly divided
+is left as a challenge exercise!)</p>
+<p><div class="q">
+<strong>Problem 3.</strong> Define a <code>vertical_mid_line</code> curve function that can used to draw a vertical line in the middle of the window.
+So, <code>draw_curve_points(vertical_mid_line, 1000)</code> draws a vertical line in the middle of the window as shown below.
+   </div></p>
+<p><center>
+   <a href="static/images/vertical-line.png"><img width=308 height=319 src="static/images/vertical-line.png"></a>
+   </center></p>
+<p><div class="q">
+<strong>Problem 4.</strong> Define a function, <code>make_vertical_line</code> that takes one number as its input and returns a function that produces a vertical line at that the horizontal location given by the input. For example, <code>draw_curve_points(make_vertical_line(0.5), 1000)</code> should produce a vertical line in the middle of the window (identical to <code>draw_curve_points(vertical_mid_line, 1000)</code>) and <code>draw_curve_points(make_vertical_line(0.2), 1000)</code> should produce a vertical line near the left side of the window (shown in the image below).
+   </div></p>
+<p><center>
+   <a href="static/images/vertical-line-0.2.png"><img width=308 height=319 src="static/images/vertical-line-0.2.png"></a>
+   </center></p>
+<h3>Manipulating Curves</h3>
+
+<p>The good thing about defining curves as functions is that it is now
+possible to combine then in interesting ways.</p>
+<p>For example, the procedure <code>rotate_ccw</code> takes a curve and rotates it 90
+degrees counter-clockwise by simply swapping the <em>x</em> and <em>y</em> points:</p>
+<pre class="brush: python;">
+def rotate_ccw(curve):
+    def new_curve(t):
+        ct = curve(t)
+        return make_point(point_y(ct), point_x(ct))
+    return new_curve
+</pre>
+
+<p>Note that <code>rotate_ccw(curve)</code> returns a function that is a new curve
+that is just like the input curve, but rotated.  </p>
+<p>The function <code>rotate_ccw</code> is a <em>higher-order function</em>: it takes a
+function (representing a curve) as its input, and returns a new function
+(that represents the rotated curve).</p>
+<p>Inside <code>rotate_ccw</code>, the <code>new_curve</code> function is defined.  Within its
+definition, we can use <code>curve</code>, the name of the parameter to
+<code>rotate_ccw</code> to refer to the input curve.  The new local variable, <code>ct</code>
+stores the result of <code>curve(t)</code> so it is not necessary to call it twice,
+and then we create a new point using the <code>point_y(ct)</code> and <code>point_x(ct)</code>
+to flip the <code>x</code> and <code>y</code> coordinates.  (For simplicity, the definition
+here does not include color; see <code>curves.py</code> for a definition of
+<code>rotate_ccw</code> that preserves the colors of points.)</p>
+<p>Predict what <code>draw_curve_points(rotate_ccw(mid_line), 1000)</code> and
+<code>draw_curve_points(rotate_ccw(rotate_ccw(mid_line)), 1000)</code> will do.
+Confirm your predictions by trying them in your Python interpreter.</p>
+<p><div class="hint"> 
+You may have just read over that paragraph and not actually done the
+prediction. The instructions are not just there to waste time:
+experience suggests that students who do not do them become confused on
+subsequent problems and then come back.  Its really important to
+understand what is going on here, before attempting the more complex
+problems.  Thus you can save time by doing them now! If you already did
+them, great work!<br />
+   </div></p>
+<p>Here's another example:</p>
+<pre class="brush: python;">
+def scale(curve, ratio):
+    def new_curve(t):
+        ct = curve(t)
+        return make_point(ratio * point_x(ct), ratio * point_y(ct))
+    return new_curve
+</pre>
+
+<p>Predict what <code>draw_curve_points(scale(mid_line, 0.5), 1000)</code> will do,
+and then try it in your interpreter.  </p>
+<p>The <code>scale</code> procedure doesn't produce quite what we want because in
+addition to changing the size of the curve, it moves it around.  Why
+does this happen?  Try scaling a few different curves to make sure you
+understand why the curve moves. </p>
+<p>One way to fix this problem is to center our curves around <code>(0,0)</code> and
+then translate them to the middle of the screen.  In mathematics and
+geometry, <em>translation</em> means moving a shape without rotating or
+flipping it. That is, to translate a curve is to "slide" it. </p>
+<p>We can do this by adding or subtracting constants to the points they
+produce:</p>
+<pre class="brush: python;">
+def translate(curve, delta_x, delta_y):
+    def new_curve(t):
+        ct = curve(t)
+        return make_point(delta_x + point_x(ct), delta_y + point_y(ct))
+    return new_curve
+</pre>
+
+<p>Using <code>translate</code>, we can now define <code>mid_line</code> by translating a
+horizontal line (at the bottom of the window) to the middle:</p>
+<pre class="brush: python;">
+def horiz_line(t):
+    return make_point(t, 0)
+
+mid_line = translate(horiz_line, 0, 0.5) 
+</pre>
+
+<p><div class="q"> 
+<strong>Problem 5.</strong> To check you understand everything so far, define a curve
+function <code>half_line(t)</code> that uses <code>translate</code>, <code>horiz_line</code> and <code>scale</code>
+to define a horizontal line half the width of the window that starts in
+the middle of the display window.  Executing
+<code>draw_curve_points(half_line, 1000)</code> should produce a horizontal line
+that starts in the middle of the window and extends to the right
+boundary (as shown below).
+   </div></p>
+<p><center>
+   <a href="static/images/half-line.png"><img width=308 height=319 src="static/images/half-line.png"></a>
+   </center></p>
+<p><div class="hint"> 
+Hint: If you do not see anything when you are drawing a curve, it may be
+that you haven't yet applied <code>translate</code> and the points are being drawn
+along the bottom edge of the screen.  You may find it helpful to modify
+<code>draw_curve_points</code> to print out the points as it draws them so you can
+see from the printed points if there are any points off the screen (if
+you do this, you'll want to reduce the number of points to print less on
+the screen).
+   </div></p>
+<p>In addition to altering the points a curve produces, we can alter a
+curve by changing the <tt>time</tt> values it will see.  For example,
+<pre class="brush: python;">
+def first_half(curve):
+   def new_curve(t):
+      return curve(t / 2)
+   return new_curve
+</pre>
+is a function that takes a curve and produces a new curve that only 
+draws the first half of the input curve.</p>
+<p>Predict what each of these expressions will do:</p>
+<ul>
+<li><code>draw_curve_points(first_half(mid_line), 1000)</code></li>
+<li><code>draw_curve_points(first_half(first_half(mid_line)), 1000)</code></li>
+</ul>
+<p>Try evaluating them in your interpreter to check if you were right.</p>
+<p>The provided code in includes several other functions that transform
+curves including: </p>
+<p><div class="hanging">
+<code>scale_x_y(curve, x_scale, y_scale)</code> &mdash; returns a curve function that is the input <code>curve</code> stretched
+along the x and y axis using the given scale factors.
+   </div><div class="hanging">
+<code>scale(curve, ratio)</code> &mdash; returns a curve function
+that is the input <code>curve</code> stretched along both the x and y axis by the same <code>ratio</code>.
+   </div><div class="hanging">
+<code>rotate_around_origin(curve, degrees)</code> &mdash; returns a curve function
+that is the input curve rotated counterclockwise by the given number of
+degrees.<br />
+   </div></p>
+<p>You should be able to understand the code in <code>curves.py</code> that defines these functions.</p>
+<h3>Connecting Curves</h3>
+<p>It is also useful to have curve transforms that combine multiple input curves into a new curve.</p>
+<p>An example is <code>connect_rigidly(curve1, curve2)</code> which returns a curve
+that consists of <code>curve1</code> followed by <code>curve2</code>.  The starting point of
+the new curve is the starting point of <code>curve1</code>, and the final point of
+<code>curve2</code> is the final point of the new curve.  </p>
+<p>Here's how <code>connect_rigidly</code> is defined (try to figure this out from
+just the code here, but look at the version in <code>curves.py</code> to see more
+explanations in the comments):</p>
+<pre class="brush: python;">
+def connect_rigidly(curve1, curve2):
+    def new_curve(t):
+        if (t < 0.5):
+            return curve1(2 * t)
+        else:
+            return curve2(2 * t - 1)
+    return new_curve
+</pre>
+
+<p>Note that <code>connect_rigidly</code> gives half of its points to drawing <code>curve1</code>
+and half to <code>curve2</code>, so when we call <code>draw_curve_points(..., n)</code> we'll
+may want to double the value of <code>n</code> to ensure there are enough points in
+each curve.  This becomes a big problem when many curves are connected
+(as will be necessary to draw interesting fractals); we'll return to it
+soon.</p>
+<p>Predict what the expression below will do:
+&nbsp;&nbsp;&nbsp;<code>draw_curve_points(connect_rigidly(vertical_mid_line, mid_line), 1000)</code><br />
+Is there any difference between that and this one:
+&nbsp;&nbsp;&nbsp;<code>draw_curve_points(connect_rigidly(mid_line, vertical_mid_line), 1000)</code>  </p>
+<p>Check your predictions in the interpreter, and try your own experiments
+connecting and transforming different curves to make sure you understand
+how everything works so far.</p>
+<h3>Distributing Points</h3>
+<p>The way <code>connect_rigidly</code> is defined above, we use all the <em>t</em>-values
+below 0.5 on the first curve, and use the <em>t</em>-values between 0.5 and 1.0
+on the second curve.  </p>
+<p>If the second curve is the result of connecting two other curves, like
+<code>connect_rigidly(c1, connect_rigidly (c2, c3))</code> then 1/2 of the points
+will be used to draw <code>c1</code>, 1/4 to draw <code>c2</code>, and 1/4 to draw <code>c3</code>.  (If
+you're not sure why, take another look at the connect_rigidly code.)
+That means that <code>c2</code> and <code>c3</code> will look dotty or grainy compared to <code>c1</code>.</p>
+<p>This isn't too big a problem when only a few curves are combined; we can
+just increase the number of points passed to <code>draw_curve_points</code> to have
+enough points to make a smooth curve.  However, you will be drawing
+fractal curves made up of <em>thousands</em> of connected curves.  Just
+increasing the number of points won't help much, as you'll see in
+the next problem.</p>
+<p><div class="q">
+<strong>Problem 6.</strong> Define a function <code>num_points(t, n)</code> that
+determines the approximate number of points that will be used
+for the <em>n</em><sup>th</sup> curve when drawing </p>
+<pre class="brush: python;">
+   connect_rigidly(c1, connect_rigidly(c2, connect_rigidly(c3, ... cn)))
+</pre>
+
+<p>The first argument to <code>num_points</code> is the number of points (<em>t</em>-values)
+total to draw.  The second argument is the number of curves.<br />
+   </div></p>
+<p><div class="hint">
+Think about this yourself first, but look in <code>project3.py</code> for a hint
+if you are stuck.  There are mathematical ways to calculate this
+efficiently, but the simplest way to calculate it is to define a
+procedure that keeps halving the number of points <em>n</em> times to
+find out how many are left for the <em>n</em><sup>th</sup> curve.
+   </div></p>
+<p>Your <code>num_points</code> procedure should produce results similar to:</p>
+<pre class="brush: python;">
+>>> num_points(1000, 10)
+1.953125
+>>> num_points(1000, 20)
+0.00190734863281
+>>> num_points(1000000, 20)
+1.90734863281
+</pre>
+
+<p>This means if we connected just 20 curves using <code>connect_rigidly</code>, and
+passed the result to <code>draw_curve_points</code> with one million as the number
+of points, there would still be only one or two points drawn for the
+20<sup>th</sup> curve.  If we are drawing thousands of curves, for most
+of them, not even a single point would be drawn!</p>
+<p>To fix this, we need to distribute the points between our curves more
+fairly.  We have provided a procedure <code>connect_curves_evenly</code> in
+<code>curves.py</code> that connects a list of curves in a way that distributes the
+range of <em>t</em>-values evenly between the curves.</p>
+<p>The definition is a bit complicated, so don't worry if you don't
+understand it completely.  You should, however, be able to figure out
+the basic idea for how it distributes the <em>t</em>-values evenly between
+every curve in a list of curves.  (See <code>curves.py</code> for a version with
+lots of comments explaining what is going on, but try to understand it
+from just the code here first.)</p>
+<pre class="brush: python;">
+def connect_curves_evenly(curvelist):
+    ncurves = len(curvelist)
+    def new_curve(t):
+        which_curve = min(int(math.floor(t * ncurves)), ncurves - 1)
+        chosen_curve = curvelist[which_curve]
+        adjusted_t = ncurves * (t - which_curve * 1.0 / ncurves)
+        return chosen_curve(adjusted_t)
+    return new_curve
+</pre>
+
+<p>It will also be useful to connect curves so that the next curve begins
+where the first curve ends.  We can do this by translating the second
+curve to begin where the first curve ends.  </p>
+<p>To do this for a list of curves, we translate each curve in the list the
+same way using a list comprehension: </p>
+<pre class="brush: python;">
+def construct_simple_curvelist(curve, curvelist):
+    endpoint = curve(1.0)
+    delta_x = point_x(endpoint)
+    delta_y = point_y(endpoint)
+    return [curve] + [translate(tcurve, delta_x, delta_y) for tcurve in curvelist]
+</pre>
+
+<p>Now that we have defined all of these procedures to manipulate, connect
+and draw listscurves, we just have to turn L-System fractals into lists of
+curves and then we can draw them!</p>
+<h2>Drawing L-System Curves</h2>
+<p>To draw an L-system fractal, we need to convert a sequence of L-system
+commands into a curve.  </p>
+<p>We defined the <code>connect_curves_evenly</code> procedure to take a list of
+curves, and produce a single curve that connects all the curves.  So, to
+draw an L-System curve, we need a procedure that turns an L-System Curve
+into a list of curve procedures.</p>
+<p>The <code>convert_lcommands_to_curvelist</code> procedure converts a list of
+L-System commands into a curve.  Here is a template for
+<code>convert_lcommands_to_curvelist</code> (with some missing parts that you will
+need to complete).  It will be explained later, but try to understand it
+yourself first.</p>
+<pre class="brush: python;">
+def convert_lcommands_to_curvelist(lcommands):
+    if len(lcommands) == 0:
+        # We need to make a leaf with just a single point of green
+        return [lambda t: make_colored_point(0, 0, GREEN)]
+    elif is_forward(lcommands[0]):
+        # Make a vertical_line and then recurse on the rest of the list
+        return construct_simple_curvelist(vertical_line, 
+                                          convert_lcommands_to_curvelist(lcommands[1:]))
+    elif is_rotate(lcommands[0]):
+        rotate_angle = -1 * get_angle(lcommands[0])
+        # Every curve in the rest of the list should be rotated
+        # Problem 7: replace with code for doing rotation
+        raise RuntimeError("Rotate not yet implemented!")
+    elif is_offshoot(lcommands[0]):
+        # Problem 8: replace with code for doing offshoots
+        raise RuntimeError("Rotate not yet implemented!")
+    else:
+        # This branch should never happen, but let's raise an error if it does.
+        raise RuntimeError("Bad Command")
+</pre>
+
+<p>We define <code>convert_lcommands_to_curvelist</code> recursively.  </p>
+<p>The base case is when there are no more commands (the <code>lcommands</code>
+parameter is the empty list).  It evaluates to the leaf curve (for now,
+we just make a point of green &mdash; you may want to replace this with
+something more interesting to make a better fractal).  Since
+<code>convert_lcommands_to_curvelist</code> evaluates to a <em>list</em> of curves, we
+need to make a singleton list of curves containing only one curve.</p>
+<p>Otherwise, we need to do something different depending on what the first
+command in the command list is.  If it is a forward command we draw a
+vertical line, and connect the rest of the fractal is connected to the
+end of the vertical line.  The recursive call to
+<code>convert_lcommands_to_curve</code> produces the curve list corresponding to
+the rest of the L-system commands.  Note how we pass <code>lcommands[1:]</code> in
+the recursive call to get the rest of the command list.</p>
+<p><div class="q">
+<strong>Problem 7.</strong> Fill in the missing code for handling rotate commands
+  (marked in <code>project3.py</code>).  You will want to use 
+<code>rotate_around_origin(curve, rotate_angle)</code> somewhere in your
+code to rotate every curve after the rotate command by the
+<code>rotate_angle</code>. The <code>rotate_around_origin</code> function was
+introduced briefly above and is defined in <code>curves.py</code>.
+   </div></p>
+<p>You can test your code by drawing the curve that results from any list
+of L-system commands that does not use offshoots.  For example,
+evaluating the code below should produce a "V":</p>
+<pre class="brush: python;">
+lcommands = parse_lsystem_sequence("[R150, F, R-120, F]")
+curvelist = convert_lcommands_to_curvelist(lcommands)
+c1 = connect_curves_evenly(curvelist)
+c2 = translate(c1, 0.3, 0.7)
+c3 = position_curve(c2, 0, 0.5)
+draw_curve_points(c3, 10000)
+</pre>
+
+<p><div class="q">
+<strong>Problem 8.</strong> Fill in the missing code for handling offshoot commands (marked in <code>project3.py</code>).  (See hints below for help.)
+   </div></p>
+<p>We have provided the <code>position_curve</code> function (defined in <code>curves.py</code>)
+to make it easier to fit fractals into the graphics window:</p>
+<div class="hanging">
+`position_curve(curve, startx, starty)` returns a curve that translates `curve` to start at `(startx, starty)` and
+scales it to fit into the graphics window maintaining the aspect ratio (the x and y dimensions are both scaled the same amount).
+</div>
+
+<p>Now, you should be able to draw any L-System command list using
+<code>position_curve</code> and the <code>convert_lcommands_to_curvelist</code> function you
+have now completed.</p>
+<p>Try drawing a few simple L-System command lists before moving on to the
+next part. For example, given this input:</p>
+<pre class="brush: python;">
+draw_curve_points(position_curve(connect_curves_evenly(
+    convert_lcommands_to_curvelist(TREE_COMMANDS)), 0.5, 0.1), 5000)
+</pre>
+
+<p>Your output should look like this:
+<center>
+<A href="static/images/tree1.png"><img src="static/images/tree1.png" width=450></a>
+</center></p>
+<p><div class="q">
+<strong>Problem 9.</strong> Define a function, <code>make_lsystem_fractal</code> that takes three parameters: <code>replace_commands</code>, a list of L-System 
+      commands that replace forward commands in the rewriting; <code>start</code>, 
+      a list of L-system commands that describes the starting curve; and <code>level</code>, the number of iterations to apply the rewrite rule.  It should return a sequence of L-System commands that results from repeating the replacement rule <code>level</code> times, starting from the <code>start</code> commands.   (<strong>Hint:</strong> You should use the <tt>rewrite_lcommands</tt> you defined in Problem 5.)
+</div></p>
+<p>You should now be able to draw a tree fractal using
+<code>make_tree_fractal</code> and <code>draw_lsystem_fractal</code> (these
+and the <code>TREE_COMMANDS</code> list of L-system commands are defined
+in <code>lsystem.py</code>):</p>
+<pre class="brush: python;">
+def make_tree_fractal(level):
+    make_lsystem_fractal(TREE_COMMANDS, [make_forward_command()], level)
+
+def draw_lsystem_fractal(lcommands):
+    draw_curve_points(
+        position_curve(
+            connect_curves_evenly(
+                convert_lcommands_to_curvelist(lcommands)), 
+            0.5, 0.1), 
+        50000)
+</pre>
+
+<p>For example, <code>draw_lsystem_fractal(make_tree_fractal(3))</code> should
+produce <a href="static/images/tree3.png">a tree fractal with 3 levels of
+branching</a>.</p>
+<p>Draw some fractals by playing with the L-system commands.  Try changing
+the rewrite rule, the starting commands, level and leaf curve (in
+<code>convert_lcommands_to_curvelist</code>) to draw an interesting fractal.  You
+might want to make the branches colorful, or even include curves that
+change color along the points.</p>
+<p>Try and make a fractal picture that will make a better course logo than
+the <a href="static/images/lambdatree.png"><em>Great Lambda Tree of Infinite Knowledge and Ultimate Power</em></a>.</p>
+<p>Your last-displayed fractal image file is saved in <code>fractal.svg</code> in your
+current directory. It is overwritten every time, so make sure to save
+any interesting fractals with different filenames.</p>
+<p><div class="q"> 
+<strong>Problem 10.</strong> Submit your best fractal image to the <code>#general</code> channel
+on slack.  You can modify any of the code you want, as well as do extra
+drawing in addition to the fractal to make a cool image.  If your image
+is interesting or beautiful enough, you may receive untold fame and
+eternal glory by having it be used as the course logo, or at least on a
+lecture slide!  Include all the code you used to generate the image in
+your <code>project3.py</code> submission.  If you want to use another tool to
+convert the <code>.svg</code> image to another image format like <code>.png</code> or <code>.jpg</code>
+that will display in-line in slack that's fine (but not necessary).
+   </div></p>
+<p><div class="credits">
+<b>Credits:</b> This problem set was originally created for CS200 Spring
+2002 by Dante Guanlao, Jon Erdman and David Evans, and revised for CS200
+Spring 2003 by Jacques Fournier and David Evans, and revised for CS200
+Spring 2004, CS150 Fall 2005, and CS150 Spring 2007 by David Evans.  A
+version of this assignment was also used at the <a
+href="http://www.cs.uga.edu/~maria/classes/4500-Spring-2006/project3.html">University
+of Georgia</a>. Most recently, it was modified for CS 150 in Spring 2009
+by Westley Weimer (including adding the Extra Credit section), and
+updated for cs1120 Fall 2009 by David Evans. Jonathan Burket and Lenny
+Li adapted it for Python in 2012, and Yuchi Tian revised it for Python 3 in 2016.
+   </div></p></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/project3 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:12:26 GMT -->
+</html>

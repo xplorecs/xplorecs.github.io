@@ -1,0 +1,205 @@
+<html>
+  
+<!-- Mirrored from xplorecs.org/class13 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>
+cs1120: Introduction to Computing - Explorations in Language, Logic, and Machines
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:150,150italic,300italic,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="static/images/icon.jpg"/>
+    
+    
+   <link href="static/css/shCoreDefault.css" rel="stylesheet">
+   <script type="text/javascript" src="static/js/shCore.js"></script>
+   <script type="text/javascript" src="static/js/shBrushPython.js"></script>
+   <script type="text/javascript">
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.all();
+   </script>
+
+  </head>
+  <body>
+    <div id="header">
+<A href="index.html">cs1120: Introduction to Computing</a> &emsp;&emsp;&emsp;
+<!-- Menu | Classes | Notes
+<span class="right"><a href="/users/login">Login</a></span>
+-->
+
+</div>
+    <div class="container">
+    <div id="content">
+
+<h1>Class 13 - Notes</h1>
+<div class="printing"><a href="static/docs/class13.pdf">PDF for Printing</a></div>
+
+<h3>Upcoming Schedule</h3>
+<p><a href="project3.html">Project 3</a> is due at the beginning of class on <strong>Friday, 26
+February</strong>, but you may not submit Project 3 until completing the Orange
+Belt level.  If you are making clear progress towards completing the
+Orange Belt (see below), you may turn in Project 3 on Monday, 29
+February with no penalty (still eligible for automatic Green Belt
+promotion with an excellent Project 3).</p>
+<h3>Orange Belt Promotion</h3>
+<p>If you received a Gold Star (or better!) on <a href="project2.html">Project 2</a>,
+congratulations - you are now an Orange Belt!</p>
+<p>If you received a Green Star on <a href="project2.html">Project 2</a>, the standard way
+to be promoted to the Orange Belt level is to do these four things:</p>
+<ol>
+<li>
+<p>Complete Udacity cs101 <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48756019/m-48532680">Lesson 6: <em>How to Have Infinite
+Power</em></a>
+to make sure you understand recursive definition.</p>
+</li>
+<li>
+<p>Answer <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48329868/e-48296559/m-48749055">Lesson 6: <em>Problem Set</em>: Question
+4</a>
+("Deep Count").</p>
+</li>
+<li>
+<p>Answer <a href="https://www.udacity.com/course/viewer#!/c-cs101/l-48420258/e-48381420/m-48678821">Lesson 6: <em>Problem Set 6 Starred</em>: Question
+1</a>
+("Family Trees")</p>
+</li>
+<li>
+<p>Define a <code>list_reverse</code> function that takes as input a list and
+returns a new list with the elements of the input list in reverse order.
+For example, <code>list_reverse([1, 2, 3, 4])</code> should return <code>[4, 3, 2, 1]</code>.
+You should define <em>two</em> versions of your <code>list_reverse</code> function: one
+that uses a recursive call (and may not contain any <code>for</code> or <code>while</code>
+loops), and one that uses a loop (and may not contain a recursive call).</p>
+</li>
+</ol>
+<p>There is nothing to submit for 1-3.  For questions 2 and 3, you should
+definitely try to solve these yourself and not look at the answer until
+you have made a serious attempt to solve it yourself.  But, you may look
+at the answer if you are stuck.  After looking at the answer, you should
+still write your own solution.  </p>
+<p>For question 4, <strong>you must work alone and solve this problem without
+help from anyone or using any external resources</strong> (other than the
+course staff).</p>
+<p>To complete the Orange Belt, send your solution to #4 by
+<a href="mailto://evans@virginia.edu">email</a>.</p>
+<h2>Slides</h2>
+<script async class="speakerdeck-embed" data-id="cd9344fca6c6408dbaa0fd293f0d7068" data-ratio="1.77777777777778" src="http://speakerdeck.com/assets/embed.js"></script>
+
+<h2>Code</h2>
+<p><a href="static/docs/class13.py">class13.py</a></p>
+<!--page-->
+
+<h2>Hammering Hamming</h2>
+<pre class="brush: python;">
+def hamming_distance_rec(s1, s2):
+    assert len(s1) == len(s2)
+    if not s1: return 0
+    else:
+        return (not s1[0] == s2[0]) + hamming_distance_rec(s1[1:], s2[1:])
+
+def hamming_distance_loop(s1, s2):
+    assert len(s1) == len(s2)
+    count = 0
+    for i in range(len(s1)):
+        count = count + (not s1[i] == s2[i])
+    return count
+
+def hamming_distance_lc(s1, s2):
+    assert len(s1) == len(s2)
+    return sum([not e1 == e2 for (e1, e2) in zip(s1, s2)])
+</pre>
+
+<!--python-->
+
+<h3>Time Trials</h3>
+<p>This is a simple (but not super accurate) way to estimate running times.</p>
+<pre class="brush: python;">
+import sys, time, random, string
+
+def random_bases(n):
+    return ''.join(random.choice(['A','C','G','T']) for i in range(n))
+
+def time_hamming(n):
+    s1 = random_bases(n)
+    s2 = random_bases(n)
+    for impl in [hamming_distance_rec,
+                 hamming_distance_loop,
+                 hamming_distance_lc]:
+        start_time = time.clock()
+        for count in range(1000):
+            impl(s1, s2)
+        stop_time = time.clock()
+        print("Time for " + impl.__name__ + ": " +
+              str(stop_time / start_time))
+</pre>
+
+<!--python-->
+
+<!--page-->
+
+<h2>Edit Distance</h2>
+<pre class="brush: python;">
+def edit_distance(a, b):
+    """
+    Returns the Levenshtein distance between a and b.
+    """
+    if not (a and b):
+        return len(a) + len(b)
+    else:
+        if a[0] == b[0]:
+            return edit_distance(a[1:], b[1:])
+        else:
+            return min(1 + edit_distance(a, b[1:]),     # insert
+                       1 + edit_distance(a[1:], b),     # delete
+                       1 + edit_distance(a[1:], b[1:])) # mutate
+</pre>
+
+<!--python-->
+
+<h2>Nested Lists</h2>
+<pre class="brush: python;">
+def list_copy(lst):
+    """Returns a shallow copy of the input lst."""
+    if not lst:
+        return []
+    else:
+        return [lst[0]] + list_copy(lst[1:])
+
+def is_list(obj):
+    """Returns True iff obj is a list."""
+    return isinstance(obj, list)    
+</pre>
+
+<!--python-->
+
+<p>We didn't get to <code>list_deep_copy</code> in class and will continue with this
+Wednesday, but try to figure this out on your own (and how to turn it
+into <code>list_flatten</code>):</p>
+<pre class="brush: python;">
+def list_deep_copy(lst):
+    """Returns a deep copy of the input list."""
+    if not lst:
+        return []
+    elif is_list(lst[0]):
+        return [list_deep_copy(lst[0])] + list_deep_copy(lst[1:])
+    else:
+        return [lst[0]] + list_deep_copy(lst[1:])
+</pre>
+
+<!--python-->
+
+<p>Demonstrate the difference between <code>list_copy</code> and <code>list_deep_copy</code> with some Python code that shows how they behave differently.</p>
+<h1></h1></div>
+    </div>
+    <div id="footer">
+<a href="index.html">University of Virginia - cs1120</a>
+<span class="right">
+<a href="http://www.cs.virginia.edu/evans/">David Evans</span>
+</div>
+  </body>
+
+<!-- Mirrored from xplorecs.org/class13 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 26 Aug 2022 17:09:48 GMT -->
+</html>
